@@ -1,0 +1,370 @@
+    SECTION 7: BORDER & OUTLINE UTILITIES
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    7.1 Border Width
+    ------------------------------------------------------------------ */
+        .border {
+            border: 1px solid var(--border-light);
+        }
+
+        .border-0 {
+            border: 0;
+        }
+
+        .border-2 {
+            border-width: 2px;
+        }
+
+        .border-4 {
+            border-width: 4px;
+        }
+
+        .border-8 {
+            border-width: 8px;
+        }
+
+        .border-t {
+            border-top-width: 1px;
+            border-top-style: solid;
+            border-top-color: var(--border-light);
+        }
+
+        .border-b {
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-bottom-color: var(--border-light);
+        }
+
+        .border-l {
+            border-left-width: 1px;
+            border-left-style: solid;
+            border-left-color: var(--border-light);
+        }
+
+        .border-r {
+            border-right-width: 1px;
+            border-right-style: solid;
+            border-right-color: var(--border-light);
+        }
+
+        .border-t-0 {
+            border-top-width: 0;
+        }
+
+        .border-b-0 {
+            border-bottom-width: 0;
+        }
+
+        .border-l-0 {
+            border-left-width: 0;
+        }
+
+        .border-r-0 {
+            border-right-width: 0;
+        }
+
+        .border-t-2 {
+            border-top-width: 2px;
+        }
+
+        .border-b-2 {
+            border-bottom-width: 2px;
+        }
+
+        .border-l-2 {
+            border-left-width: 2px;
+        }
+
+        .border-r-2 {
+            border-right-width: 2px;
+        }
+
+        /* ------------------------------------------------------------------
+    7.2 Border Style
+    ------------------------------------------------------------------ */
+        .border-solid {
+            border-style: solid;
+        }
+
+        .border-dashed {
+            border-style: dashed;
+        }
+
+        .border-dotted {
+            border-style: dotted;
+        }
+
+        .border-double {
+            border-style: double;
+        }
+
+        .border-none {
+            border-style: none;
+        }
+
+        /* ------------------------------------------------------------------
+    7.3 Border Colors
+    ------------------------------------------------------------------ */
+        .border-light {
+            border-color: var(--border-light);
+        }
+
+        .border-medium {
+            border-color: var(--border-medium);
+        }
+
+        .border-dark {
+            border-color: var(--border-dark);
+        }
+
+        .border-primary {
+            border-color: var(--role-primary);
+        }
+
+        .border-success {
+            border-color: var(--success);
+        }
+
+        .border-warning {
+            border-color: var(--warning);
+        }
+
+        .border-danger {
+            border-color: var(--danger);
+        }
+
+        .border-info {
+            border-color: var(--info);
+        }
+
+        .border-transparent {
+            border-color: transparent;
+        }
+
+        .border-white {
+            border-color: white;
+        }
+
+        .border-black {
+            border-color: black;
+        }
+
+        /* ------------------------------------------------------------------
+    7.4 Border Radius
+    ------------------------------------------------------------------ */
+        .rounded-none {
+            border-radius: 0;
+        }
+
+        .rounded-sm {
+            border-radius: var(--r-sm);
+        }
+
+        .rounded-md {
+            border-radius: var(--r-md);
+        }
+
+        .rounded-lg {
+            border-radius: var(--r-lg);
+        }
+
+        .rounded-xl {
+            border-radius: var(--r-xl);
+        }
+
+        .rounded-2xl {
+            border-radius: var(--r-2xl);
+        }
+
+        .rounded-full {
+            border-radius: var(--r-full);
+        }
+
+        /* Individual corner radii */
+        .rounded-t-sm {
+            border-top-left-radius: var(--r-sm);
+            border-top-right-radius: var(--r-sm);
+        }
+
+        .rounded-b-sm {
+            border-bottom-left-radius: var(--r-sm);
+            border-bottom-right-radius: var(--r-sm);
+        }
+
+        .rounded-l-sm {
+            border-top-left-radius: var(--r-sm);
+            border-bottom-left-radius: var(--r-sm);
+        }
+
+        .rounded-r-sm {
+            border-top-right-radius: var(--r-sm);
+            border-bottom-right-radius: var(--r-sm);
+        }
+
+        .rounded-t-md {
+            border-top-left-radius: var(--r-md);
+            border-top-right-radius: var(--r-md);
+        }
+
+        .rounded-b-md {
+            border-bottom-left-radius: var(--r-md);
+            border-bottom-right-radius: var(--r-md);
+        }
+
+        .rounded-l-md {
+            border-top-left-radius: var(--r-md);
+            border-bottom-left-radius: var(--r-md);
+        }
+
+        .rounded-r-md {
+            border-top-right-radius: var(--r-md);
+            border-bottom-right-radius: var(--r-md);
+        }
+
+        .rounded-t-lg {
+            border-top-left-radius: var(--r-lg);
+            border-top-right-radius: var(--r-lg);
+        }
+
+        .rounded-b-lg {
+            border-bottom-left-radius: var(--r-lg);
+            border-bottom-right-radius: var(--r-lg);
+        }
+
+        .rounded-l-lg {
+            border-top-left-radius: var(--r-lg);
+            border-bottom-left-radius: var(--r-lg);
+        }
+
+        .rounded-r-lg {
+            border-top-right-radius: var(--r-lg);
+            border-bottom-right-radius: var(--r-lg);
+        }
+
+        .rounded-t-xl {
+            border-top-left-radius: var(--r-xl);
+            border-top-right-radius: var(--r-xl);
+        }
+
+        .rounded-b-xl {
+            border-bottom-left-radius: var(--r-xl);
+            border-bottom-right-radius: var(--r-xl);
+        }
+
+        .rounded-l-xl {
+            border-top-left-radius: var(--r-xl);
+            border-bottom-left-radius: var(--r-xl);
+        }
+
+        .rounded-r-xl {
+            border-top-right-radius: var(--r-xl);
+            border-bottom-right-radius: var(--r-xl);
+        }
+
+        .rounded-t-full {
+            border-top-left-radius: var(--r-full);
+            border-top-right-radius: var(--r-full);
+        }
+
+        .rounded-b-full {
+            border-bottom-left-radius: var(--r-full);
+            border-bottom-right-radius: var(--r-full);
+        }
+
+        .rounded-l-full {
+            border-top-left-radius: var(--r-full);
+            border-bottom-left-radius: var(--r-full);
+        }
+
+        .rounded-r-full {
+            border-top-right-radius: var(--r-full);
+            border-bottom-right-radius: var(--r-full);
+        }
+
+        /* ------------------------------------------------------------------
+    7.5 Outline Utilities
+    ------------------------------------------------------------------ */
+        .outline-none {
+            outline: none;
+        }
+
+        .outline {
+            outline: 1px solid var(--border-medium);
+        }
+
+        .outline-2 {
+            outline: 2px solid var(--border-medium);
+        }
+
+        .outline-primary {
+            outline-color: var(--role-primary);
+        }
+
+        .outline-success {
+            outline-color: var(--success);
+        }
+
+        .outline-warning {
+            outline-color: var(--warning);
+        }
+
+        .outline-danger {
+            outline-color: var(--danger);
+        }
+
+        /* ------------------------------------------------------------------
+    7.6 Box Shadow Utilities
+    ------------------------------------------------------------------ */
+        .shadow-none {
+            box-shadow: none;
+        }
+
+        .shadow-sm {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .shadow-md {
+            box-shadow: var(--shadow-md);
+        }
+
+        .shadow-lg {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .shadow-xl {
+            box-shadow: var(--shadow-xl);
+        }
+
+        .shadow-2xl {
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .shadow-inner {
+            box-shadow: var(--shadow-inner);
+        }
+
+        .shadow-focus {
+            box-shadow: var(--shadow-focus);
+        }
+
+        /* Shadow on hover */
+        .hover\:shadow-sm:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hover\:shadow-md:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .hover\:shadow-lg:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hover\:shadow-xl:hover {
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* ==================================================================
+    ==================================================================

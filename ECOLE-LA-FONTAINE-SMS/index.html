@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>ECOLE LA FONTAINE — Complete School Management System</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="/pwa/manifest.json">
+    <meta name="theme-color" content="#1a3a5c">
+    <link rel="apple-touch-icon" href="/assets/logos/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EcoleFontaine">
+    <link rel="icon" type="image/x-icon" href="/assets/logos/favicon.ico">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/core/variables.css">
+    <link rel="stylesheet" href="css/core/reset.css">
+    <link rel="stylesheet" href="css/core/typography.css">
+    <link rel="stylesheet" href="css/core/layout.css">
+    <link rel="stylesheet" href="css/core/spacing.css">
+    <link rel="stylesheet" href="css/core/positioning.css">
+    <link rel="stylesheet" href="css/core/borders.css">
+    <link rel="stylesheet" href="css/core/backgrounds.css">
+    <link rel="stylesheet" href="css/core/cursors.css">
+    <link rel="stylesheet" href="css/core/sizing.css">
+    <link rel="stylesheet" href="css/core/animations.css">
+    <link rel="stylesheet" href="css/core/animation-delays.css">
+    <link rel="stylesheet" href="css/core/utilities.css">
+    <link rel="stylesheet" href="css/core/themes.css">
+    <link rel="stylesheet" href="css/components/loaders.css">
+    <link rel="stylesheet" href="css/components/skeletons.css">
+    <link rel="stylesheet" href="css/components/sidebar.css">
+    <link rel="stylesheet" href="css/components/topbar.css">
+    <link rel="stylesheet" href="css/components/cards.css">
+    <link rel="stylesheet" href="css/components/tables.css">
+    <link rel="stylesheet" href="css/components/forms.css">
+    <link rel="stylesheet" href="css/components/buttons.css">
+    <link rel="stylesheet" href="css/components/badges.css">
+    <link rel="stylesheet" href="css/components/modals.css">
+    <link rel="stylesheet" href="css/components/toasts.css">
+    <link rel="stylesheet" href="css/components/alerts.css">
+    <link rel="stylesheet" href="css/components/pagination.css">
+    <link rel="stylesheet" href="css/components/dropdowns.css">
+    <link rel="stylesheet" href="css/components/tabs.css">
+    <link rel="stylesheet" href="css/components/charts.css">
+    <link rel="stylesheet" href="css/components/empty-states.css">
+    <link rel="stylesheet" href="css/pages/login.css">
+    <link rel="stylesheet" href="css/pages/marks.css">
+    <link rel="stylesheet" href="css/pages/attendance.css">
+    <link rel="stylesheet" href="css/pages/finance.css">
+    <link rel="stylesheet" href="css/pages/teachers.css">
+    <link rel="stylesheet" href="css/pages/timetable.css">
+    <link rel="stylesheet" href="css/pages/report-cards.css">
+    <link rel="stylesheet" href="css/pages/analytics.css">
+    <link rel="stylesheet" href="css/pages/notifications.css">
+    <link rel="stylesheet" href="css/pages/settings.css">
+    <link rel="stylesheet" href="css/pages/class-register.css">
+    <link rel="stylesheet" href="css/mobile/mobile.css">
+    <link rel="stylesheet" href="css/mobile/mobile-enhanced.css">
+    <link rel="stylesheet" href="css/print/print.css">
+</head>
+<body>
+    <!-- Partials injected at runtime via JS or included below -->
+    <!-- INCLUDE: html/partials/toast-modal-containers.html -->
+    <!-- INCLUDE: html/partials/login.html -->
+    <!-- INCLUDE: html/partials/sidebar.html -->
+    <!-- INCLUDE: html/partials/topbar.html -->
+    <!-- INCLUDE: html/partials/term-progress-bar.html -->
+    <!-- INCLUDE: html/partials/content-container.html -->
+
+    <!-- JavaScript -->
+    <script src="js/config/supabase-config.js"></script>
+    <script src="js/config/app-config.js"></script>
+    <script src="js/config/constants.js"></script>
+    <script src="js/config/role-permissions.js"></script>
+    <script src="js/core/state.js"></script>
+    <script src="js/core/api.js"></script>
+    <script src="js/core/utils.js"></script>
+    <script src="js/core/formatters.js"></script>
+    <script src="js/core/validators.js"></script>
+    <script src="js/core/academic-formulas.js"></script>
+    <script src="js/core/finance-formulas.js"></script>
+    <script src="js/core/data-refresh.js"></script>
+    <script src="js/core/auth.js"></script>
+    <script src="js/core/offline.js"></script>
+    <script src="js/ui/shell.js"></script>
+    <script src="js/ui/toasts.js"></script>
+    <script src="js/ui/modals.js"></script>
+    <script src="js/ui/router.js"></script>
+    <script src="js/core/boot.js"></script>
+    <script src="js/modules/dashboard.js"></script>
+    <script src="js/modules/marks.js"></script>
+    <script src="js/modules/class-register.js"></script>
+    <script src="js/modules/assessments.js"></script>
+    <script src="js/modules/report-cards.js"></script>
+    <script src="js/modules/timetable.js"></script>
+    <script src="js/modules/attendance.js"></script>
+    <script src="js/modules/students.js"></script>
+    <script src="js/modules/student-fees.js"></script>
+    <script src="js/modules/payments.js"></script>
+    <script src="js/modules/fee-structure.js"></script>
+    <script src="js/modules/finance-reports.js"></script>
+    <script src="js/modules/staff.js"></script>
+    <script src="js/modules/settings.js"></script>
+    <script src="js/modules/notifications.js"></script>
+    <script src="js/modules/marks-import-export.js"></script>
+    <script src="js/modules/register-export.js"></script>
+    <script src="js/modules/report-generator.js"></script>
+    <script src="js/modules/transcripts.js"></script>
+    <script src="js/modules/ranking-engine.js"></script>
+    <script src="js/modules/academic-reports.js"></script>
+    <script src="js/modules/family-management.js"></script>
+    <script src="js/modules/fee-term-status.js"></script>
+    <script src="js/patches/v9-features.js"></script>
+    <script src="js/patches/missing-functions.js"></script>
+    <script src="js/patches/window-exposure.js"></script>
+</body>
+</html>

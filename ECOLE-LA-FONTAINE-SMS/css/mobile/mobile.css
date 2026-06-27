@@ -1,0 +1,319 @@
+    SECTION 39: MOBILE & RESPONSIVE STYLES
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    39.1 Mobile Base (up to 768px)
+    ------------------------------------------------------------------ */
+        @media (max-width: 768px) {
+
+            /* Main Content */
+            .main-content {
+                margin-left: 0;
+            }
+
+            .container {
+                padding: 0 var(--sm);
+            }
+
+            /* Stats Grid */
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--sm);
+            }
+
+            .stat-card {
+                padding: var(--md);
+            }
+
+            .stat-value {
+                font-size: 1.2rem;
+            }
+
+            .stat-icon {
+                font-size: 1.4rem;
+            }
+
+            .stat-label {
+                font-size: 0.7rem;
+            }
+
+            /* Cards */
+            .dash-card-header {
+                padding: var(--sm) var(--md);
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dash-card-body {
+                padding: var(--md);
+            }
+
+            /* Forms */
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: var(--sm);
+            }
+
+            .form-group label {
+                font-size: 0.75rem;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            /* Quick Actions */
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--sm);
+            }
+
+            .quick-btn {
+                padding: var(--md);
+            }
+
+            .quick-btn .qb-icon {
+                font-size: 1.5rem;
+            }
+
+            .quick-btn .qb-title {
+                font-size: 0.75rem;
+            }
+
+            .quick-btn .qb-sub {
+                font-size: 0.65rem;
+            }
+
+            /* Empty States */
+            .empty-state {
+                padding: var(--lg);
+            }
+
+            .empty-state-icon {
+                font-size: 3rem;
+            }
+
+            .empty-state-title {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* ------------------------------------------------------------------
+    39.2 Tablet Styles (769px - 1024px)
+    ------------------------------------------------------------------ */
+        @media (min-width: 769px) and (max-width: 1024px) {
+
+            /* Layout */
+            .sidebar {
+                width: 240px;
+            }
+
+            .main-content {
+                margin-left: 240px;
+            }
+
+            /* Stats Grid */
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: var(--sm);
+            }
+
+            .stat-value {
+                font-size: 1.4rem;
+            }
+
+            /* Two Column Layout */
+            .two-col {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--md);
+            }
+
+            /* Forms */
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--md);
+            }
+
+            .form-group.full {
+                grid-column: span 2;
+            }
+
+            /* Quick Actions */
+            .quick-actions {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            /* Modals */
+            .modal {
+                max-width: 80%;
+            }
+
+            .modal-lg {
+                max-width: 90%;
+            }
+        }
+
+        /* ------------------------------------------------------------------
+    39.3 Small Mobile (up to 480px)
+    ------------------------------------------------------------------ */
+        @media (max-width: 480px) {
+
+            /* Stats Grid */
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: var(--sm);
+            }
+
+            /* Buttons */
+            .btn-group {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .btn {
+                flex: 1 1 auto;
+                min-width: 0;
+                font-size: 0.72rem;
+                padding: 6px 10px;
+                white-space: nowrap;
+            }
+
+            /* Card Headers */
+            .dash-card-header {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            /* Filters Bar */
+            .filters-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filters-bar .flex-1 {
+                width: 100%;
+            }
+
+            .result-count {
+                margin-left: 0;
+                text-align: center;
+                font-size: 0.7rem;
+            }
+
+            /* Pagination */
+            .pagination {
+                gap: 2px;
+            }
+
+            .page-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 0.7rem;
+            }
+
+            /* Tables */
+            .data-table {
+                font-size: 0.7rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 6px 8px;
+            }
+
+            /* Marks Input */
+            .marks-input {
+                width: 55px;
+                padding: 4px 2px;
+                font-size: 0.7rem;
+            }
+
+            /* Modals */
+            .modal-overlay {
+                padding: var(--sm);
+            }
+
+            .modal-footer {
+                flex-wrap: wrap;
+            }
+
+            .modal-footer .btn {
+                flex: 1;
+            }
+        }
+
+        /* ------------------------------------------------------------------
+    39.4 Touch Optimizations
+    ------------------------------------------------------------------ */
+        @media (max-width: 768px) {
+
+            /* Larger touch targets */
+            button,
+            .btn,
+            .nav-item,
+            .tab-btn,
+            .page-btn,
+            .modal-close,
+            .dropdown-item,
+            .quick-btn,
+            .class-tab {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            .btn-sm {
+                min-height: 36px;
+                min-width: 36px;
+            }
+
+            /* Prevent zoom on input focus (iOS) */
+            input,
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+
+            /* Checkboxes and radios */
+            input[type="checkbox"],
+            input[type="radio"] {
+                width: 20px;
+                height: 20px;
+                transform: scale(1.2);
+                margin-right: 8px;
+            }
+
+            /* Remove hover effects on touch */
+            .btn:hover,
+            .nav-item:hover,
+            .quick-btn:hover,
+            .module-card:hover {
+                transform: none;
+            }
+
+            /* Active state for touch feedback */
+            .btn:active,
+            .nav-item:active,
+            .quick-btn:active {
+                opacity: 0.7;
+                transition: opacity 0.05s;
+            }
+
+            /* Scrollable areas */
+            .sidebar-nav,
+            .modal-body,
+            .table-wrapper {
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Disable pull-to-refresh on modals */
+            .modal-body {
+                overscroll-behavior: contain;
+            }
+        }
+
+        /* ==================================================================
+    ==================================================================

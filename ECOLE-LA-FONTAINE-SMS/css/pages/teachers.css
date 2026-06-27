@@ -1,0 +1,134 @@
+    SECTION 32: TEACHERS & STAFF STYLES
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    32.1 Teacher Card
+    ------------------------------------------------------------------ */
+        .teacher-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--r-lg);
+            padding: var(--md);
+            display: flex;
+            gap: var(--md);
+            margin-bottom: var(--md);
+            transition: all var(--transition);
+        }
+
+        .teacher-card:hover {
+            border-color: var(--border-medium);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .teacher-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .teacher-info {
+            flex: 1;
+        }
+
+        .teacher-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: var(--xs);
+        }
+
+        .teacher-details {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: var(--lg);
+            flex-wrap: wrap;
+            margin-bottom: var(--sm);
+        }
+
+        .teacher-subjects {
+            display: flex;
+            gap: var(--xs);
+            flex-wrap: wrap;
+        }
+
+        /* Assignment Matrix */
+        .assignment-matrix {
+            overflow-x: auto;
+        }
+
+        .assignment-matrix-table {
+            min-width: 600px;
+        }
+
+        .assignment-matrix-table th,
+        .assignment-matrix-table td {
+            text-align: center;
+            padding: var(--sm);
+        }
+
+        .assignment-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* Subject Row */
+        .subject-row {
+            display: flex;
+            align-items: center;
+            gap: var(--md);
+            padding: var(--sm) var(--md);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .subject-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .subject-code {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            min-width: 80px;
+        }
+
+        .subject-max {
+            min-width: 100px;
+            display: flex;
+            gap: var(--sm);
+        }
+
+        .subject-max input {
+            width: 60px;
+            padding: 4px 8px;
+            text-align: center;
+        }
+
+        .subject-postmid {
+            width: 40px;
+            text-align: center;
+        }
+
+        .subject-actions {
+            display: flex;
+            gap: var(--xs);
+        }
+
+        /* Teacher Performance Stats */
+        .teacher-performance-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--md);
+            margin-bottom: var(--lg);
+        }
+
+        /* ==================================================================
+    ==================================================================

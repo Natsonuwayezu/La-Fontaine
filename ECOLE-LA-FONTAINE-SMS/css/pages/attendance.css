@@ -1,0 +1,96 @@
+    SECTION 30: ATTENDANCE STYLES
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    30.1 Attendance Grid
+    ------------------------------------------------------------------ */
+        .attendance-grid {
+            overflow-x: auto;
+        }
+
+        .attendance-table {
+            min-width: 600px;
+        }
+
+        .attendance-table th,
+        .attendance-table td {
+            text-align: center;
+        }
+
+        /* Attendance Status Indicators */
+        .attendance-status {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-size: 1rem;
+        }
+
+        .attendance-status.present {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .attendance-status.absent {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .attendance-status.late {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .attendance-status.excused {
+            background: var(--info-bg);
+            color: var(--info);
+        }
+
+        .attendance-status:hover {
+            transform: scale(1.1);
+        }
+
+        /* Attendance Summary Cards */
+        .attendance-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--md);
+            margin-bottom: var(--lg);
+        }
+
+        .attendance-summary-card {
+            text-align: center;
+            padding: var(--md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--r-lg);
+        }
+
+        .attendance-summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--xs);
+        }
+
+        .attendance-summary-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Date Picker */
+        .attendance-date-picker {
+            display: flex;
+            gap: var(--md);
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: var(--lg);
+        }
+
+        /* ==================================================================
+    ==================================================================

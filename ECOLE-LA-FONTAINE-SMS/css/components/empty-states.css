@@ -1,0 +1,110 @@
+    SECTION 41: EMPTY STATES & SKELETONS
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    41.1 Empty State Container
+    ------------------------------------------------------------------ */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--xxl) var(--lg);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--r-lg);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: var(--md);
+            opacity: 0.6;
+        }
+
+        .empty-state-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--sm);
+        }
+
+        .empty-state-message {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: var(--lg);
+            max-width: 400px;
+        }
+
+        .empty-state-action {
+            margin-top: var(--sm);
+        }
+
+        /* Compact Empty State */
+        .empty-state-compact {
+            padding: var(--lg) var(--md);
+        }
+
+        .empty-state-compact .empty-state-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--sm);
+        }
+
+        /* Table Empty State */
+        .table-empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            background: var(--bg-secondary);
+        }
+
+        .table-empty-state .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: var(--md);
+        }
+
+        /* Filter Empty State */
+        .filter-empty-state {
+            text-align: center;
+            padding: var(--xl);
+            background: var(--bg-tertiary);
+            border-radius: var(--r-lg);
+        }
+
+        .filter-empty-state-icon {
+            font-size: 2rem;
+            margin-bottom: var(--sm);
+            opacity: 0.5;
+        }
+
+        .filter-empty-state-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .filter-empty-state-message {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Search Empty State */
+        .search-empty-state {
+            text-align: center;
+            padding: var(--xl);
+        }
+
+        .search-empty-state-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--sm);
+            opacity: 0.5;
+        }
+
+        .search-empty-state-text {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* ==================================================================
+    ==================================================================

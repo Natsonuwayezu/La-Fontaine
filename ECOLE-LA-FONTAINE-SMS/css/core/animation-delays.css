@@ -1,0 +1,109 @@
+    SECTION 44: ANIMATION DELAY & DURATION CLASSES
+    ==================================================================
+    ================================================================== */
+
+        /* Delay Classes */
+        .delay-0 {
+            transition-delay: 0s;
+            animation-delay: 0s;
+        }
+
+        .delay-100 {
+            transition-delay: 0.1s;
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s;
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s;
+            animation-delay: 0.3s;
+        }
+
+        .delay-400 {
+            transition-delay: 0.4s;
+            animation-delay: 0.4s;
+        }
+
+        .delay-500 {
+            transition-delay: 0.5s;
+            animation-delay: 0.5s;
+        }
+
+        .delay-700 {
+            transition-delay: 0.7s;
+            animation-delay: 0.7s;
+        }
+
+        .delay-1000 {
+            transition-delay: 1s;
+            animation-delay: 1s;
+        }
+
+        /* Duration Classes */
+        .duration-0 {
+            transition-duration: 0s;
+            animation-duration: 0s;
+        }
+
+        .duration-100 {
+            transition-duration: 0.1s;
+            animation-duration: 0.1s;
+        }
+
+        .duration-200 {
+            transition-duration: 0.2s;
+            animation-duration: 0.2s;
+        }
+
+        .duration-300 {
+            transition-duration: 0.3s;
+            animation-duration: 0.3s;
+        }
+
+        .duration-400 {
+            transition-duration: 0.4s;
+            animation-duration: 0.4s;
+        }
+
+        .duration-500 {
+            transition-duration: 0.5s;
+            animation-duration: 0.5s;
+        }
+
+        .duration-700 {
+            transition-duration: 0.7s;
+            animation-duration: 0.7s;
+        }
+
+        .duration-1000 {
+            transition-duration: 1s;
+            animation-duration: 1s;
+        }
+
+        /* Easing Classes */
+        .ease-linear {
+            transition-timing-function: linear;
+        }
+
+        .ease-in {
+            transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+        }
+
+        .ease-out {
+            transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        }
+
+        .ease-in-out {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .ease-bounce {
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* ==================================================================
+    ==================================================================

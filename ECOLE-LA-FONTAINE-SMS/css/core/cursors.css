@@ -1,0 +1,72 @@
+    SECTION 9: CURSOR & POINTER UTILITIES
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    9.1 Cursor Styles
+    ------------------------------------------------------------------ */
+        .cursor-auto {
+            cursor: auto;
+        }
+
+        .cursor-default {
+            cursor: default;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .cursor-wait {
+            cursor: wait;
+        }
+
+        .cursor-text {
+            cursor: text;
+        }
+
+        .cursor-move {
+            cursor: move;
+        }
+
+        .cursor-not-allowed {
+            cursor: not-allowed;
+        }
+
+        .cursor-grab {
+            cursor: grab;
+        }
+
+        .cursor-grabbing {
+            cursor: grabbing;
+        }
+
+        .cursor-zoom-in {
+            cursor: zoom-in;
+        }
+
+        .cursor-zoom-out {
+            cursor: zoom-out;
+        }
+
+        /* ------------------------------------------------------------------
+    9.2 User Select
+    ------------------------------------------------------------------ */
+        .select-none {
+            user-select: none;
+        }
+
+        .select-text {
+            user-select: text;
+        }
+
+        .select-all {
+            user-select: all;
+        }
+
+        .select-auto {
+            user-select: auto;
+        }
+
+        /* ==================================================================
+    ==================================================================

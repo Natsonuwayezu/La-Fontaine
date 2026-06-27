@@ -1,0 +1,152 @@
+    SECTION 43: DARK MODE OVERRIDES (Additional)
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    43.1 Dark Mode Card Adjustments
+    ------------------------------------------------------------------ */
+        [data-theme="dark"] .report-card {
+            background: var(--bg-secondary);
+            border-color: var(--border-light);
+        }
+
+        [data-theme="dark"] .report-header {
+            background: #1a3a5c;
+        }
+
+        [data-theme="dark"] .report-summary {
+            background: #1a3a5c;
+        }
+
+        [data-theme="dark"] .report-info-item {
+            border-color: var(--border-light);
+        }
+
+        [data-theme="dark"] .report-info-item span {
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .report-subjects th {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border-light);
+        }
+
+        [data-theme="dark"] .report-subjects td {
+            border-color: var(--border-light);
+        }
+
+        [data-theme="dark"] .report-footer {
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+        }
+
+        /* ------------------------------------------------------------------
+    43.2 Dark Mode Table Adjustments
+    ------------------------------------------------------------------ */
+        [data-theme="dark"] .data-table thead tr {
+            background: var(--bg-tertiary);
+        }
+
+        [data-theme="dark"] .data-table th {
+            color: var(--text-secondary);
+            border-color: var(--border-light);
+        }
+
+        /* ------------------------------------------------------------------
+    43.3 Dark Mode Form Adjustments
+    ------------------------------------------------------------------ */
+        [data-theme="dark"] .form-group input,
+        [data-theme="dark"] .form-group select,
+        [data-theme="dark"] .form-group textarea {
+            background: var(--bg-tertiary);
+            border-color: var(--border-medium);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .form-group input:focus,
+        [data-theme="dark"] .form-group select:focus,
+        [data-theme="dark"] .form-group textarea:focus {
+            border-color: var(--role-primary);
+            box-shadow: var(--shadow-focus);
+        }
+
+        /* ------------------------------------------------------------------
+    43.4 Dark Mode Card Adjustments
+    ------------------------------------------------------------------ */
+        [data-theme="dark"] .stat-card,
+        [data-theme="dark"] .dash-card {
+            background: var(--bg-secondary);
+            border-color: var(--border-light);
+        }
+
+        [data-theme="dark"] .quick-btn {
+            background: var(--bg-tertiary);
+            border-color: var(--border-light);
+        }
+
+        [data-theme="dark"] .quick-btn:hover {
+            background: var(--role-light);
+        }
+
+        /* ------------------------------------------------------------------
+    43.5 Dark Mode Modal Adjustments
+    ------------------------------------------------------------------ */
+        [data-theme="dark"] .modal {
+            background: var(--bg-secondary);
+            border-color: var(--border-light);
+        }
+
+        [data-theme="dark"] .modal-header {
+            border-color: var(--border-light);
+        }
+
+        [data-theme="dark"] .modal-footer {
+            border-color: var(--border-light);
+        }
+
+        /* ------------------------------------------------------------------
+    43.6 Dark Mode Dropdown Adjustments
+    ------------------------------------------------------------------ */
+        [data-theme="dark"] .dropdown-menu {
+            background: var(--bg-secondary);
+            border-color: var(--border-light);
+        }
+
+        [data-theme="dark"] .dropdown-item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        /* ------------------------------------------------------------------
+    43.7 Dark Mode Toast Adjustments
+    ------------------------------------------------------------------ */
+        [data-theme="dark"] .toast {
+            background: var(--bg-secondary);
+            border-color: var(--border-light);
+        }
+
+        /* ------------------------------------------------------------------
+    43.8 Dark Mode Alert Adjustments
+    ------------------------------------------------------------------ */
+        [data-theme="dark"] .alert-info {
+            background: var(--info-bg);
+            color: #93c5fd;
+        }
+
+        [data-theme="dark"] .alert-success {
+            background: var(--success-bg);
+            color: #86efac;
+        }
+
+        [data-theme="dark"] .alert-warning {
+            background: var(--warning-bg);
+            color: #fcd34d;
+        }
+
+        [data-theme="dark"] .alert-danger {
+            background: var(--danger-bg);
+            color: #fca5a5;
+        }
+
+        /* ==================================================================
+    ==================================================================
