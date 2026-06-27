@@ -1,0 +1,226 @@
+SECTION 40: PRINT STYLES
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    40.1 Print Base (Hide navigation elements)
+    ------------------------------------------------------------------ */
+        @media print {
+
+            /* Hide all navigation elements */
+            .sidebar,
+            .topbar,
+            .menu-toggle,
+            .btn-group,
+            .filters-bar,
+            .pagination,
+            .notif-bell,
+            .user-menu,
+            .term-progress-bar,
+            .quick-actions,
+            .modal-overlay,
+            .no-print,
+            #pwa-install-btn,
+            #back-to-top {
+                display: none !important;
+            }
+
+            /* Main content full width */
+            .main-content {
+                margin-left: 0 !important;
+                padding: 0 !important;
+            }
+
+            #dynamic-content {
+                padding: 0 !important;
+            }
+
+            /* Report card specific */
+            .report-card {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                margin: 0;
+                page-break-after: avoid;
+            }
+
+            .report-header {
+                background: #1a3a5c !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .report-summary {
+                background: #1a3a5c !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* Tables */
+            .data-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .data-table th,
+            .data-table td {
+                border: 1px solid #999;
+                padding: 4px 6px;
+            }
+
+            .data-table thead tr {
+                background: #1a3a5c !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* Badges */
+            .badge {
+                border: 1px solid #999;
+                background: #f5f5f5 !important;
+                color: black !important;
+            }
+
+            /* Page breaks */
+            .page-break-before {
+                page-break-before: always;
+            }
+
+            .page-break-after {
+                page-break-after: always;
+            }
+
+            .page-break-inside-avoid {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* ------------------------------------------------------------------
+    40.2 Receipt Print Styles (Thermal)
+    ------------------------------------------------------------------ */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+
+            .receipt-container {
+                max-width: 100%;
+                margin: 0;
+                padding: 10px;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+
+            .btn-print,
+            .no-print {
+                display: none !important;
+            }
+
+            .receipt-header {
+                background: #1a3a5c !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .amount-box {
+                background: #d1fae5 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* Thermal receipt (80mm) */
+            @media (max-width: 80mm) {
+                .receipt-container {
+                    font-size: 10px;
+                    padding: 5px;
+                }
+
+                .receipt-header {
+                    padding: 8px;
+                }
+
+                .school-name {
+                    font-size: 14px;
+                }
+
+                .receipt-body {
+                    padding: 8px;
+                }
+
+                .info-row {
+                    padding: 4px 0;
+                }
+
+                .amount-value {
+                    font-size: 18px;
+                }
+            }
+        }
+
+        /* ------------------------------------------------------------------
+    40.3 Transcript Print Styles
+    ------------------------------------------------------------------ */
+        @media print {
+            .transcript-container {
+                max-width: 100%;
+                margin: 0;
+                padding: 20px;
+                font-family: 'Times New Roman', serif;
+            }
+
+            .transcript-header {
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid black;
+                padding-bottom: 10px;
+            }
+
+            .transcript-title {
+                font-size: 18px;
+                font-weight: bold;
+                text-transform: uppercase;
+                margin-bottom: 4px;
+            }
+
+            .transcript-subtitle {
+                font-size: 12px;
+            }
+
+            .transcript-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 10px;
+            }
+
+            .transcript-table th,
+            .transcript-table td {
+                border: 1px solid black;
+                padding: 6px 8px;
+                text-align: center;
+            }
+
+            .transcript-table th {
+                background: #f0f0f0;
+                font-weight: bold;
+            }
+
+            .transcript-summary {
+                margin-top: 20px;
+                padding-top: 10px;
+                border-top: 2px solid black;
+                font-size: 11px;
+            }
+
+            .transcript-footer {
+                margin-top: 30px;
+                text-align: center;
+                font-size: 10px;
+                border-top: 1px solid #ccc;
+                padding-top: 10px;
+            }
+        }
+
+        /* ==================================================================
+    ==================================================================

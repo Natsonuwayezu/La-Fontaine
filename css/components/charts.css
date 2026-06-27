@@ -1,0 +1,95 @@
+SECTION 28: CHARTS
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    28.1 Chart Container
+    ------------------------------------------------------------------ */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            min-height: 300px;
+            margin-bottom: var(--lg);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Chart Legend */
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--md);
+            justify-content: center;
+            margin-top: var(--md);
+            padding-top: var(--sm);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .chart-legend-item {
+            display: flex;
+            align-items: center;
+            gap: var(--sm);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .chart-legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        .chart-legend-color.circle {
+            border-radius: 50%;
+        }
+
+        /* Chart Tooltip */
+        .chart-tooltip {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--r-sm);
+            padding: var(--sm) var(--md);
+            box-shadow: var(--shadow-md);
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            pointer-events: none;
+        }
+
+        /* Empty Chart State */
+        .chart-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            background: var(--bg-tertiary);
+            border-radius: var(--r-md);
+            color: var(--text-muted);
+        }
+
+        .chart-empty-icon {
+            font-size: 3rem;
+            margin-bottom: var(--sm);
+        }
+
+        /* Responsive Charts */
+        @media (max-width: 768px) {
+            .chart-container {
+                min-height: 250px;
+            }
+
+            .chart-legend {
+                gap: var(--sm);
+            }
+
+            .chart-legend-item {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* ==================================================================
+    ==================================================================

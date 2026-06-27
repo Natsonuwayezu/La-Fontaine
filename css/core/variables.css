@@ -1,0 +1,305 @@
+==================================================================
+    SECTION 1: ROOT VARIABLES & THEMING
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    1.1 ROOT VARIABLES (Light Theme Default)
+    ------------------------------------------------------------------ */
+        :root {
+            /* ----- BACKGROUND COLORS ----- */
+            --bg-primary: #eef2f5;
+            /* Main background - soft gray-blue */
+            --bg-secondary: #ffffff;
+            /* Card backgrounds, modals, sidebar */
+            --bg-tertiary: #f4f7fa;
+            /* Table headers, filters, subtle sections */
+            --bg-hover: #f8fafc;
+            /* Hover states */
+            --bg-active: #e2e8f0;
+            /* Active states */
+            --bg-disabled: #f1f5f9;
+            /* Disabled elements */
+
+            /* ----- TEXT COLORS ----- */
+            --text-primary: #1e293b;
+            /* Main text - dark slate */
+            --text-secondary: #475569;
+            /* Secondary text - lighter slate */
+            --text-muted: #94a3b8;
+            /* Muted text - placeholder, helper text */
+            --text-disabled: #cbd5e1;
+            /* Disabled text */
+            --text-inverse: #ffffff;
+            /* Text on dark backgrounds */
+
+            /* ----- BORDER COLORS ----- */
+            --border-light: #e2e8f0;
+            /* Light borders - cards, modals */
+            --border-medium: #cbd5e1;
+            /* Medium borders - inputs, selects */
+            --border-dark: #94a3b8;
+            /* Dark borders - focus states */
+            --border-focus: #3b82f6;
+            /* Focus border color */
+            --border-error: #ef4444;
+            /* Error border color */
+            --border-success: #10b981;
+            /* Success border color */
+
+            /* ----- ADMIN ROLE COLORS ----- */
+            --admin-primary: #1a3a5c;
+            /* Deep navy blue */
+            --admin-secondary: #3b82f6;
+            /* Bright blue */
+            --admin-accent: #c9a84c;
+            /* Gold accent */
+            --admin-light: rgba(26, 58, 92, 0.08);
+            /* Light background variant */
+            --admin-gradient: linear-gradient(135deg, #1a3a5c, #2d5a8e);
+
+            /* ----- ACCOUNTANT ROLE COLORS ----- */
+            --accountant-primary: #0d9488;
+            /* Teal */
+            --accountant-secondary: #14b8a6;
+            /* Light teal */
+            --accountant-accent: #f59e0b;
+            /* Amber accent */
+            --accountant-light: rgba(13, 148, 136, 0.08);
+            --accountant-gradient: linear-gradient(135deg, #0d9488, #14b8a6);
+
+            /* ----- TEACHER ROLE COLORS ----- */
+            --teacher-primary: #7c3aed;
+            /* Purple */
+            --teacher-secondary: #8b5cf6;
+            /* Light purple */
+            --teacher-accent: #ec4899;
+            /* Pink accent */
+            --teacher-light: rgba(124, 58, 237, 0.08);
+            --teacher-gradient: linear-gradient(135deg, #7c3aed, #8b5cf6);
+
+            /* ----- SEMANTIC COLORS ----- */
+            --success: #10b981;
+            /* Success green */
+            --success-bg: #d1fae5;
+            /* Success background */
+            --success-border: #10b981;
+            /* Success border */
+            --warning: #f59e0b;
+            /* Warning orange */
+            --warning-bg: #fef3c7;
+            /* Warning background */
+            --warning-border: #f59e0b;
+            /* Warning border */
+            --danger: #ef4444;
+            /* Danger red */
+            --danger-bg: #fee2e2;
+            /* Danger background */
+            --danger-border: #ef4444;
+            /* Danger border */
+            --info: #3b82f6;
+            /* Info blue */
+            --info-bg: #dbeafe;
+            /* Info background */
+            --info-border: #3b82f6;
+            /* Info border */
+
+            /* ----- GRADE COLORS ----- */
+            --grade-aplus: #10b981;
+            /* A+ grade color */
+            --grade-a: #34d399;
+            /* A grade color */
+            --grade-b: #60a5fa;
+            /* B grade color */
+            --grade-c: #fbbf24;
+            /* C grade color */
+            --grade-d: #f97316;
+            /* D grade color */
+            --grade-f: #ef4444;
+            /* F grade color */
+
+            /* ----- SPACING SYSTEM (8px base) ----- */
+            --xs: 4px;
+            /* Extra small spacing */
+            --sm: 8px;
+            /* Small spacing */
+            --md: 16px;
+            /* Medium spacing */
+            --lg: 24px;
+            /* Large spacing */
+            --xl: 32px;
+            /* Extra large spacing */
+            --xxl: 48px;
+            /* 2X large spacing */
+            --xxxl: 64px;
+            /* 3X large spacing */
+
+            /* ----- BORDER RADIUS ----- */
+            --r-none: 0;
+            /* No radius */
+            --r-sm: 8px;
+            /* Small radius */
+            --r-md: 12px;
+            /* Medium radius */
+            --r-lg: 16px;
+            /* Large radius */
+            --r-xl: 20px;
+            /* Extra large radius */
+            --r-2xl: 24px;
+            /* 2X large radius */
+            --r-full: 9999px;
+            /* Full circle radius */
+
+            /* ----- SHADOWS ----- */
+            --shadow-none: none;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, .05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 10px 10px -5px rgba(0, 0, 0, .04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, .25);
+            --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, .05);
+            --shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.15);
+
+            /* ----- TRANSITIONS ----- */
+            --transition-fast: 0.15s ease;
+            /* Fast transitions */
+            --transition: 0.2s ease;
+            /* Standard transitions */
+            --transition-slow: 0.3s ease;
+            /* Slow transitions */
+            --transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+            /* ----- LAYOUT CONSTANTS ----- */
+            --sidebar-w: 280px;
+            /* Sidebar width */
+            --sidebar-w-collapsed: 80px;
+            /* Collapsed sidebar width */
+            --topbar-h: 64px;
+            /* Topbar height */
+            --topbar-h-mobile: 56px;
+            /* Topbar height on mobile */
+            --footer-h: 60px;
+            /* Footer height */
+            --max-width: 1400px;
+            /* Maximum content width */
+
+            /* ----- Z-INDEX LAYERS ----- */
+            --z-negative: -1;
+            /* Behind everything */
+            --z-low: 10;
+            /* Low z-index */
+            --z-medium: 100;
+            /* Medium z-index */
+            --z-high: 200;
+            /* High z-index */
+            --z-modal: 1000;
+            /* Modal overlay */
+            --z-modal-content: 1010;
+            /* Modal content */
+            --z-dropdown: 1100;
+            /* Dropdown menus */
+            --z-tooltip: 1200;
+            /* Tooltips */
+            --z-toast: 9999;
+            /* Toast notifications */
+            --z-max: 99999;
+            /* Maximum z-index */
+
+            /* ----- ACTIVE ROLE (OVERRIDDEN BY BODY CLASS) ----- */
+            --role-primary: var(--admin-primary);
+            --role-secondary: var(--admin-secondary);
+            --role-accent: var(--admin-accent);
+            --role-light: var(--admin-light);
+            --role-gradient: var(--admin-gradient);
+        }
+
+        /* ------------------------------------------------------------------
+    1.2 DARK THEME VARIABLES
+    ------------------------------------------------------------------ */
+        [data-theme="dark"] {
+            /* Background Colors - Dark Mode */
+            --bg-primary: #0f172a;
+            /* Very dark blue */
+            --bg-secondary: #1e293b;
+            /* Dark slate */
+            --bg-tertiary: #334155;
+            /* Lighter slate */
+            --bg-hover: #334155;
+            /* Hover state */
+            --bg-active: #475569;
+            /* Active state */
+            --bg-disabled: #1e293b;
+            /* Disabled state */
+
+            /* Text Colors - Dark Mode */
+            --text-primary: #f1f5f9;
+            /* Off-white */
+            --text-secondary: #cbd5e1;
+            /* Light gray */
+            --text-muted: #94a3b8;
+            /* Medium gray */
+            --text-disabled: #64748b;
+            /* Dark gray */
+            --text-inverse: #0f172a;
+            /* Dark text on light backgrounds */
+
+            /* Border Colors - Dark Mode */
+            --border-light: #334155;
+            /* Dark border */
+            --border-medium: #475569;
+            /* Medium dark border */
+            --border-dark: #64748b;
+            /* Lighter dark border */
+            --border-focus: #60a5fa;
+            /* Focus border */
+
+            /* Role Colors - Dark Mode Overrides */
+            --admin-primary: #2d5a8e;
+            /* Lighter navy */
+            --admin-secondary: #60a5fa;
+            /* Lighter blue */
+            --accountant-primary: #14b8a6;
+            /* Lighter teal */
+            --accountant-secondary: #2dd4bf;
+            /* Very light teal */
+            --teacher-primary: #a78bfa;
+            /* Lighter purple */
+            --teacher-secondary: #c4b5fd;
+            /* Very light purple */
+
+            /* Shadows - Dark Mode */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, .3), 0 2px 4px -1px rgba(0, 0, 0, .2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, .3), 0 4px 6px -2px rgba(0, 0, 0, .2);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, .3), 0 10px 10px -5px rgba(0, 0, 0, .2);
+        }
+
+        /* ------------------------------------------------------------------
+    1.3 ROLE OVERRIDES (Applied via body class)
+    ------------------------------------------------------------------ */
+        body.role-admin {
+            --role-primary: var(--admin-primary);
+            --role-secondary: var(--admin-secondary);
+            --role-accent: var(--admin-accent);
+            --role-light: var(--admin-light);
+            --role-gradient: var(--admin-gradient);
+        }
+
+        body.role-accountant {
+            --role-primary: var(--accountant-primary);
+            --role-secondary: var(--accountant-secondary);
+            --role-accent: var(--accountant-accent);
+            --role-light: var(--accountant-light);
+            --role-gradient: var(--accountant-gradient);
+        }
+
+        body.role-teacher {
+            --role-primary: var(--teacher-primary);
+            --role-secondary: var(--teacher-secondary);
+            --role-accent: var(--teacher-accent);
+            --role-light: var(--teacher-light);
+            --role-gradient: var(--teacher-gradient);
+        }
+
+        /* ==================================================================
+    ==================================================================

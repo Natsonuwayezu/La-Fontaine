@@ -1,0 +1,783 @@
+SECTION: EXTRACTED FROM JAVASCRIPT INLINE STYLES
+   ================================================================ */
+
+        /* ------------------------------------------------------------------
+   1. Offline Badge (from initOfflineSupport / syncOfflineMarks)
+   ------------------------------------------------------------------ */
+        #offline-badge {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--warning);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 1000;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all var(--transition);
+        }
+
+        #offline-badge:hover {
+            transform: scale(1.05);
+        }
+
+        /* ------------------------------------------------------------------
+   2. Connection Status (from updateConnectionStatus)
+   ------------------------------------------------------------------ */
+        #connection-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: .5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        #connection-status.online {
+            background: var(--success-bg);
+            color: var(--success);
+            display: flex;
+        }
+
+        #connection-status.offline {
+            background: var(--danger-bg);
+            color: var(--danger);
+            display: flex;
+        }
+
+        /* ------------------------------------------------------------------
+   3. Toast Container (from showToast)
+   ------------------------------------------------------------------ */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: var(--z-toast);
+            display: flex;
+            flex-direction: column;
+            gap: var(--sm);
+            pointer-events: none;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        /* ------------------------------------------------------------------
+   4. Sync Progress Modal (from showSyncProgressModal)
+   ------------------------------------------------------------------ */
+        #sync-modal .modal {
+            max-width: 400px;
+        }
+
+        #sync-status {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        #sync-status .spinner {
+            margin: 0 auto 12px;
+        }
+
+        #sync-progress-container {
+            margin: 16px 0;
+        }
+
+        #sync-progress-container>div {
+            background: var(--border-light);
+            border-radius: 99px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        #sync-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--role-primary);
+            transition: width .3s ease;
+        }
+
+        #sync-progress-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        #sync-details {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* ------------------------------------------------------------------
+   5. Notification Badge Dot (from updateNotificationBadgeCount)
+   ------------------------------------------------------------------ */
+        .notif-dot {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--danger);
+            color: white;
+            border-radius: 99px;
+            font-size: .6rem;
+            font-weight: 700;
+            min-width: 16px;
+            height: 16px;
+            padding: 0 3px;
+            position: absolute;
+            top: -4px;
+            right: -4px;
+        }
+
+        .notif-bell {
+            position: relative;
+        }
+
+        /* ------------------------------------------------------------------
+   6. Report Card (from generateReportCard)
+   ------------------------------------------------------------------ */
+        .report-card {
+            max-width: 780px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .08);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .report-header {
+            background: #1a3a5c;
+            color: white;
+            padding: 22px 26px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .report-logo {
+            width: 68px;
+            height: 68px;
+            background: rgba(255, 255, 255, .15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .report-header-text h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0 0 2px;
+            color: white;
+        }
+
+        .report-header-text h3 {
+            font-size: .88rem;
+            font-weight: 700;
+            margin: 6px 0 2px;
+            color: white;
+        }
+
+        .report-header-text p {
+            font-size: .75rem;
+            opacity: .75;
+            margin: 0;
+            color: white;
+        }
+
+        .report-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .report-info-item {
+            padding: 10px 18px;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .report-info-item strong {
+            display: block;
+            font-size: .68rem;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 3px;
+            letter-spacing: .4px;
+        }
+
+        .report-info-item span {
+            font-size: .85rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .report-subjects {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .report-subjects th {
+            background: #e8f0fe;
+            color: #1a3a5c;
+            padding: 9px 12px;
+            font-size: .72rem;
+            font-weight: 700;
+            text-align: center;
+            border: 1px solid #c7d8f8;
+        }
+
+        .report-subjects td {
+            padding: 7px 12px;
+            font-size: .8rem;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .report-subjects td:first-child {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .report-summary {
+            background: #1a3a5c;
+            color: white;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            padding: 14px 20px;
+            text-align: center;
+            gap: 12px;
+        }
+
+        .summary-label {
+            font-size: .68rem;
+            opacity: .7;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+        }
+
+        .summary-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 3px;
+        }
+
+        .report-footer {
+            padding: 12px 18px;
+            background: #f8fafc;
+            text-align: center;
+            font-size: .78rem;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            line-height: 1.8;
+        }
+
+        /* ------------------------------------------------------------------
+   7. Receipt Preview (from processPayment, printReceipt)
+   ------------------------------------------------------------------ */
+        .receipt-preview {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+        }
+
+        .receipt-preview .header {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .receipt-preview .header strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .receipt-preview .header small {
+            color: var(--text-muted);
+        }
+
+        .receipt-preview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .receipt-preview-grid span:first-child {
+            color: var(--text-muted);
+        }
+
+        .receipt-preview-grid span:last-child {
+            font-weight: 600;
+        }
+
+        .receipt-preview .amount-box {
+            text-align: center;
+            margin-top: 8px;
+            padding: 8px;
+            background: var(--success-bg);
+            border-radius: 6px;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* ------------------------------------------------------------------
+   8. Progress Modal (from batch operations)
+   ------------------------------------------------------------------ */
+        #progress-modal .modal {
+            max-width: 400px;
+        }
+
+        #progress-message {
+            margin-bottom: 12px;
+        }
+
+        #progress-bar-wrap {
+            background: var(--border-light);
+            border-radius: 99px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--role-primary);
+            transition: width .3s ease;
+        }
+
+        #progress-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* ------------------------------------------------------------------
+   9. QR Code Block (from addQRCodeToReport)
+   ------------------------------------------------------------------ */
+        .report-qr-block {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 8px 12px;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 8px;
+            background: #f8fafc;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .report-qr-block .qr-label {
+            font-size: 9px;
+            color: #64748b;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .report-qr-block .qr-label strong {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .report-qr-block .qr-image {
+            width: 80px;
+            height: 80px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            display: block;
+        }
+
+        /* ------------------------------------------------------------------
+   10. Family Block (from renderSingleFamilyBlock)
+   ------------------------------------------------------------------ */
+        .family-block {
+            border: 1px solid var(--border-light);
+            border-radius: var(--r-lg);
+            margin-bottom: var(--lg);
+            overflow: hidden;
+        }
+
+        .family-block-header {
+            background: var(--role-light);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .family-block-header .code {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .family-block-header .guardian {
+            margin-left: 12px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .family-block-header .phone {
+            margin-left: 12px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .family-block-header .stats {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+        }
+
+        .family-block-header .stats .total {
+            font-weight: 700;
+        }
+
+        .family-block-header .stats .paid {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .family-block-header .stats .balance {
+            font-weight: 700;
+        }
+
+        .family-block-header .stats .balance.danger {
+            color: var(--danger);
+        }
+
+        .family-block-header .stats .balance.success {
+            color: var(--success);
+        }
+
+        /* ------------------------------------------------------------------
+   11. QR Result Modal (from displayQRCodeResults)
+   ------------------------------------------------------------------ */
+        #qr-result-modal .modal {
+            max-width: 820px;
+            max-height: 95vh;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        #qr-result-modal .modal-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        #qr-result-modal .modal-body {
+            padding: 16px 20px;
+        }
+
+        #qr-result-modal .modal-footer {
+            position: sticky;
+            bottom: 0;
+        }
+
+        /* QR Result Header */
+        .qr-result-school-header {
+            text-align: center;
+            padding: 12px 0;
+            border-bottom: 2px solid var(--admin-primary);
+            margin-bottom: 16px;
+        }
+
+        .qr-result-school-header h2 {
+            color: var(--admin-primary);
+            margin: 0;
+        }
+
+        .qr-result-school-header p {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin: 4px 0;
+        }
+
+        /* ------------------------------------------------------------------
+   12. Student Statement (from generateStudentStatement)
+   ------------------------------------------------------------------ */
+        .statement-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+            background: var(--bg-tertiary);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .statement-summary-item {
+            text-align: center;
+        }
+
+        .statement-summary-item .label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .statement-summary-item .value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .statement-summary-item .value.success {
+            color: var(--success);
+        }
+
+        .statement-summary-item .value.danger {
+            color: var(--danger);
+        }
+
+        /* ------------------------------------------------------------------
+   13. Manual Balance Adjustment (from openManualBalanceModal)
+   ------------------------------------------------------------------ */
+        #manual-balance-modal .modal {
+            max-width: 500px;
+        }
+
+        .manual-balance-alert {
+            background: var(--info-bg);
+            border-radius: var(--r-sm);
+            padding: var(--sm) var(--md);
+            margin-bottom: var(--md);
+        }
+
+        .manual-balance-alert strong {
+            display: block;
+        }
+
+        /* ------------------------------------------------------------------
+   14. Family Form Modal (from openCreateFamilyModal)
+   ------------------------------------------------------------------ */
+        #family-form-modal .modal {
+            max-width: 600px;
+        }
+
+        .family-member-select {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border-light);
+            border-radius: var(--r-sm);
+            padding: var(--sm);
+        }
+
+        .family-member-select label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            cursor: pointer;
+            border-radius: var(--r-sm);
+            transition: background var(--transition);
+        }
+
+        .family-member-select label:hover {
+            background: var(--bg-hover);
+        }
+
+        .family-member-select label.checked {
+            background: var(--info-bg);
+        }
+
+        /* ------------------------------------------------------------------
+   15. Family Details Modal (from viewFamilyDetails)
+   ------------------------------------------------------------------ */
+        #family-details-modal .modal {
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .family-details-summary {
+            background: var(--bg-tertiary);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .family-details-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            text-align: center;
+        }
+
+        .family-details-summary-grid .value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .family-details-summary-grid .label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .family-details-progress {
+            margin-top: 8px;
+            background: var(--border-light);
+            border-radius: 99px;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .family-details-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--role-primary);
+            border-radius: 99px;
+        }
+
+        /* ------------------------------------------------------------------
+   16. Bulk Payment Modal (from openBulkPaymentModal)
+   ------------------------------------------------------------------ */
+        #bulk-payment-modal .modal {
+            max-width: 800px;
+        }
+
+        #bulk-payment-modal .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .bulk-student-row input[type="number"] {
+            width: 140px;
+        }
+
+        /* ------------------------------------------------------------------
+   17. Credit Refund Modal (from openCreditRefundModal)
+   ------------------------------------------------------------------ */
+        #credit-refund-modal .modal {
+            max-width: 500px;
+        }
+
+        .credit-refund-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .refund-max-hint {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* ------------------------------------------------------------------
+   18. Waiver Modal (from openSmartWaiverModal)
+   ------------------------------------------------------------------ */
+        #smart-waiver-modal .modal {
+            max-width: 540px;
+        }
+
+        #smart-waiver-modal .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .waiver-fee-preview {
+            background: var(--bg-tertiary);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: .82rem;
+        }
+
+        /* ------------------------------------------------------------------
+   19. Add Family Modal (from openAddFamilyModal)
+   ------------------------------------------------------------------ */
+        #add-family-modal .modal {
+            max-width: 600px;
+        }
+
+        /* ------------------------------------------------------------------
+   20. Add Student Modal (from openAddStudentModal)
+   ------------------------------------------------------------------ */
+        #add-student-modal .modal {
+            max-width: 600px;
+        }
+
+        /* ------------------------------------------------------------------
+   21. Grade Level Row (from addGradeLevel)
+   ------------------------------------------------------------------ */
+        .grade-level-row {
+            display: grid;
+            grid-template-columns: 1fr 80px 80px 60px 40px;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .grade-level-row input[type="color"] {
+            height: 34px;
+            padding: 2px;
+            border: 1px solid var(--border-medium);
+            border-radius: var(--r-sm);
+        }
+
+        @media (max-width: 768px) {
+            .grade-level-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+            }
+
+            .grade-level-row input[type="color"] {
+                width: 100%;
+            }
+        }
+
+        /* ------------------------------------------------------------------
+   22. Discount Rule Row (from openAddDiscountRuleModal)
+   ------------------------------------------------------------------ */
+        .discount-rule-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 8px;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        @media (max-width: 768px) {
+            .discount-rule-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+            }
+        }
+
+        /* ------------------------------------------------------------------
+   23. Fee Category Row (from renderFeeStructure)
+   ------------------------------------------------------------------ */
+        .fee-category-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 8px;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        @media (max-width: 768px) {
+            .fee-category-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+            }
+        }
+
+        /* ================================================================

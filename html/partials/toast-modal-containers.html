@@ -1,0 +1,38 @@
+<!-- ================================================================ -->
+
+    <!-- A1: Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- A2: Modal Container (All modals rendered here) -->
+    <div id="modals-container"></div>
+
+    <!-- A3: PWA Install Banner -->
+    <div id="pwa-install-banner" class="pwa-install-banner">
+        <span>📲 Install ECOLE LA FONTAINE for a better experience</span>
+        <button class="btn btn-primary" onclick="installPWA()">Install App</button>
+        <button class="btn btn-ghost"
+            onclick="document.getElementById('pwa-install-banner').classList.remove('visible')">✕</button>
+    </div>
+
+    <!-- A4: Back to Top Button -->
+    <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+    <!-- A5: Idle Warning Overlay -->
+    <div id="idle-warning-overlay">
+        <div class="idle-warning-box">
+            <div class="icon">⏰</div>
+            <h3>Session Expiring Soon</h3>
+            <p>Your session will expire in <span class="timer" id="idle-timer">30</span> seconds</p>
+            <div class="btn-group">
+                <button class="btn btn-primary"
+                    onclick="resetIdleTimer();document.getElementById('idle-warning-overlay').classList.remove('visible')">Stay
+                    Logged In</button>
+                <button class="btn btn-danger" onclick="logout()">Logout Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- A6: Offline Status Badge (Created by JS) -->
+    <!-- A7: Connection Status (Created by JS) -->
+
+    <!-- ================================================================ -->

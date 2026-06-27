@@ -1,0 +1,197 @@
+SECTION 8: BACKGROUND & COLOR UTILITIES
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    8.1 Background Colors
+    ------------------------------------------------------------------ */
+        .bg-primary {
+            background: var(--bg-primary);
+        }
+
+        .bg-secondary {
+            background: var(--bg-secondary);
+        }
+
+        .bg-tertiary {
+            background: var(--bg-tertiary);
+        }
+
+        .bg-hover {
+            background: var(--bg-hover);
+        }
+
+        .bg-active {
+            background: var(--bg-active);
+        }
+
+        .bg-disabled {
+            background: var(--bg-disabled);
+        }
+
+        .bg-success {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .bg-warning {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .bg-danger {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .bg-info {
+            background: var(--info-bg);
+            color: var(--info);
+        }
+
+        .bg-white {
+            background: white;
+        }
+
+        .bg-black {
+            background: black;
+        }
+
+        .bg-transparent {
+            background: transparent;
+        }
+
+        .bg-role-primary {
+            background: var(--role-primary);
+            color: white;
+        }
+
+        .bg-role-light {
+            background: var(--role-light);
+        }
+
+        .bg-role-gradient {
+            background: var(--role-gradient);
+            color: white;
+        }
+
+        /* ------------------------------------------------------------------
+    8.2 Background Gradients
+    ------------------------------------------------------------------ */
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, var(--role-primary), var(--role-secondary));
+        }
+
+        .bg-gradient-success {
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+
+        .bg-gradient-danger {
+            background: linear-gradient(135deg, #ef4444, #f87171);
+        }
+
+        .bg-gradient-warning {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+
+        .bg-gradient-info {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        }
+
+        /* ------------------------------------------------------------------
+    8.3 Background Size & Position
+    ------------------------------------------------------------------ */
+        .bg-cover {
+            background-size: cover;
+        }
+
+        .bg-contain {
+            background-size: contain;
+        }
+
+        .bg-center {
+            background-position: center;
+        }
+
+        .bg-top {
+            background-position: top;
+        }
+
+        .bg-bottom {
+            background-position: bottom;
+        }
+
+        .bg-left {
+            background-position: left;
+        }
+
+        .bg-right {
+            background-position: right;
+        }
+
+        .bg-no-repeat {
+            background-repeat: no-repeat;
+        }
+
+        /* ------------------------------------------------------------------
+    8.4 Opacity Utilities
+    ------------------------------------------------------------------ */
+        .opacity-0 {
+            opacity: 0;
+        }
+
+        .opacity-10 {
+            opacity: 0.1;
+        }
+
+        .opacity-20 {
+            opacity: 0.2;
+        }
+
+        .opacity-30 {
+            opacity: 0.3;
+        }
+
+        .opacity-40 {
+            opacity: 0.4;
+        }
+
+        .opacity-50 {
+            opacity: 0.5;
+        }
+
+        .opacity-60 {
+            opacity: 0.6;
+        }
+
+        .opacity-70 {
+            opacity: 0.7;
+        }
+
+        .opacity-80 {
+            opacity: 0.8;
+        }
+
+        .opacity-90 {
+            opacity: 0.9;
+        }
+
+        .opacity-100 {
+            opacity: 1;
+        }
+
+        /* Hover opacity */
+        .hover\:opacity-80:hover {
+            opacity: 0.8;
+        }
+
+        .hover\:opacity-90:hover {
+            opacity: 0.9;
+        }
+
+        .hover\:opacity-100:hover {
+            opacity: 1;
+        }
+
+        /* ==================================================================
+    ==================================================================

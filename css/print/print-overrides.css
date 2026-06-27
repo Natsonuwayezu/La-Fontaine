@@ -1,0 +1,82 @@
+SECTION: PRINT OVERRIDES FOR INLINE STYLES
+   ================================================================ */
+
+        @media print {
+
+            /* Report cards */
+            .report-card {
+                box-shadow: none !important;
+                border: 1px solid #ccc;
+                margin: 0;
+                page-break-after: avoid;
+            }
+
+            .report-header {
+                background: #1a3a5c !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .report-summary {
+                background: #1a3a5c !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .report-subjects th {
+                background: #e8f0fe !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* Family blocks */
+            .family-block {
+                border-color: #ccc;
+                page-break-inside: avoid;
+            }
+
+            .family-block-header {
+                background: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* QR codes */
+            .report-qr-block img {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* Statement summaries */
+            .statement-summary {
+                background: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* Modals */
+            .modal-overlay {
+                position: static !important;
+                background: none !important;
+                backdrop-filter: none !important;
+            }
+
+            .modal {
+                box-shadow: none !important;
+                border: 1px solid #ccc;
+                max-height: none !important;
+                border-radius: 0 !important;
+            }
+
+            .modal-header {
+                position: static !important;
+            }
+
+            .modal-footer {
+                position: static !important;
+            }
+        }
+    </style>
+</head>
+
+<body>

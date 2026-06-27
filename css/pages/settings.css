@@ -1,0 +1,111 @@
+SECTION 37: SETTINGS & CONFIGURATION
+    ==================================================================
+    ================================================================== */
+
+        /* ------------------------------------------------------------------
+    37.1 Settings Tabs
+    ------------------------------------------------------------------ */
+        .settings-tabs {
+            display: flex;
+            gap: 2px;
+            border-bottom: 2px solid var(--border-light);
+            margin-bottom: var(--lg);
+            flex-wrap: wrap;
+        }
+
+        .settings-section {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .settings-section.active {
+            display: block;
+        }
+
+        /* Logo Upload Area */
+        .logo-upload-area {
+            display: flex;
+            gap: var(--lg);
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: var(--lg);
+        }
+
+        .logo-preview {
+            width: 100px;
+            height: 100px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--r-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Backup List */
+        .backup-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .backup-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--sm) var(--md);
+            border-bottom: 1px solid var(--border-light);
+            flex-wrap: wrap;
+            gap: var(--sm);
+        }
+
+        .backup-info {
+            display: flex;
+            gap: var(--lg);
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .backup-date {
+            color: var(--text-muted);
+        }
+
+        .backup-size {
+            font-family: monospace;
+        }
+
+        /* API Settings */
+        .api-test-result {
+            margin-top: var(--md);
+            padding: var(--md);
+            border-radius: var(--r-md);
+        }
+
+        .api-test-result.success {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .api-test-result.error {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        /* System Logs */
+        .logs-table {
+            font-family: monospace;
+            font-size: 0.75rem;
+        }
+
+        .logs-table td {
+            font-family: monospace;
+        }
+
+        /* ==================================================================
+    ==================================================================
