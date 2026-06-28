@@ -1,158 +1,52 @@
-# System Architecture
+# Architecture — Ecole La Fontaine
 
 ## Overview
+Single-file SPA: `index.html` (~37,000 lines)
+Backend: Supabase (PostgreSQL via REST API)
+Language: Vanilla JavaScript ('use strict'), no framework, no bundler
 
-ECOLE LA FONTAINE School Management System is a single-page application (SPA) built with vanilla JavaScript, HTML5, and CSS3. It uses Supabase as the backend database and authentication provider.
+## File Structure in Repo Root
+```
+index.html       ← The entire application
+frontend.txt     ← ASCII wireframes for every screen
+backend.txt      ← Formulas, DB schema, business rules, API contracts
+progress.txt     ← Build tracker (read this to know what's done/next)
+AGENT_PROMPT.md  ← Universal agent guide (read this first every session)
+docs/            ← Detailed documentation per domain
+```
 
-## Architecture Diagram
-┌─────────────────────────────────────────────────────────────┐
-│ Client Browser │
-├─────────────────────────────────────────────────────────────┤
-│ ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │
-│ │ HTML5 │ │ CSS3 │ │ JavaScript (ES6+) │ │
-│ │ Shell │ │ Styles │ │ Application Core │ │
-│ └─────────────┘ └─────────────┘ └──────────┬──────────┘ │
-│ │ │
-│ ┌──────────────────────────────────────────────┼──────────┐ │
-│ │ Modules │ │ │
-│ │ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ │ │ │
-│ │ │Students│ │Finance │ │Academy │ │Reports │ │ │ │
-│ │ └────────┘ └────────┘ └────────┘ └────────┘ │ │ │
-│ └──────────────────────────────────────────────┼──────────┘ │
-│ │ │
-│ ┌──────────────────────────────────────────────┼──────────┐ │
-│ │ Core │ │ │
-│ │ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ │ │ │
-│ │ │ Router │ │ State │ │ Auth │ │ Utils │ │ │ │
-│ │ └────────┘ └────────┘ └────────┘ └────────┘ │ │ │
-│ └──────────────────────────────────────────────┼──────────┘ │
-│ │ │
-│ ┌──────────────────────────────────────────────┼──────────┐ │
-│ │ Offline Layer │ │ │
-│ │ ┌──────────────────────────────────────────┐ │ │ │
-│ │ │ IndexedDB │ │ │ │
-│ │ │ • Offline Marks Storage │ │ │ │
-│ │ │ • Pending Sync Queue │ │ │ │
-│ │ │ • Cache Manager │ │ │ │
-│ │ └──────────────────────────────────────────┘ │ │ │
-│ └──────────────────────────────────────────────┼──────────┘ │
-└──────────────────────────────────────────────────┼──────────────┘
-│
-▼
-┌─────────────────────────────────────────────────────────────────┐
-│ Supabase Backend │
-├─────────────────────────────────────────────────────────────────┤
-│ ┌─────────────┐ ┌─────────────┐ ┌─────────────────────────┐ │
-│ │ PostgreSQL │ │ Realtime │ │ Authentication │ │
-│ │ Database │ │ Subscriptions│ │ (JWT) │ │
-│ └─────────────┘ └─────────────┘ └─────────────────────────┘ │
-│ │
-│ Tables: students, teachers, classes, subjects, assessments, │
-│ marks, payments, student_fees, fee_categories, etc. │
-└─────────────────────────────────────────────────────────────────┘
+## JavaScript Organization (inside index.html)
+```
+Section A  — Config & Constants (APP_CONFIG, GRADE defaults, PROMOTION_MAP, TIMETABLE)
+Section B  — Offline Support / IndexedDB (queue marks offline, sync on reconnect)
+Section C  — Supabase API Layer (get, getAll, insert, update, delete_, apiRequest)
+Section D  — Global State (state object, loadInitialData, refreshTable, lookup helpers)
+Section E  — Utilities & Formulas (fmt, fmtCurrency, esc, getGrade, calcMG, calcEX...)
+Section F  — Authentication (login, logout, session, biometric)
+Section G  — Login Page Logic (card animation, particles, role switch)
+Section H  — App Shell (sidebar, topbar, routing, theme, fee reset automation, bootApp)
+Section I  — Module Router (loadModule dispatch, 40+ render functions)
+Section J+ — All module render functions (dashboard, marks, finance, students, settings...)
+Window     — All functions exported to window.* for onclick handlers
+```
 
-## Component Layers
-
-### 1. Presentation Layer (UI)
-- **HTML Templates**: Dynamic content loaded via router
-- **CSS Styles**: Responsive, theme-aware styling
-- **UI Components**: Reusable buttons, modals, tables, forms
-
-### 2. Application Layer (Modules)
-- **Module Loader**: Dynamic module loading based on navigation
-- **Feature Modules**: Students, Finance, Academics, Reports, Settings
-- **UI Handlers**: Sidebar, topbar, notifications, modals
-
-### 3. Core Layer
-- **Router**: Hash-based SPA routing
-- **State Management**: Centralized state object with reactivity
-- **Authentication**: JWT-based session management
-- **API Client**: Supabase REST wrapper with retry logic
-- **Utilities**: Formatting, validation, helpers
-
-### 4. Offline Layer
-- **IndexedDB**: Local storage for offline marks
-- **Sync Engine**: Background sync when online
-- **Cache Manager**: Caches frequent queries
-
-### 5. Integration Layer
-- **Chart.js**: Analytics visualizations
-- **SheetJS**: Excel import/export
-- **html2pdf**: PDF generation
-- **WebAuthn**: Biometric authentication
+## CSS Architecture (inside index.html)
+- CSS custom properties for all colors, spacing, shadows, z-index
+- Role-based theming via body.role-admin / .role-accountant / .role-teacher
+- Light/dark mode via [data-theme="light|dark"] on <html>
+- Full utility framework (grid, flex, spacing, typography, display, cursor, opacity)
+- Component styles (cards, tables, badges, buttons, modals, toasts, tabs)
+- Mobile-first responsive (breakpoints: 480px, 768px, 900px, 1024px)
 
 ## Data Flow
+1. bootApp(user) → loadInitialData() → 14 parallel Supabase fetches → state object
+2. navigateTo(moduleId) → loadModule(id) → renderXxx(container) → innerHTML
+3. User action → Supabase write → refreshTable(name) → re-render
+4. Notifications → polled every 60s → bell badge updated
 
-### Online Flow
-User Action → Module → API Client → Supabase → Response → State Update → UI Re-render
-
-### Offline Flow (Marks Entry)
-User Action → Module → Offline Storage (IndexedDB) → Local UI Update
-↓
-(When online) Sync Engine → API Client → Supabase
-
-## Security Architecture
-
-### Authentication
-- JWT tokens stored in localStorage
-- Session timeout after 30 minutes inactivity
-- Biometric authentication (WebAuthn) for supported devices
-
-### Authorization
-- Role-based access control (Admin, Accountant, Teacher)
-- Frontend route guarding
-- Supabase Row Level Security (RLS) policies (recommended for production)
-
-### Data Protection
-- HTTPS required for production
-- Input sanitization
-- XSS protection via content escaping
-- CORS configured on Supabase
-
-## Performance Optimizations
-
-1. **Code Splitting**: Modules loaded on demand
-2. **Caching**: Frequent queries cached in memory
-3. **Pagination**: Large tables paginated (20 records per page)
-4. **Web Workers**: Heavy calculations offloaded to workers
-5. **Lazy Loading**: Charts and heavy components loaded when needed
-6. **IndexedDB**: Offline marks stored locally
-
-## Deployment Architecture
-
-### Development
-- Local file system or local server
-- Direct Supabase connection
-
-### Production
-- Static hosting (Netlify, Vercel, GitHub Pages)
-- CDN for assets
-- Supabase production database
-
-## Scalability Considerations
-
-- **Database Indexes**: Foreign keys and frequently queried fields indexed
-- **Pagination**: Limits response size
-- **Offline Support**: Reduces server load
-- **Caching**: Minimizes duplicate requests
-
-## Technology Stack
-
-| Layer | Technology |
-|-------|------------|
-| Frontend | Vanilla JavaScript ES6+ |
-| Styling | CSS3 with CSS Variables |
-| Backend | Supabase (PostgreSQL) |
-| Authentication | Supabase Auth + WebAuthn |
-| Charts | Chart.js 4.4 |
-| Excel | SheetJS |
-| PDF | html2pdf.js |
-| Icons | Emoji (fallback) / Font Awesome (optional) |
-
-## Browser Support
-
-- Chrome 90+
-- Firefox 88+
-- Edge 90+
-- Safari 14+
-- Mobile browsers with PWA support
+## Key Design Decisions
+- No framework: reduces complexity, single file deployable anywhere
+- All rendering via innerHTML with esc() for XSS prevention
+- window.* exports required because strict mode + inline onclick handlers
+- Supabase anon key in plaintext: acceptable with RLS, upgrade later
+- Passwords in plaintext: known issue, upgrade to bcrypt in future
