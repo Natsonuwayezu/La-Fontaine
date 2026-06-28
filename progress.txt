@@ -1,0 +1,266 @@
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  ECOLE LA FONTAINE — BUILD PROGRESS TRACKER                                        ║
+║  Update this file whenever a task is completed.                                    ║
+║  Status: [ ] = todo  [~] = in progress  [x] = done  [!] = blocked                 ║
+║  Last updated: 2026-06-28                                                          ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+HOW TO USE THIS FILE
+────────────────────
+1. When you start a task → change [ ] to [~] and add your name + date
+2. When you finish a task → change [~] to [x] and add completion date
+3. If blocked → change to [!] and describe why
+4. After any update → git commit this file with message "progress: <task name>"
+5. The AGENT_PROMPT.md reads this file to know what's done and what's next
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 0 — FOUNDATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[x] P0-01  Deploy working index.html to GitHub repo          2026-06-28
+[x] P0-02  Fix calculateGrade() → delegate to getGrade()    2026-06-28
+[x] P0-03  Fix all hardcoded >= 50 pass mark comparisons     2026-06-28
+[x] P0-04  Fix decision banner full text (EN + FR)           2026-06-28
+[x] P0-05  Fix toggleSidebar overlay .active bug (mobile)    2026-06-28
+[x] P0-06  Convert CRLF to LF (Windows line endings)         2026-06-28
+[x] P0-07  Write frontend.txt wireframes to repo root        2026-06-28
+[x] P0-08  Write backend.txt specification to repo root      2026-06-28
+[x] P0-09  Write progress.txt tracker to repo root           2026-06-28
+[x] P0-10  Write AGENT_PROMPT.md universal agent guide       2026-06-28
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 1 — DASHBOARD REBUILDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[x] P1-01  Teacher dashboard: corrected completion rate formula
+           Formula: totalFilled/totalPossible (marks×assessments)
+           Completed: 2026-06-28
+
+[x] P1-02  Teacher dashboard: ASCII horizontal + vertical charts
+           Per-class bars, per-assessment bars, vertical column for averages
+           Completed: 2026-06-28
+
+[x] P1-03  Teacher dashboard: Next 3 periods widget
+           Reads from timetable, shows NOW/NEXT/LATER badges
+           Completed: 2026-06-28
+
+[x] P1-04  Teacher dashboard: Students without marks section
+           Cards showing student name, class, which assessments missing
+           Completed: 2026-06-28
+
+[x] P1-05  Teacher dashboard: Attendance reminder banner
+           Shows if class teacher has not recorded attendance today
+           Completed: 2026-06-28
+
+[x] P1-06  Teacher dashboard: Live notifications feed
+           Polls notifications table, shows unread dot, icon, who+when
+           Completed: 2026-06-28
+
+[x] P1-07  Accountant dashboard: Full rebuild
+           ASCII collection-by-class bars, live notification feed,
+           overdue severity bars, monthly trend ASCII vertical chart,
+           recent payments with Recorded By column, today's activity banner
+           Completed: 2026-06-28
+
+[ ] P1-08  Admin dashboard: Rebuild with ASCII charts
+           Fee collection by class, marks completion overview,
+           recent activity log, quick actions
+           Target: next session
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 2 — MARKS SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[x] P2-01  Marks entry: inline popup validation (no silent clamping)
+           Popup on score input for: above max, below zero, non-numeric
+           3 choices: auto-correct, manual fix, clear
+           Completed: 2026-06-28
+
+[x] P2-02  Marks entry: save gate (all students must have score or absent)
+           Blocks save if any popup open OR any empty input
+           Shows which students are missing
+           Completed: 2026-06-28
+
+[x] P2-03  Marks entry: summary screen before saving
+           Shows distribution chart, per-student grid, avg, pass rate
+           Confirm button writes to DB
+           Completed: 2026-06-28
+
+[x] P2-04  Marks save: dispatch notification to admin
+           notifyAction('marks_saved', ..., ['admin'])
+           Includes teacher name, assessment, class, subject
+           Completed: 2026-06-28
+
+[ ] P2-05  Marks database: edit triggers notification to admin + teacher
+           When admin edits marks → notify teacher who entered them
+           Target: next session
+
+[ ] P2-06  Marks database: lock/unlock assessment flow
+           Locked = fully counted in completion rate
+           Notify all relevant teachers when locked
+           Target: next session
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 3 — TEACHER ASSIGNMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[x] P3-01  Teacher assignments: Tab 1 — Subject assignments table
+           Shows all teachers, their CT class, subject×class badges, load
+           Completed: 2026-06-28
+
+[x] P3-02  Teacher assignments: Edit modal — subject grid (class × subject)
+           Row/col select-all checkboxes, visual toggle cells
+           Completed: 2026-06-28
+
+[x] P3-03  Teacher assignments: Class teacher role dropdown in edit modal
+           Shows access granted on selection
+           Removes CT from previous class automatically
+           Completed: 2026-06-28
+
+[x] P3-04  Teacher assignments: Tab 2 — Class teachers per class
+           One row per class, shows CT name, access badges, assign/change button
+           Warning badge for unassigned classes
+           Completed: 2026-06-28
+
+[x] P3-05  Teacher assignments: Tab 3 — Overview matrix
+           Teacher rows × class columns, subject codes + 🏠 for CT
+           Footer row: teachers-per-class count
+           Completed: 2026-06-28
+
+[x] P3-06  DB: classes.class_teacher_id column
+           Referenced in access control and dashboard
+           Completed: 2026-06-28
+
+[x] P3-07  Access control: class teacher unlocks in loadModule()
+           attendance, class-register, class-timetable, marks-entry (all subjects)
+           Completed: 2026-06-28
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 4 — NOTIFICATION SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[x] P4-01  notifyAction() enhanced with recipient_role, recorded_by, resource_id
+           Completed: 2026-06-28
+
+[x] P4-02  Payment recorded → notify opposite role
+           Admin records → notify accountant
+           Accountant records → notify admin
+           Completed: 2026-06-28
+
+[x] P4-03  Marks saved → notify admin
+           Completed: 2026-06-28
+
+[ ] P4-04  Marks edited → notify teacher + admin
+           Target: next session
+
+[ ] P4-05  Attendance not recorded reminder
+           Daily check at login for class teachers
+           Dispatch notification if no attendance record for today
+           Target: next session
+
+[ ] P4-06  Notification center full page
+           Tabs: All / Unread / By type
+           Mark individual as read, mark all read
+           Deep link to resource (payment receipt, assessment)
+           Target: next session
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 5 — ATTENDANCE MODULE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] P5-01  Record attendance: daily per-student P/A/L/E grid
+           Only class teacher of that class can record
+           Must record before end of school day
+           Target: next session
+
+[ ] P5-02  Attendance summary: per student attendance rate
+           Days present/absent/late/excused
+           Flag at-risk students (<75% attendance)
+           Target: next session
+
+[ ] P5-03  Attendance reports: by class, by date range, export Excel
+           Target: next session
+
+[ ] P5-04  Attendance reminder: notify class teacher if not recorded by 10am
+           Target: next session
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 6 — FINANCE ENHANCEMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] P6-01  Payment allocation: FIFO auto-allocation to oldest fees
+           Target: next session
+
+[ ] P6-02  Smart waiver: full/percentage/custom types, recurring flag
+           Target: next session
+
+[ ] P6-03  Payment reversal: de-allocate, restore fee balances, notify
+           Target: next session
+
+[ ] P6-04  Credit balance: overpayment → credit → apply to next fee
+           Target: next session
+
+[ ] P6-05  Fee reset automation: monthly/termly/annual triggers
+           Target: next session
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 7 — REPORT CARDS & TRANSCRIPTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[x] P7-01  Decision banner: full text EN + FR                2026-06-28
+[x] P7-02  QR code on every report card                      2026-06-28
+[ ] P7-03  Annual transcript using calcSubjectAnnual()
+           Full-year totals across all terms
+           Target: next session
+
+[ ] P7-04  QR scan verification modal
+           Decode scanned QR, display verification page
+           Target: next session
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 8 — MOBILE & UX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[x] P8-01  Mobile sidebar overlay .active fix                 2026-06-28
+[ ] P8-02  Bottom navigation bar for mobile
+           Target: next session
+[ ] P8-03  Touch target minimum 44px on all interactive elements
+           Target: next session
+[ ] P8-04  iOS font-size 16px on inputs (prevent zoom)
+           Target: next session
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 9 — SECURITY & PERFORMANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] P9-01  Password hashing (bcrypt or similar)
+           Currently plain text — upgrade before production
+           Target: future
+
+[ ] P9-02  State cache with TTL invalidation
+           studentBalances, classStats, ranks cached in Map
+           invalidateCache() called on updateState()
+           Target: next session
+
+[ ] P9-03  IndexedDB offline marks queue + sync
+           Marks queued offline, synced on reconnect
+           Target: verify working
+
+[ ] P9-04  Max login attempts lockout (5 attempts → 15min)
+           Target: next session
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CURRENT SESSION SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Session date:  2026-06-28
+Completed:     P0-01 to P0-10, P1-01 to P1-07, P2-01 to P2-04,
+               P3-01 to P3-07, P4-01 to P4-03, P7-01, P7-02, P8-01
+Working file:  index.html (37,623 lines, in repo root)
+Repo:          https://github.com/Natsonuwayezu/La-Fontaine
+
+NEXT SESSION — START HERE:
+  1. P1-08  Admin dashboard rebuild (ASCII charts, no Chart.js)
+  2. P2-05  Marks database: edit → notify teacher + admin
+  3. P4-04  Marks edited notification
+  4. P5-01  Attendance module (record, summary, reports)
+  5. P4-06  Notification center full page

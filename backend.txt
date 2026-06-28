@@ -1,0 +1,757 @@
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  ECOLE LA FONTAINE — BACKEND SPECIFICATION                                         ║
+║  Complete formulas, business rules, data flows, validation, and DB contracts       ║
+║  Version: 1.0  |  Date: 2026-06-28  |  Stack: Supabase (PostgreSQL) + Vanilla JS  ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+This document is the single source of truth for all backend logic.
+Every formula, rule, trigger, and API contract is defined here.
+Frontend code must read this and implement accordingly.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 1 — DATABASE SCHEMA (Supabase / PostgreSQL)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1.1 CORE TABLES
+───────────────
+
+TABLE: academic_years
+  id               SERIAL PRIMARY KEY
+  name             TEXT NOT NULL              -- e.g. "2025-2026"
+  start_date       DATE
+  end_date         DATE
+  is_active        BOOLEAN DEFAULT false      -- only ONE can be true at a time
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: terms
+  id               SERIAL PRIMARY KEY
+  academic_year_id INTEGER REFERENCES academic_years(id)
+  name             TEXT NOT NULL              -- "Term 1", "Term 2", "Term 3"
+  term_number      INTEGER                    -- 1, 2, 3
+  start_date       DATE
+  end_date         DATE
+  midterm_date     DATE                       -- splits pre/post midterm phases
+  is_active        BOOLEAN DEFAULT false
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: classes
+  id               SERIAL PRIMARY KEY
+  name             TEXT NOT NULL              -- "Nursery 1", "Primary 4A", etc.
+  level            TEXT                       -- "nursery" | "primary"
+  sort_order       INTEGER DEFAULT 0          -- for display ordering
+  is_active        BOOLEAN DEFAULT true
+  class_teacher_id INTEGER REFERENCES teachers(id) -- homeroom teacher (nullable)
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: subjects
+  id               SERIAL PRIMARY KEY
+  name             TEXT NOT NULL
+  code             TEXT                       -- MTH, ENG, SCI, KIN, FRE, SST
+  mg_max           NUMERIC DEFAULT 30         -- max for continuous assessment (MG)
+  ex_max           NUMERIC DEFAULT 70         -- max for exam component (EX)
+  sort_order       INTEGER DEFAULT 0
+  is_active        BOOLEAN DEFAULT true
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: teachers
+  id               SERIAL PRIMARY KEY
+  name             TEXT NOT NULL
+  email            TEXT UNIQUE
+  phone            TEXT
+  username         TEXT UNIQUE
+  password         TEXT                       -- plain text (upgrade to bcrypt later)
+  role             TEXT DEFAULT 'teacher'     -- 'teacher' | 'accountant'
+  department       TEXT
+  is_active        BOOLEAN DEFAULT true
+  last_login       TIMESTAMPTZ
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: students
+  id               SERIAL PRIMARY KEY
+  first_name       TEXT NOT NULL
+  last_name        TEXT NOT NULL
+  date_of_birth    DATE
+  gender           TEXT                       -- 'Male' | 'Female'
+  class_id         INTEGER REFERENCES classes(id)
+  academic_year_id INTEGER REFERENCES academic_years(id)
+  guardian_name    TEXT
+  guardian_phone   TEXT
+  guardian_email   TEXT
+  address          TEXT
+  student_code     TEXT UNIQUE                -- auto-generated: ELF-YYYY-XXXX
+  status           TEXT DEFAULT 'Active'      -- 'Active'|'Inactive'|'Transferred'|'Graduated'
+  family_id        INTEGER REFERENCES families(id)
+  photo_url        TEXT
+  is_archived      BOOLEAN DEFAULT false
+  archived_at      TIMESTAMPTZ
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: families
+  id               SERIAL PRIMARY KEY
+  family_code      TEXT UNIQUE               -- FAM-XXXX
+  guardian_name    TEXT
+  guardian_phone   TEXT
+  guardian_email   TEXT
+  discount_pct     NUMERIC DEFAULT 0         -- sibling discount %
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: teacher_assignments
+  id               SERIAL PRIMARY KEY
+  teacher_id       INTEGER REFERENCES teachers(id)
+  class_id         INTEGER REFERENCES classes(id)
+  subject_id       INTEGER REFERENCES subjects(id)
+  academic_year_id INTEGER REFERENCES academic_years(id)
+  created_at       TIMESTAMPTZ DEFAULT now()
+  UNIQUE(teacher_id, class_id, subject_id, academic_year_id)
+
+TABLE: assessments
+  id               SERIAL PRIMARY KEY
+  class_id         INTEGER REFERENCES classes(id)
+  subject_id       INTEGER REFERENCES subjects(id)
+  term_id          INTEGER REFERENCES terms(id)
+  academic_year_id INTEGER REFERENCES academic_years(id)
+  assessment_name  TEXT NOT NULL             -- "Quiz 1", "Mid-term", "Final Exam"
+  assessment_type  TEXT                      -- 'Quiz'|'Assignment'|'Mid-term'|'Exam'|'Final Exam'
+  max_marks        NUMERIC NOT NULL
+  assessment_date  DATE
+  due_date         DATE
+  phase            TEXT DEFAULT 'pre_midterm' -- 'pre_midterm'|'post_midterm'
+  is_locked        BOOLEAN DEFAULT false      -- locked = no further edits
+  created_by       INTEGER REFERENCES teachers(id)
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: marks
+  id               SERIAL PRIMARY KEY
+  assessment_id    INTEGER REFERENCES assessments(id)
+  student_id       INTEGER REFERENCES students(id)
+  score            NUMERIC NOT NULL
+  is_absent        BOOLEAN DEFAULT false
+  entered_by       INTEGER REFERENCES teachers(id)
+  created_at       TIMESTAMPTZ DEFAULT now()
+  updated_at       TIMESTAMPTZ DEFAULT now()
+  UNIQUE(assessment_id, student_id)
+
+TABLE: grading_scale
+  id               SERIAL PRIMARY KEY
+  grade            TEXT NOT NULL             -- 'A+', 'A', 'B', 'C', 'D', 'F'
+  min_percentage   NUMERIC NOT NULL
+  max_percentage   NUMERIC NOT NULL
+  description      TEXT
+  color            TEXT                      -- CSS color hex
+  sort_order       INTEGER DEFAULT 0
+
+TABLE: school_settings
+  key              TEXT PRIMARY KEY
+  value            TEXT
+  -- Keys: school_name, school_address, school_phone, school_email,
+  --        admin_password, current_term, pass_mark (default 50),
+  --        promotion_mark (default 50), logo_base64, head_teacher,
+  --        academic_year, auto_backup_enabled, backup_interval_hours,
+  --        session_timeout_minutes, max_login_attempts
+
+1.2 FINANCE TABLES
+──────────────────
+
+TABLE: fee_categories
+  id               SERIAL PRIMARY KEY
+  name             TEXT NOT NULL             -- "Tuition", "Lunch", "Transport"
+  frequency        TEXT NOT NULL             -- 'monthly'|'termly'|'annual'|'one-time'
+  default_amount   NUMERIC DEFAULT 0
+  is_active        BOOLEAN DEFAULT true
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: fee_amounts
+  id               SERIAL PRIMARY KEY
+  fee_category_id  INTEGER REFERENCES fee_categories(id)
+  class_id         INTEGER REFERENCES classes(id)
+  academic_year_id INTEGER REFERENCES academic_years(id)
+  amount           NUMERIC NOT NULL
+  created_at       TIMESTAMPTZ DEFAULT now()
+  UNIQUE(fee_category_id, class_id, academic_year_id)
+
+TABLE: student_fees
+  id               SERIAL PRIMARY KEY
+  student_id       INTEGER REFERENCES students(id)
+  fee_category_id  INTEGER REFERENCES fee_categories(id)
+  academic_year_id INTEGER REFERENCES academic_years(id)
+  term_id          INTEGER REFERENCES terms(id)
+  amount           NUMERIC NOT NULL
+  paid_amount      NUMERIC DEFAULT 0
+  due_date         DATE
+  is_waived        BOOLEAN DEFAULT false
+  waiver_reason    TEXT
+  waiver_amount    NUMERIC DEFAULT 0
+  is_credit        BOOLEAN DEFAULT false      -- credit balance record
+  is_archived      BOOLEAN DEFAULT false
+  is_paid          BOOLEAN DEFAULT false
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: payments
+  id               SERIAL PRIMARY KEY
+  student_id       INTEGER REFERENCES students(id)
+  amount           NUMERIC NOT NULL
+  payment_date     DATE NOT NULL
+  payment_method   TEXT                      -- 'Cash'|'MTN Mobile Money'|'Bank Transfer'|'Cheque'
+  reference        TEXT                      -- transaction ID / cheque number
+  receipt_number   TEXT UNIQUE               -- auto-generated: R-YYYY-XXXX
+  notes            TEXT
+  recorded_by      INTEGER REFERENCES teachers(id)
+  recorded_by_role TEXT                      -- 'admin'|'accountant'
+  is_reversed      BOOLEAN DEFAULT false
+  reversed_at      TIMESTAMPTZ
+  reversed_by      INTEGER
+  reversal_reason  TEXT
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: payment_allocations
+  id               SERIAL PRIMARY KEY
+  payment_id       INTEGER REFERENCES payments(id)
+  student_fee_id   INTEGER REFERENCES student_fees(id)
+  amount_allocated NUMERIC NOT NULL
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: payment_reversals
+  id               SERIAL PRIMARY KEY
+  payment_id       INTEGER REFERENCES payments(id)
+  reason           TEXT NOT NULL
+  reversed_by      INTEGER
+  reversed_at      TIMESTAMPTZ DEFAULT now()
+
+1.3 COMMUNICATION TABLES
+────────────────────────
+
+TABLE: notifications
+  id               SERIAL PRIMARY KEY
+  title            TEXT NOT NULL
+  message          TEXT
+  type             TEXT                      -- 'payment'|'marks'|'attendance'|'system'|'announcement'
+  icon             TEXT
+  recipient_role   TEXT                      -- 'admin'|'accountant'|'teacher'|'all'
+  recipient_id     INTEGER                   -- specific teacher id (NULL = all of that role)
+  recorded_by      TEXT                      -- name of person who triggered it
+  recorded_by_role TEXT
+  resource_id      INTEGER                   -- payment_id or assessment_id for deep link
+  resource_type    TEXT                      -- 'payment'|'assessment'|'student'
+  is_read          BOOLEAN DEFAULT false
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+TABLE: announcements
+  id               SERIAL PRIMARY KEY
+  title            TEXT NOT NULL
+  message          TEXT NOT NULL
+  type             TEXT DEFAULT 'info'
+  status           TEXT DEFAULT 'published'
+  recipients       TEXT DEFAULT 'all'        -- 'all'|'teachers'|'accountants'|'admin'
+  category         TEXT
+  created_by       INTEGER
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+1.4 ATTENDANCE TABLES
+─────────────────────
+
+TABLE: attendance
+  id               SERIAL PRIMARY KEY
+  student_id       INTEGER REFERENCES students(id)
+  class_id         INTEGER REFERENCES classes(id)
+  date             DATE NOT NULL
+  status           TEXT NOT NULL             -- 'Present'|'Absent'|'Late'|'Excused'
+  recorded_by      INTEGER REFERENCES teachers(id)
+  notes            TEXT
+  created_at       TIMESTAMPTZ DEFAULT now()
+  UNIQUE(student_id, date)
+
+1.5 ACTIVITY LOG TABLE
+──────────────────────
+
+TABLE: activity_logs
+  id               SERIAL PRIMARY KEY
+  user_id          INTEGER
+  user_role        TEXT
+  action           TEXT NOT NULL
+  resource_type    TEXT
+  resource_id      INTEGER
+  details          JSONB
+  ip_address       TEXT
+  created_at       TIMESTAMPTZ DEFAULT now()
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 2 — ACADEMIC FORMULAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2.1 GRADING
+───────────
+  getGrade(pct, gradingScale)
+    → Loop gradingScale array (sorted by min_percentage DESC)
+    → Return grade where pct >= min_percentage AND pct <= max_percentage
+    → Fallback to hardcoded: A+(90-100), A(80-89), B(70-79), C(60-69), D(50-59), F(0-49)
+    → NEVER use calculateGrade() directly — always pass through getGrade()
+
+  getGradeClass(pct)
+    → Returns CSS class: grade-Ap|grade-A|grade-B|grade-C|grade-D|grade-F
+
+  Pass/Fail threshold:
+    → Always read from: parseFloat(state.schoolSettings?.pass_mark || 50)
+    → NEVER hardcode >= 50 anywhere in the codebase
+
+2.2 MARKS COMPLETION RATE (Dashboard stat card)
+────────────────────────────────────────────────
+  Formula:
+    totalPossible = SUM over each term-assessment of:
+                      count of Active students in that assessment's class
+    totalFilled   = SUM over each term-assessment of:
+                      IF assessment.is_locked → add class student count (fully done)
+                      ELSE → count of marks records for that assessment
+    completionPct = totalFilled / totalPossible × 100
+
+  Rules:
+    · Only current-term assessments
+    · Locked assessments = 100% complete
+    · Absent marks count as entered (teacher made a decision)
+    · If totalPossible === 0 → show 0%
+
+2.3 PRE-MIDTERM CALCULATION (Primary)
+──────────────────────────────────────
+  For each assessment in pre_midterm phase:
+    raw_pct = score / max_marks × 100
+  Average of all pre-midterm raw_pcts = preMidtermPct
+
+  calcPreMidtermPrimary(scores[], maxes[]):
+    total_score = sum(scores)
+    total_max   = sum(maxes)
+    return total_max > 0 ? (total_score / total_max) × 100 : 0
+
+2.4 PRE-MIDTERM CALCULATION (Nursery)
+──────────────────────────────────────
+  calcPreMidtermNursery(scores[]):
+    → Simple average of scores (no max scaling)
+    return scores.length > 0 ? sum(scores) / scores.length : 0
+
+2.5 MG (Moyenne Générale — Continuous Assessment)
+──────────────────────────────────────────────────
+  calcMG(scores[], maxes[], mgMax):
+    avgPct = sum(scores) / sum(maxes) × 100    [if sum(maxes) > 0]
+    return (avgPct / 100) × mgMax
+
+  Example: scores=[18,22], maxes=[25,25], mgMax=30
+    avgPct = 40/50 × 100 = 80%
+    MG = 80/100 × 30 = 24/30
+
+2.6 EXAM (EX) COMPONENT
+─────────────────────────
+  calcEX(scores[], maxes[], exMax):
+    Same formula as MG but for exam assessments
+    avgPct = sum(scores) / sum(maxes) × 100
+    return (avgPct / 100) × exMax
+
+2.7 POST-MIDTERM SUBJECT TOTAL
+────────────────────────────────
+  calcSubjectPostMidterm(subject, assessments, marks, studentId):
+    mgAssessments  = assessments.filter(phase='pre_midterm' OR type!='Final Exam')
+    exAssessments  = assessments.filter(type='Final Exam' OR type='Exam')
+    mg = calcMG(mgScores, mgMaxes, subject.mg_max)
+    ex = calcEX(exScores, exMaxes, subject.ex_max)
+    total = mg + ex
+    maxTotal = subject.mg_max + subject.ex_max
+    pct = total / maxTotal × 100
+    return { mg, ex, total, maxTotal, pct, grade: getGrade(pct) }
+
+2.8 ANNUAL SUBJECT TOTAL (Full-year transcript)
+────────────────────────────────────────────────
+  calcSubjectAnnual(subject, allTermAssessments, allMarks, studentId):
+    Same as post-midterm but spans ALL terms in the academic year
+    Uses same MG + EX formula across the full year's assessments
+
+2.9 STUDENT RANKING
+────────────────────
+  rankStudents(students[]):
+    → Sort by percentage DESC, then by name ASC for ties
+    → Olympic ranking: if 2 students share rank 1, next rank is 3
+    → Return [{...student, rank, total, pct}]
+
+  calculateStudentRank(studentId, classId):
+    → Get all active students in that class
+    → Calculate each student's term percentage
+    → Sort, rank, return "X of Y" string for the specific student
+
+  calculateStudentRankFair(studentId, classId, termsToProcess, ...):
+    → Multi-term weighted rank
+    → Handles nursery vs primary level differences
+    → Used for year-end report cards
+
+2.10 ATTENDANCE RATE
+─────────────────────
+  attendanceRate(studentId, dateFrom, dateTo):
+    totalDays   = count of attendance records in range for that student
+    presentDays = count where status IN ('Present', 'Late')
+    return totalDays > 0 ? (presentDays / totalDays) × 100 : null
+
+  Status for at-risk alert: attendanceRate < 75%
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 3 — FINANCE FORMULAS & BUSINESS RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3.1 STUDENT BALANCE CALCULATION
+────────────────────────────────
+  studentFeeBalance(studentId):
+    fees       = student_fees WHERE student_id=X AND is_waived=false AND is_credit=false
+    credits    = student_fees WHERE student_id=X AND is_credit=true
+    totalDue   = sum(fees.amount) - sum(fees.waiver_amount)
+    totalPaid  = sum(payments via payment_allocations)
+    creditAmt  = sum(credits.amount)
+    balance    = totalDue - totalPaid - creditAmt
+    return { totalDue, totalPaid, balance, credit: creditAmt,
+             pct: totalDue>0 ? (totalPaid/totalDue)×100 : 100,
+             hasCredit: creditAmt > 0 }
+
+  Rules:
+    · Waived fees: excluded from totalDue
+    · Credits: reduce what is owed (overpayments become credits)
+    · Archived fees: excluded from current balance
+
+3.2 FEE RESET AUTOMATION
+────────────────────────
+  Triggered: daily check at boot and every 24h
+
+  Monthly fees:  apply on 1st of each month
+  Termly fees:   apply day after term.start_date
+  Annual fees:   apply day after academic_year.start_date
+  One-time fees: applied manually only
+
+  applyFeesByFrequency(frequency):
+    For each active student:
+      For each fee_category WHERE frequency matches:
+        Check if student_fees record already exists for this period
+        If not → get fee_amounts for student's class
+        Apply sibling discount if family.discount_pct > 0
+        Apply any active recurring waivers
+        Insert student_fees record
+
+  archivePreviousYearFees():
+    Mark student_fees.is_archived = true
+    WHERE academic_year_id != current AND is_paid = false
+
+3.3 PAYMENT RECORDING
+──────────────────────
+  recordPayment(studentId, amount, method, reference, recordedBy, recordedByRole):
+    1. Validate: amount > 0, student exists, student is Active
+    2. Generate receipt_number: "R-" + year + "-" + padded sequence
+    3. INSERT into payments
+    4. Allocate payment to oldest unpaid fees first (FIFO):
+       - Get student_fees WHERE is_paid=false ORDER BY due_date ASC
+       - Allocate payment amount across fees until exhausted
+       - Mark fee.is_paid=true when fully covered
+       - If payment > total owed → create credit record in student_fees (is_credit=true)
+    5. Dispatch notification:
+       - IF recordedByRole === 'admin' → notify accountant
+       - IF recordedByRole === 'accountant' → notify admin
+       - notification.type = 'payment', resource_id = payment.id
+    6. Log activity
+
+3.4 PAYMENT REVERSAL
+─────────────────────
+  reversePayment(paymentId, reason, reversedBy):
+    1. Validate payment exists and is not already reversed
+    2. SET payments.is_reversed=true, reversed_at=now(), reversal_reason=reason
+    3. De-allocate: UPDATE student_fees paid_amount -= allocated_amount
+    4. Remove payment_allocations for this payment
+    5. Remove credit records created by this payment
+    6. Notify admin + accountant
+    7. Log activity
+
+3.5 FEE WAIVER
+───────────────
+  applyWaiver(studentFeeId, waiverType, amount, reason):
+    Types:
+      'full'       → is_waived=true, waiver_amount=fee.amount
+      'percentage' → waiver_amount = fee.amount × pct / 100
+      'custom'     → waiver_amount = specified amount (cannot exceed fee.amount)
+    
+    If fee already partially paid → waiver applies to remaining balance only
+    Log activity with reason
+
+3.6 OVERDUE CLASSIFICATION
+───────────────────────────
+  Days overdue = today - fee.due_date (where due_date is in the past and not paid)
+  
+  Critical  = days > 44
+  High      = days 30-44
+  Medium    = days 14-29
+  Recent    = days 7-13
+  Not yet   = days <= 6 (not overdue)
+
+3.7 COLLECTION RATE
+────────────────────
+  collectionRate(classId, termId):
+    expected  = sum(student_fees.amount) for active students in class this term
+    collected = sum(payments.amount) allocated to those fees
+    return expected > 0 ? (collected / expected) × 100 : 0
+
+3.8 SIBLING DISCOUNT
+─────────────────────
+  If student.family_id is set AND families.discount_pct > 0:
+    Discount applies to all fee categories marked as discountable
+    discounted_amount = fee_amount × (1 - discount_pct / 100)
+    Applied automatically when fees are generated for that student
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 4 — NOTIFICATION DISPATCH RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Every significant action dispatches a notification via notifyAction():
+
+  ACTION                  → NOTIFY ROLES       ICON  TYPE
+  ─────────────────────────────────────────────────────────
+  Admin records payment   → accountant         💰    payment
+  Accountant records pay  → admin              💰    payment
+  Teacher saves marks     → admin              📝    marks
+  Admin edits marks       → teacher (owner)    ✏️    marks_edit
+  Marks locked            → admin              🔒    marks
+  Student enrolled        → admin              🎓    student
+  Fee waiver applied      → admin+accountant   🎁    finance
+  Payment reversed        → admin+accountant   ↩️    payment
+  Backup created          → admin              💾    system
+  Attendance not recorded → class teacher      📋    attendance (daily reminder)
+
+  notifyAction(action, details, targetRoles):
+    INSERT INTO notifications:
+      title        = icon + " " + humanised(action)
+      message      = details.message
+      type         = categorise(action)
+      recipient_role = targetRoles[0] (or 'all')
+      recorded_by  = currentUser.name
+      resource_id  = details.resource_id
+      is_read      = false
+
+  Polling: notifications are polled every 60 seconds
+  Bell badge: count of is_read=false for current user's role
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5 — ACCESS CONTROL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5.1 ROLE CAPABILITIES
+──────────────────────
+
+  ADMIN:
+    · Full access to all modules
+    · Only admin can: enroll/archive students, manage staff, change settings,
+      manage fee structure, view all financial data, backup/restore
+    · Admin password stored in school_settings.admin_password (plain text → upgrade later)
+
+  ACCOUNTANT:
+    · Finance modules: record payment, fee structure (read), receipts, overdue,
+      waivers, balances, payment history, financial reports, payment reversals
+    · Academic: view class register (read only), view marks (read only)
+    · BLOCKED: marks entry/edit, student enrollment, staff management, settings
+
+  TEACHER:
+    · Academic: marks entry (own subjects), marks database (own), class register (own classes),
+      report cards (own classes), statistics (own classes), assessments
+    · BLOCKED: finance, student enrollment, staff management, settings
+    · Class Teacher additionally gets: attendance, full marks for their homeroom class,
+      class timetable, student list (read only for homeroom class)
+
+5.2 CLASS TEACHER ACCESS
+─────────────────────────
+  Stored as: classes.class_teacher_id = teacher.id
+  
+  If classes.class_teacher_id === currentUser.id:
+    → 'attendance'        UNLOCKED for that class
+    → 'class-register'    UNLOCKED for that class
+    → 'class-timetable'   UNLOCKED for that class
+    → 'marks-entry'       UNLOCKED for ALL subjects in that class
+    → 'marks-database'    READ ONLY for that class
+    → 'student-list'      READ ONLY filtered to that class
+
+5.3 MODULE BLOCK LISTS
+───────────────────────
+  TEACHER_BLOCKED_MODULES = Set([
+    'fee-structure','record-payment','payment-history','receipts',
+    'overdue-payments','fee-waivers','student-balances','payment-reversals',
+    'financial-reports','enroll-student','student-archive','bulk-import',
+    'bulk-export','student-promotion','teachers-list','subjects',
+    'teacher-assignments','teacher-performance','school-settings',
+    'academic-calendar','class-management','grading-scale','backup-restore',
+    'system-logs','api-settings','user-management','analytics'
+  ])
+
+  ACCOUNTANT_BLOCKED_MODULES = Set([
+    'marks-entry','marks-database','report-cards','transcripts',
+    'academic-reports','statistics','assessments','enroll-student',
+    'student-archive','bulk-import','bulk-export','student-promotion',
+    'teachers-list','subjects','teacher-assignments','teacher-performance',
+    'school-settings','academic-calendar','class-management','grading-scale',
+    'backup-restore','system-logs','api-settings','user-management','analytics'
+  ])
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 6 — MARKS ENTRY VALIDATION RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  On every keystroke in a score input:
+    1. Parse raw input as float
+    2. If NaN → show inline popup: "❌ Invalid value" — offer Clear
+    3. If < 0  → show inline popup: "⚠️ Below zero" — offer Auto-correct to 0 | Manual fix | Clear
+    4. If > max_marks → show inline popup: "⚠️ Exceeds max" — offer Auto-correct to max | Manual fix | Clear
+    5. If valid → commit score, update % and grade badge live, clear popup
+
+  Popup has 3 options (non-numeric gets only Clear):
+    A. ✅ Auto-correct to [0 or max]   → sets value, closes popup
+    B. ✏️ Let me type the correct value → closes popup, refocuses+selects input
+    C. 🗑️ Clear                        → empties field, closes popup
+
+  Save gate:
+    BLOCK saving if ANY popup is open (errorPopups.length > 0)
+    BLOCK saving if ANY student input is empty AND not marked absent
+    Both conditions produce a specific toast + scroll to problem
+
+  After save:
+    → dispatch notification to admin: marks_saved action
+    → include: teacher name, assessment name, subject, class, count saved
+
+  Summary screen (before final save):
+    → Shows: entered count, absent count, average, pass rate
+    → ASCII grade distribution chart
+    → Per-student score grid
+    → User must click "Confirm & Save" to actually write to DB
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 7 — REPORT CARD RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  7.1 DECISION BANNER TEXT
+  ─────────────────────────
+    Passed (primary):  "✅ PROMOTED TO NEXT CLASS"
+    Failed (primary):  "⚠️ MUST ATTEND HOLIDAY REMEDIAL COURSES TO SIT FOR SECOND SITTING EXAMINATIONS"
+    Passed (nursery):  "✅ ADMIS(E) EN CLASSE SUPÉRIEURE"
+    Failed (nursery):  "⚠️ DOIT SUIVRE LES COURS DE RATTRAPAGE DES VACANCES POUR UNE DEUXIÈME SESSION D'EXAMEN"
+
+    Pass threshold = parseFloat(school.pass_mark || 50)
+    Nursery = class.level === 'nursery'
+
+  7.2 QR CODE
+  ────────────
+    Every report card includes a QR code containing:
+    { v:1, school:{name,address,phone}, student:{firstName,lastName,code,class,gender,guardian,guardianPhone},
+      academic:{term,totalScore,totalMax,pct,grade,rank,subjects:[{name,mg,ex,total,max,pct,grade}]},
+      headTeacher, gen: ISO timestamp }
+    QR is generated via qrcodejs library and embedded as base64 PNG
+
+  7.3 RANK DISPLAY
+  ─────────────────
+    Show rank as "X of Y" where Y = total active students in class
+    Use Olympic ranking (ties share rank, next rank skips)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 8 — AUTHENTICATION & SESSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Session stored in localStorage: keys elf_user (JSON) + elf_expiry (timestamp)
+  Session duration: 1 hour (rolling — reset on any click/keydown/mousemove)
+  Idle warning: 25 minutes of inactivity
+  Idle logout: 30 minutes of inactivity
+  Max login attempts: 5 → 15-minute lockout
+  Session watcher: checks every 60 seconds
+
+  Admin login: compare password vs school_settings.admin_password
+  Teacher/Accountant login: query teachers table by username+role, compare password
+
+  Biometric (WebAuthn):
+    Registration: navigator.credentials.create() with platform authenticator
+    Assertion: navigator.credentials.get()
+    Credential ID stored in localStorage as biometric_{userId}
+
+  Password change:
+    Admin → update school_settings.admin_password
+    Teacher → update teachers.password
+    Requires current password verification
+    Forces logout after change
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 9 — API LAYER (Supabase REST)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Base URL: SUPABASE_URL + '/rest/v1/'
+  Auth header: apikey: SUPABASE_KEY, Authorization: Bearer SUPABASE_KEY
+  Content-Type: application/json
+  Prefer: return=representation (on POST/PATCH to get back the row)
+
+  Core wrappers:
+    api(path, method, body)          → raw fetch with error handling
+    get(table, params)               → GET with auto-pagination for marks/assessments
+    getAll(table, filters)           → high-level with 50000 limit
+    getById(table, id)               → single row by id
+    insert(table, data)              → POST, returns first element
+    update(table, id, data)          → PATCH by id
+    delete_(table, id)               → DELETE by id
+    apiRequest(endpoint, method, body) → cleaner wrapper returning {success, data, error}
+
+  Pagination:
+    marks and assessments: auto-paginate in 1000-row batches
+    all other tables: limit=50000 single request
+
+  Offline handling:
+    Network errors → call notifyOffline() (de-duped toast max once per 10s)
+    Queue marks in IndexedDB for offline entry
+    Sync on reconnect via syncOfflineMarks()
+
+  Error classification:
+    Network error → 'OFFLINE: Could not reach the server'
+    4xx → Supabase API error with detail
+    5xx → Server error
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 10 — STUDENT PROMOTION RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  PROMOTION_MAP:
+    Nursery 1  → Nursery 2
+    Nursery 2  → Nursery 3
+    Nursery 3  → Primary 1
+    Primary 1  → Primary 2
+    Primary 2  → Primary 3
+    Primary 3  → Primary 4A (or 4B if exists)
+    Primary 4A → Primary 5B (or 5A)
+    Primary 5B → Primary 6
+    Primary 6  → GRADUATED
+
+  Promotion threshold = parseFloat(school.promotion_mark || school.pass_mark || 50)
+  Promotion is a BATCH operation — entire class at once
+  Preview shown before execution
+  Rollback available immediately after execution (within same session)
+  Graduated students → status = 'Graduated', class_id = NULL
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 11 — AUTO-ARCHIVE RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Auto-archive trigger: student.status = 'Inactive' for > 30 days
+  OR: student has no marks, no attendance, no payments for > 90 days
+  Archived students: is_archived=true, archived_at=now()
+  Archived students excluded from all calculations
+  Restore: is_archived=false, archived_at=null
+  Permanent delete: removes all related records (confirm dialog required)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 12 — BACKUP & RESTORE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Backup format: JSON file containing all state tables
+  Filename: ELF_Backup_YYYY-MM-DD_HH-MM.json
+  Auto-backup: every 6 hours (if enabled in settings)
+  Max backups retained: 5 (older ones deleted)
+  Manual backup: triggered from Settings > Backup & Restore
+  Restore: re-inserts all records (existing data cleared first — confirm required)
+
