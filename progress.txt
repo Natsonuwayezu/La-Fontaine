@@ -1,0 +1,296 @@
+# ÉCOLE LA FONTAINE — BUILD PROGRESS TRACKER
+# ============================================================
+# HOW THIS FILE WORKS:
+#   - Each task has a STATUS field: [ ] TODO | [~] IN PROGRESS | [x] DONE
+#   - When you complete a task, change [ ] or [~] to [x]
+#   - Add DONE_BY (agent/date) and NOTES when completing
+#   - This file lives in the repo root — commit it after every update
+#   - Read AGENT_PROMPT.md first to understand the full project context
+# ============================================================
+# Last updated: 2026-06-28 by Claude (Anthropic)
+# ============================================================
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 0 — FOUNDATION (Database & Project Setup)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[x] P0-01  Create Supabase project "School Demo"
+           DONE_BY: Natson | DATE: 2026-06-27
+           NOTES: Project ID ovmymtdrugdljnttiltd, region eu-west-1
+
+[x] P0-02  Create all 23 database tables
+           DONE_BY: Claude | DATE: 2026-06-28
+           NOTES: academic_years, terms, classes, subjects, teachers,
+                  families, students, assessments, marks, fee_categories,
+                  fee_amounts, student_fees, payments, discounts,
+                  attendance, teacher_assignments, promotions,
+                  school_settings, grading_scale, activity_logs,
+                  announcements, reminders, holidays
+
+[x] P0-03  Seed essential starter data
+           DONE_BY: Claude | DATE: 2026-06-28
+           NOTES: 7 classes (P1-P6+P2B), 8 subjects, academic year
+                  2025-2026, 3 terms, grading scale A-E, school settings,
+                  admin user (admin/admin123)
+
+[ ] P0-04  Enable Row Level Security (RLS) on all tables
+           PRIORITY: HIGH (security risk until done)
+           NOTES: Currently all tables are fully public via anon key.
+                  Need policies: authenticated users can read all,
+                  only admin can write. See AGENT_PROMPT.md Section 4.
+
+[x] P0-05  Create GitHub repository
+           DONE_BY: Natson | DATE: prior to 2026-06-28
+           NOTES: https://github.com/Natsonuwayezu/La-Fontaine
+                  PAT: [REDACTED-USE-YOUR-OWN-PAT]
+
+[x] P0-06  Add frontend.txt wireframes to repo root
+           DONE_BY: Claude | DATE: 2026-06-28
+           NOTES: 14,355-line ASCII wireframe of all pages
+
+[x] P0-07  Add backend.txt specification to repo root
+           DONE_BY: Claude | DATE: 2026-06-28
+           NOTES: All formulas, logic, DB schema, page behaviours
+
+[x] P0-08  Add progress.txt tracker to repo root
+           DONE_BY: Claude | DATE: 2026-06-28
+           NOTES: This file
+
+[x] P0-09  Add AGENT_PROMPT.md universal agent prompt to repo root
+           DONE_BY: Claude | DATE: 2026-06-28
+           NOTES: Complete onboarding prompt for any AI agent
+
+[ ] P0-10  Update supabase-config.js to point to new project
+           PRIORITY: HIGH — app won't connect without this
+           CURRENT: hejdppzparottbcnycjo.supabase.co (old project)
+           TARGET:  ovmymtdrugdljnttiltd.supabase.co
+           FILE: js/config/supabase-config.js + index.html
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 1 — CRITICAL BUG FIXES (index.html / index__1_.html)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] P1-01  Fix calculateGrade() — remove hardcoded grade boundaries
+           PRIORITY: HIGH
+           FILE: index.html (search: calculateGrade)
+           FIX: Replace with getGrade(pct) that reads state.gradingScale
+           REF: backend.txt Section 4.1, BUG-001
+
+[ ] P1-02  Fix hardcoded pass mark (>= 50)
+           PRIORITY: HIGH
+           FILE: index.html (10 occurrences of '>= 50')
+           FIX: Replace with isPassing(pct) → reads schoolSettings.pass_mark
+           REF: backend.txt Section 4.2, BUG-002
+
+[ ] P1-03  Fix decision banner — full text EN + FR
+           PRIORITY: MEDIUM
+           FILE: patches/missing-functions-98.js (report card generator)
+           FIX: Use complete text from backend.txt Section 4.7
+           REF: BUG-003
+
+[ ] P1-04  Fix toggleSidebar overlay bug (mobile)
+           PRIORITY: MEDIUM
+           FILE: index.html (function toggleSidebar)
+           FIX: Add overlay.classList.add/remove('active') on open/close
+           REF: BUG-004
+
+[ ] P1-05  Update Supabase URL/key in index.html
+           PRIORITY: HIGH — same as P0-10 but for the single-file version
+           FILE: index.html (search: hejdppzparottbcnycjo)
+           FIX: Replace old URL with ovmymtdrugdljnttiltd.supabase.co
+                Replace old anon key with new project's anon key
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 2 — FRONTEND PAGES (match wireframes in frontend.txt)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Status key for each page:
+    SHELL   = HTML container exists
+    LOGIC   = JS data fetch + render implemented
+    FULL    = matches wireframe, all buttons functional, tested
+    EXPORT  = PDF/CSV export working
+
+  ── Dashboard ─────────────────────────────────────────────
+  [~] P2-01  Dashboard — main stats cards            SHELL + LOGIC
+  [ ] P2-02  Dashboard — Chart.js graphs             TODO
+  [ ] P2-03  Dashboard — Quick actions               TODO
+  [ ] P2-04  Dashboard — Alerts panel                TODO
+
+  ── Students ──────────────────────────────────────────────
+  [~] P2-05  Student list (all students table)       SHELL + LOGIC
+  [~] P2-06  Enroll student (form + save)            SHELL + LOGIC
+  [ ] P2-07  Student profile / details               TODO
+  [ ] P2-08  Family groups management                TODO
+  [ ] P2-09  Student promotion workflow              TODO
+  [ ] P2-10  Student archive (view + restore)        TODO
+
+  ── Academics ─────────────────────────────────────────────
+  [~] P2-11  Marks entry grid                        SHELL + LOGIC
+  [~] P2-12  Marks database (view all marks)         SHELL
+  [~] P2-13  Class register (roster + export)        SHELL + LOGIC + EXPORT
+  [~] P2-14  Report cards (generate + print)         SHELL + LOGIC
+  [ ] P2-15  Report cards — decision banner fix      TODO (see P1-03)
+  [~] P2-16  Transcripts (full student history)      SHELL + LOGIC
+  [~] P2-17  Academic reports                        SHELL + LOGIC
+  [ ] P2-18  Statistics / analytics                  TODO
+
+  ── Attendance ────────────────────────────────────────────
+  [~] P2-19  Record attendance                       SHELL + LOGIC
+  [~] P2-20  Attendance summary                      SHELL + LOGIC
+  [ ] P2-21  Attendance reports                      TODO
+
+  ── Finance ───────────────────────────────────────────────
+  [~] P2-22  Finance dashboard                       SHELL + LOGIC
+  [~] P2-23  Fee structure management                SHELL + LOGIC
+  [~] P2-24  Record payment                          SHELL + LOGIC
+  [~] P2-25  Payment history                         SHELL + LOGIC
+  [~] P2-26  Receipts & printing                     SHELL + LOGIC
+  [~] P2-27  Overdue payments list                   SHELL
+  [ ] P2-28  Fee waivers management                  TODO
+  [ ] P2-29  Student balances view                   TODO
+  [ ] P2-30  Payment reversals                       TODO
+  [~] P2-31  Financial reports (collection, trends)  SHELL + LOGIC
+
+  ── Staff & Timetable ────────────────────────────────────
+  [~] P2-32  Staff management (CRUD)                 SHELL + LOGIC
+  [~] P2-33  Subjects management                     SHELL + LOGIC
+  [~] P2-34  Teacher assignments matrix              SHELL + LOGIC
+  [ ] P2-35  Teacher performance report              TODO
+  [~] P2-36  Master timetable                        SHELL + LOGIC
+
+  ── Communication ─────────────────────────────────────────
+  [~] P2-37  Announcements                           SHELL + LOGIC
+  [~] P2-38  Notification center                     SHELL
+  [~] P2-39  Reminders                               SHELL + LOGIC
+
+  ── Settings ──────────────────────────────────────────────
+  [~] P2-40  School settings                         SHELL + LOGIC
+  [~] P2-41  Academic calendar                       SHELL
+  [~] P2-42  Academic years & terms                  SHELL + LOGIC
+  [~] P2-43  Class management                        SHELL + LOGIC
+  [~] P2-44  Grading scale editor                    SHELL + LOGIC
+  [~] P2-45  Backup & restore                        SHELL + LOGIC
+  [~] P2-46  System logs                             SHELL + LOGIC
+  [~] P2-47  API settings                            SHELL + LOGIC
+  [ ] P2-48  System health monitoring                TODO
+
+  ── Bulk Operations ───────────────────────────────────────
+  [ ] P2-49  Bulk import (Excel → students/marks)    TODO
+  [ ] P2-50  Bulk export (all data → Excel/PDF)      TODO
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 3 — BACKEND / BUSINESS LOGIC COMPLETION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] P3-01  Implement getGrade() reading from DB grading scale
+           FILE: js/core/academic-formulas.js
+
+[ ] P3-02  Implement isPassing() reading from school_settings.pass_mark
+           FILE: js/core/academic-formulas.js
+
+[ ] P3-03  Implement calculateStudentBalance() with credit/overdue logic
+           FILE: js/core/finance-formulas.js
+           REF: backend.txt Section 5.2
+
+[ ] P3-04  Implement auto fee assignment on enrollment
+           FILE: js/modules/students.js
+           REF: backend.txt Section 5.1
+
+[ ] P3-05  Implement sibling/family discount auto-apply
+           FILE: js/modules/family-management.js
+           REF: backend.txt Section 5.5
+
+[ ] P3-06  Implement attendance rate formula with holiday exclusion
+           FILE: js/core/academic-formulas.js
+           REF: backend.txt Section 4.9
+
+[ ] P3-07  Implement class ranking (dense rank algorithm)
+           FILE: js/modules/ranking-engine.js
+           REF: backend.txt Section 4.6
+
+[ ] P3-08  Implement promotion decision logic
+           FILE: js/modules/report-generator.js
+           REF: backend.txt Section 4.7
+
+[ ] P3-09  Implement receipt number auto-generation
+           FILE: js/modules/payments.js
+           REF: backend.txt Section 5.3
+
+[ ] P3-10  Implement overdue detection with grace period
+           FILE: js/modules/payments.js
+           REF: backend.txt Section 5.6
+
+[ ] P3-11  Implement bulk marks import from Excel
+           FILE: js/modules/marks-import-export.js
+
+[ ] P3-12  Implement activity logging (every CRUD operation)
+           FILE: js/core/api.js wrapper or per-module
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 4 — TECH DEBT CLEANUP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] P4-01  Merge missing-functions.js into proper modules
+           SIZE: 136KB → target 0KB after merge
+
+[ ] P4-02  Merge missing-functions-98.js into proper modules
+           SIZE: 329KB → target 0KB after merge
+
+[ ] P4-03  Merge window-exposure-98.js into window-exposure.js
+           SIZE: 21KB
+
+[ ] P4-04  Merge v9-features.js into proper modules
+           SIZE: 45KB
+
+[ ] P4-05  Fill empty html/partials/ files
+           NOTES: sidebar.html, login.html, topbar.html etc are 0 bytes
+
+[ ] P4-06  Fill empty docs/ markdown files
+           FILES: architecture.md, database-schema.md,
+                  academics-workflow.md, finance-workflow.md,
+                  permissions.md, setup-guide.md, changelog.md
+
+[ ] P4-07  Enable RLS policies on Supabase (same as P0-04)
+
+[ ] P4-08  Add password hashing (bcrypt or PBKDF2)
+           NOTES: Currently plain text — security risk
+
+[ ] P4-09  Set up Netlify deployment with netlify.toml
+           NOTES: Free hosting, auto-deploy from GitHub main branch
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 5 — TESTING & QA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] P5-01  Test login with admin/admin123 on new Supabase project
+[ ] P5-02  Test student enrollment (auto student_code + auto fees)
+[ ] P5-03  Test marks entry, grade calculation, pass/fail
+[ ] P5-04  Test report card generation + decision banner
+[ ] P5-05  Test fee recording and balance calculation
+[ ] P5-06  Test attendance entry + rate formula
+[ ] P5-07  Test backup/restore full cycle
+[ ] P5-08  Test mobile sidebar overlay
+[ ] P5-09  Test all 50 pages/modules load without JS errors
+[ ] P5-10  Test offline behaviour (disconnect network mid-session)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+QUICK STATS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Total tasks  : 71
+  [x] Done     : 9  (13%)
+  [~] Partial  : 30  (42%)
+  [ ] TODO     : 32  (45%)
+
+  Next priority:
+    1. P0-10 / P1-05 — Update Supabase URL in code (BLOCKING)
+    2. P0-04  — Enable RLS (security)
+    3. P1-01 to P1-04 — 4 critical bug fixes in index.html
+    4. P3-01 to P3-03 — Core formula implementations

@@ -1,0 +1,769 @@
+# ÉCOLE LA FONTAINE — BACKEND SPECIFICATION
+# Complete Logic, Formulas & Behaviour Reference
+# Last updated: 2026-06-28 | Version: 9.0.0
+# =============================================================
+# This file documents every formula, rule, workflow and
+# business-logic decision used by the system. Any agent
+# building or debugging code MUST follow these specs exactly.
+# =============================================================
+
+
+══════════════════════════════════════════════════════════════
+SECTION 1 — SYSTEM OVERVIEW & STACK
+══════════════════════════════════════════════════════════════
+
+  App type   : Single-page application (SPA), pure HTML/CSS/JS
+  Database   : Supabase (PostgreSQL) — project "School Demo"
+               URL:  stored in localStorage key 'sb_url'
+               KEY:  stored in localStorage key 'sb_key'
+               Project ID: ovmymtdrugdljnttiltd (eu-west-1)
+  Auth       : Custom (username + password, no Supabase Auth)
+               Session stored in localStorage key 'lf_session'
+  Deployment : GitHub Pages or Netlify (static file)
+               Repo: https://github.com/Natsonuwayezu/La-Fontaine
+  Language   : Bilingual — French primary, English secondary
+  Currency   : RWF (Rwandan Franc), 0 decimal places
+  Timezone   : Africa/Kigali (UTC+2)
+  School     : École La Fontaine, Kigali, Rwanda
+               Classes: P1, P2, P2B, P3, P4, P5, P6 (6 grades)
+
+
+══════════════════════════════════════════════════════════════
+SECTION 2 — AUTHENTICATION & SESSION
+══════════════════════════════════════════════════════════════
+
+  LOGIN FLOW:
+    1. User enters username + password
+    2. Query: SELECT * FROM teachers WHERE username = ? AND is_active = true
+    3. Compare password (plain text — no hashing currently)
+    4. If match → store session in localStorage:
+         lf_session = { id, username, role, name: first_name+last_name,
+                        loginTime: Date.now() }
+    5. Call bootApp() → loadInitialData() → navigate to dashboard
+
+  SESSION RULES:
+    - Duration: 60 minutes from last activity (APP_CONFIG.sessionDuration)
+    - Idle warning at 25 min (APP_CONFIG.idleWarningMs)
+    - Force logout at 30 min idle (APP_CONFIG.idleLogoutMs)
+    - Max login attempts: 5, then lockout for 15 minutes
+    - On logout: clear localStorage, reload page
+
+  ROLES:
+    admin      → full access to all modules
+    teacher    → attendance, marks entry, class register, own timetable
+    accountant → full finance access + full attendance viewing
+
+  ROLE PERMISSION CHECK:
+    function hasPermission(moduleId):
+      if role === 'admin' → always true
+      check ADMIN_ONLY_MODULES set → deny if teacher/accountant
+      check TEACHER_MODULES set → allow if teacher
+      check ACCOUNTANT_MODULES set → allow if accountant
+      else → deny
+
+  ADMIN-ONLY MODULES:
+    marks-analysis, teacher-assignments, teacher-performance,
+    enroll-student, student-promotion, student-archive,
+    sibling-linking, family-management, user-management,
+    subjects, school-settings, academic-calendar, academic-years,
+    class-management, grading-scale, grading-settings,
+    backup-restore, system-logs, api-settings, settings,
+    system-health, analytics-settings, bulk-import, bulk-export,
+    bulk-finance-actions, bulk-student-actions
+
+  TEACHER MODULES (teacher role can access):
+    dashboard, marks-entry, class-register, attendance-entry,
+    attendance-summary, report-cards, transcripts, timetable,
+    student-list, student-details, notifications, reminders,
+    announcements, statistics
+
+  ACCOUNTANT MODULES:
+    dashboard, finance-dashboard, fee-structure, record-payment,
+    payment-history, receipts, overdue-payments, student-fees,
+    fee-waivers, student-balances, payment-reversals,
+    financial-reports, student-list, student-details,
+    attendance-entry, attendance-summary, attendance-reports,
+    notifications, reminders, announcements
+
+
+══════════════════════════════════════════════════════════════
+SECTION 3 — DATABASE TABLES & COLUMNS
+══════════════════════════════════════════════════════════════
+
+  All API calls use Supabase REST: SUPABASE_URL + '/rest/v1/' + path
+  Standard headers: { apikey, Authorization: Bearer KEY,
+                      Content-Type: application/json,
+                      Prefer: return=representation }
+
+  ── academic_years ──────────────────────────────────────────
+  id, name (TEXT), start_date (DATE), end_date (DATE),
+  is_active (BOOL), created_at, updated_at
+  RULE: Only one row may have is_active = true at a time.
+        When activating one, set all others to false.
+
+  ── terms ───────────────────────────────────────────────────
+  id, name, term_number (INT 1-3), start_date, end_date,
+  academic_year_id (FK→academic_years), is_active (BOOL),
+  created_at, updated_at
+  RULE: Only one term is_active = true per academic year.
+        Active term = "current term" used throughout the app.
+        Terms for 2025-2026: T1(Sep-Dec), T2(Jan-Mar), T3(Apr-Jun)
+
+  ── classes ─────────────────────────────────────────────────
+  id, name, level, section, capacity (INT, default 30),
+  sort_order (INT), is_active (BOOL), created_at, updated_at
+  Existing: P1(id=15), P2(16), P2B(17), P3(18), P4(19), P5(20), P6(21)
+  RULE: sort by sort_order ASC always.
+
+  ── subjects ────────────────────────────────────────────────
+  id, name, code, level, max_marks (INT, default 100),
+  sort_order (INT), is_core (BOOL), is_active (BOOL),
+  created_at, updated_at
+  Core subjects: English(ENG), Mathematics(MTH), Kinyarwanda(KIN),
+  SET(Science & Elementary Tech), SST(Social Studies), RE(Religious Ed)
+  Non-core: Creative Arts(CA), Physical Education(PE)
+
+  ── teachers ────────────────────────────────────────────────
+  id, first_name, last_name, email, phone, username (UNIQUE),
+  password, role ('admin'|'teacher'|'accountant'), is_active (BOOL),
+  created_at, updated_at
+  NOTE: "teachers" table holds ALL users (admin, teachers, accountants).
+  Seed admin: username='admin', password='admin123', role='admin'
+
+  ── families ────────────────────────────────────────────────
+  id, family_code (UNIQUE TEXT), guardian_name, guardian_phone,
+  guardian_email, address, created_at, updated_at
+  PURPOSE: Groups siblings so family discount applies automatically.
+  family_code = auto-generated: 'FAM' + timestamp suffix
+
+  ── students ────────────────────────────────────────────────
+  id, first_name, last_name, student_code (UNIQUE),
+  date_of_birth (DATE), gender ('Male'|'Female'),
+  class_id (FK→classes), family_id (FK→families, nullable),
+  guardian_name, guardian_phone, guardian_email, address,
+  status ('Active'|'Inactive'|'Transferred'|'Graduated'),
+  is_deleted (BOOL, default false),
+  enrollment_date (DATE), archived_at, created_at, updated_at
+  student_code format: 'LF' + year + sequence (e.g. LF20250001)
+  RULE: Soft delete only. is_deleted=true + status='Inactive'.
+        Filter: always query WHERE is_deleted = false for active views.
+
+  ── assessments ─────────────────────────────────────────────
+  id, title, assessment_type ('Quiz'|'Assignment'|'Mid-term'|'Exam'|'Final Exam'),
+  class_id (FK), subject_id (FK), term_id (FK), academic_year_id (FK),
+  max_marks (INT, default 100), date (DATE),
+  phase ('pre_midterm'|'post_midterm'),
+  is_locked (BOOL, default false), created_at, updated_at
+  RULE: When is_locked=true, no marks can be added/edited for that assessment.
+
+  ── marks ───────────────────────────────────────────────────
+  id, student_id (FK), assessment_id (FK), score (NUMERIC 6,2),
+  entered_at (TIMESTAMPTZ), balance (NUMERIC 10,2),
+  created_at, updated_at
+  UNIQUE: (student_id, assessment_id)
+  RULE: score must be 0 ≤ score ≤ assessment.max_marks.
+        Use UPSERT on conflict (student_id, assessment_id).
+
+  ── fee_categories ──────────────────────────────────────────
+  id, name, description, fee_type ('tuition'|'transport'|'lunch'|'other'),
+  reset_frequency ('term'|'year'|'once'),
+  amount (NUMERIC 10,2), is_active (BOOL), created_at, updated_at
+
+  ── fee_amounts ─────────────────────────────────────────────
+  id, fee_category_id (FK), class_id (FK), academic_year_id (FK),
+  amount (NUMERIC 10,2), created_at, updated_at
+  UNIQUE: (fee_category_id, class_id, academic_year_id)
+  PURPOSE: Override the default fee_category.amount for specific classes/years.
+
+  ── student_fees ────────────────────────────────────────────
+  id, student_id (FK), fee_category_id (FK), academic_year_id (FK),
+  term_id (FK, nullable), amount (NUMERIC 10,2),
+  is_waived (BOOL), waiver_reason, waived_at, waived_by (FK→teachers),
+  created_at, updated_at
+  RULE: Generated automatically when student is enrolled or new term starts.
+        Amount = fee_amounts[class][year] or fee_categories.amount as fallback.
+
+  ── payments ────────────────────────────────────────────────
+  id, student_id (FK), amount (NUMERIC 10,2),
+  payment_method ('Cash'|'Mobile-Money'|'Bank Transfer'|'Cheque'),
+  payment_date (DATE), receipt_number (UNIQUE TEXT),
+  term_id (FK), academic_year_id (FK),
+  recorded_by (TEXT = username), notes,
+  is_reversed (BOOL, default false), created_at, updated_at
+  receipt_number format: 'RCP' + YYYYMMDD + sequence (e.g. RCP202506280001)
+
+  ── discounts ───────────────────────────────────────────────
+  id, name, fee_category_id (FK, nullable = applies to all fees),
+  discount_type ('percentage'|'fixed'),
+  discount_value (NUMERIC 10,2), condition (TEXT),
+  is_active (BOOL), created_at, updated_at
+  CONDITIONS: 'sibling' (auto for family members), 'scholarship',
+              'staff_child', 'manual'
+
+  ── attendance ──────────────────────────────────────────────
+  id, student_id (FK), class_id (FK), term_id (FK),
+  academic_year_id (FK), date (DATE NOT NULL),
+  status ('present'|'absent'|'late'|'excused'),
+  recorded_by (FK→teachers), notes, created_at, updated_at
+  UNIQUE: (student_id, date)
+  RULE: Can only record attendance for current/past dates, not future.
+        Late = counts as 0.5 absent for attendance rate calculation.
+
+  ── teacher_assignments ─────────────────────────────────────
+  id, teacher_id (FK), class_id (FK), subject_id (FK),
+  academic_year_id (FK), created_at
+  UNIQUE: (teacher_id, class_id, subject_id, academic_year_id)
+  PURPOSE: Defines who teaches what. Used to filter marks entry
+           so teachers only see their assigned class/subjects.
+
+  ── promotions ──────────────────────────────────────────────
+  id, student_id (FK), from_class_id (FK), to_class_id (FK),
+  academic_year_id (FK), promoted_by (FK→teachers),
+  promoted_at, notes, created_at
+
+  ── school_settings ─────────────────────────────────────────
+  id (always 1 row), school_name, school_address, school_phone,
+  school_email, school_logo (base64 or URL), pass_mark (default 50),
+  currency (default 'RWF'), country, timezone, academic_year_id (FK),
+  term_id (FK), language ('fr'|'en'), report_footer,
+  created_at, updated_at
+  RULE: Only one row. Use UPSERT (id=1) for all updates.
+  Current values: 'École La Fontaine', RWF, pass_mark=50, lang=fr
+
+  ── grading_scale ───────────────────────────────────────────
+  id, grade (TEXT e.g. 'A'), min_percentage (NUMERIC),
+  max_percentage (NUMERIC), description, color (hex),
+  sort_order (INT), created_at, updated_at
+  Seeded: A(80-100), B(70-79), C(60-69), D(50-59), E(0-49)
+  FALLBACK: If empty, use DEFAULT_GRADES from constants.js
+
+  ── activity_logs ───────────────────────────────────────────
+  id, user_id (FK→teachers), action (TEXT), table_name,
+  record_id (INT), details (TEXT), created_at
+  PURPOSE: Audit trail. Log every CREATE/UPDATE/DELETE.
+  FORMAT: action = verb + noun e.g. "Enrolled student: John Doe"
+
+  ── announcements ───────────────────────────────────────────
+  id, title, message, recipients ('all'|'teachers'|'students'),
+  type, status ('published'|'draft'), category ('system'|'general'),
+  is_read (BOOL), created_by (FK→teachers), created_at, updated_at
+
+  ── reminders ───────────────────────────────────────────────
+  id, title, due_date (DATE), message, completed (BOOL),
+  completed_at, user_id (FK→teachers), created_at, updated_at
+  RULE: Each user only sees their own reminders (filter by user_id).
+
+  ── holidays ────────────────────────────────────────────────
+  id, name, date (DATE), holiday_type ('public'|'school'|'event'),
+  academic_year_id (FK), description, is_recurring (BOOL),
+  created_at, updated_at
+  PURPOSE: Excluded from attendance counts and shown on calendar.
+
+
+══════════════════════════════════════════════════════════════
+SECTION 4 — ACADEMIC FORMULAS
+══════════════════════════════════════════════════════════════
+
+  ── 4.1 GRADE CALCULATION ───────────────────────────────────
+
+  getGrade(percentage):
+    Load grading_scale from state.gradingScale (sorted by sort_order ASC).
+    If empty, use DEFAULT_GRADES from constants.js.
+    Find first row where min_percentage ≤ percentage ≤ max_percentage.
+    Return { grade, color, description }
+    NEVER hardcode grade boundaries — always read from state.gradingScale.
+
+  calculatePercentage(score, maxMarks):
+    return (score / maxMarks) * 100
+    Round to 2 decimal places.
+
+  ── 4.2 PASS/FAIL ───────────────────────────────────────────
+
+  isPassing(percentage):
+    return percentage >= parseFloat(state.schoolSettings?.pass_mark || 50)
+    NEVER hardcode >= 50. Always read from schoolSettings.pass_mark.
+
+  ── 4.3 ASSESSMENT SCORING ──────────────────────────────────
+
+  For each student × assessment:
+    score     = marks.score (raw marks out of assessment.max_marks)
+    pct       = (score / assessment.max_marks) * 100
+    grade     = getGrade(pct)
+    passed    = isPassing(pct)
+
+  ── 4.4 TERM AGGREGATE (per student × subject × term) ───────
+
+  Collect all assessments for student in subject for term.
+  total_score    = SUM(marks.score)
+  total_max      = SUM(assessment.max_marks)
+  term_pct       = (total_score / total_max) * 100
+  term_grade     = getGrade(term_pct)
+  term_passed    = isPassing(term_pct)
+
+  ── 4.5 ANNUAL AGGREGATE (per student × subject) ────────────
+
+  Collect all term aggregates across all terms in the year.
+  If school uses term averages:
+    annual_pct = AVERAGE of all term_pct values
+  If school uses cumulative:
+    annual_pct = SUM(all scores) / SUM(all max_marks) * 100
+  Default: AVERAGE of term percentages.
+  annual_grade  = getGrade(annual_pct)
+  annual_passed = isPassing(annual_pct)
+
+  ── 4.6 CLASS RANKING ───────────────────────────────────────
+
+  For a given class × term:
+    1. Compute each student's TOTAL percentage across ALL subjects.
+       total_pct = SUM(subject_pct) / number_of_subjects
+       (or: grand_total / grand_max * 100)
+    2. Sort students by total_pct DESC.
+    3. Assign rank: dense rank (tied students get same rank, next rank skips).
+    4. RANK is stored in-memory only (not persisted to DB).
+
+  ── 4.7 REPORT CARD DECISION BANNER ────────────────────────
+
+  If student passes ALL subjects (all annual_passed = true):
+    EN: "PROMOTED TO [NEXT CLASS]"
+    FR: "PROMU(E) EN [CLASSE SUIVANTE]"
+  If student fails 1-2 subjects:
+    EN: "HOLIDAY REMEDIAL COURSES — TO SIT FOR SECOND SITTING EXAMINATIONS"
+    FR: "COURS DE RATTRAPAGE — POUR PASSER LES EXAMENS DE DEUXIÈME SESSION"
+  If student fails 3+ subjects:
+    EN: "REPEAT [CURRENT CLASS]"
+    FR: "REDOUBLER [CLASSE ACTUELLE]"
+  Colour: green=promoted, orange=remedial, red=repeat.
+
+  ── 4.8 PHASE LOGIC ─────────────────────────────────────────
+
+  Each term has two phases:
+    pre_midterm  → first half of term assessments
+    post_midterm → second half of term assessments
+  Displayed on report cards as separate sections.
+  Phase determined by assessment.phase field (set at creation).
+
+  ── 4.9 ATTENDANCE RATE ─────────────────────────────────────
+
+  For student × term:
+    school_days   = COUNT(distinct dates in term, excluding holidays)
+    present_days  = COUNT(status='present') + COUNT(status='late') * 0.5
+    absence_days  = COUNT(status='absent') + COUNT(status='excused')
+    rate_pct      = (present_days / school_days) * 100
+  THRESHOLD: rate < 75% → "at risk" alert.
+  THRESHOLD: rate < 85% → yellow warning.
+  THRESHOLD: rate >= 85% → green/good.
+
+  ── 4.10 TRANSCRIPT ─────────────────────────────────────────
+
+  Shows all academic years for a student.
+  Per year: all subjects, term marks, annual average, grade, passed.
+  Final summary: promotion decision for each year.
+
+
+══════════════════════════════════════════════════════════════
+SECTION 5 — FINANCE FORMULAS
+══════════════════════════════════════════════════════════════
+
+  ── 5.1 FEE ASSIGNMENT (on enrollment or new term) ──────────
+
+  When student is enrolled or new term activates:
+    For each active fee_category:
+      1. Check fee_amounts for (category_id, student.class_id, year_id).
+      2. If found: amount = fee_amounts.amount
+      3. Else: amount = fee_categories.amount (default)
+      4. Check discounts for student (sibling, scholarship, etc.)
+      5. Apply discount:
+         if discount_type = 'percentage': amount *= (1 - discount_value/100)
+         if discount_type = 'fixed': amount -= discount_value
+         amount = MAX(0, amount)
+      6. Insert into student_fees.
+
+  ── 5.2 STUDENT BALANCE ─────────────────────────────────────
+
+  calculateStudentBalance(studentId, yearId?):
+    total_fees    = SUM(student_fees.amount WHERE NOT is_waived)
+    waived_amount = SUM(student_fees.amount WHERE is_waived)
+    total_paid    = SUM(payments.amount WHERE NOT is_reversed)
+    balance       = total_fees - total_paid        (positive = owes money)
+    credit        = MAX(0, total_paid - total_fees) (overpayment)
+    return { total_fees, total_paid, waived_amount, balance, credit,
+             is_overdue: balance > 0 }
+
+  ── 5.3 PAYMENT RECORDING ───────────────────────────────────
+
+  recordPayment(studentId, amount, method, date, notes):
+    1. Generate receipt_number: 'RCP' + YYYYMMDD + zero-padded-seq
+       (seq = COUNT(payments WHERE date=today) + 1)
+    2. INSERT into payments.
+    3. Log to activity_logs.
+    4. Refresh student balance in state.cache.studentBalances.
+    5. Return receipt for printing.
+
+  ── 5.4 PAYMENT REVERSAL ────────────────────────────────────
+
+  reversePayment(paymentId, reason):
+    1. INSERT into activity_logs: action='Reversed payment', details=reason
+    2. UPDATE payments SET is_reversed=true WHERE id=paymentId
+    3. Refresh student balance.
+    NOTE: Reversals are soft — original payment row is kept.
+
+  ── 5.5 FAMILY DISCOUNT (SIBLING) ───────────────────────────
+
+  When a family has 2+ active students:
+    Find discount WHERE condition='sibling' AND is_active=true.
+    Apply automatically to all students in the family
+    (except the first/eldest, who pays full price — configurable).
+    Trigger: when family_id is set on a student, re-calculate fees.
+
+  ── 5.6 OVERDUE DETECTION ───────────────────────────────────
+
+  A student is overdue if:
+    balance > 0 AND
+    current date > term.start_date + grace_period (default 30 days)
+  Grace period configurable in school_settings (key: payment_grace_days).
+
+  ── 5.7 FINANCE REPORTS ─────────────────────────────────────
+
+  Collection by class: SUM(payments) per class for a period.
+  Monthly trend: SUM(payments) grouped by month.
+  Accountant dashboard:
+    - Total collected today / this week / this month / this term
+    - Outstanding balance (SUM of all student balances where balance > 0)
+    - Collection rate: total_paid / total_fees * 100
+    - Top 10 overdue students
+
+  ── 5.8 RECEIPT FORMAT ──────────────────────────────────────
+
+  School name + logo at top
+  Receipt number, date, recorded_by
+  Student name, class, student_code
+  Amount paid, payment method
+  Running balance after payment
+  Footer: school address + phone
+  Print via window.print() on a hidden div.
+
+
+══════════════════════════════════════════════════════════════
+SECTION 6 — CORE DATA LOAD (bootApp flow)
+══════════════════════════════════════════════════════════════
+
+  bootApp():
+    1. checkSession() → redirect to login if expired
+    2. loadInitialData() — parallel fetch:
+       REQUIRED: classes, subjects, terms, academic_years, students,
+                 teachers, assessments, marks, fee_categories,
+                 fee_amounts, student_fees, payments, discounts,
+                 grading_scale, school_settings
+       OPTIONAL (catch errors silently):
+                 families, activity_logs, announcements, reminders,
+                 holidays, teacher_assignments, attendance, promotions
+    3. state.currentAcadYear = active academic_year (is_active=true)
+    4. state.currentTerm     = active term (is_active=true)
+    5. state.schoolSettings  = school_settings row (id=1)
+    6. buildSidebar(state.currentUser.role)
+    7. navigateTo('dashboard')
+
+  refreshTable(tableName):
+    Re-fetches single table and updates state.
+    Used after any CREATE/UPDATE/DELETE to keep state fresh.
+
+  Cache invalidation:
+    invalidateCache() clears state.cache.studentBalances,
+    classStats, and ranks. Called after any data mutation.
+
+
+══════════════════════════════════════════════════════════════
+SECTION 7 — PAGE-BY-PAGE BEHAVIOUR
+══════════════════════════════════════════════════════════════
+
+  ── DASHBOARD ───────────────────────────────────────────────
+  Stats cards: total students, total teachers, fees collected this term,
+               outstanding balance, attendance rate today
+  Charts: monthly fee collection (bar), subject performance (line),
+          class attendance (donut)
+  Recent activity: last 10 activity_logs
+  Quick actions: Record Payment, Enroll Student, Mark Attendance, Report Cards
+  Alerts: overdue payments, at-risk students, pending reminders
+
+  ── MARKS ENTRY ─────────────────────────────────────────────
+  Filter: class → subject → term → assessment
+  Teachers: only see their assigned classes/subjects (teacher_assignments)
+  Admin: sees all
+  Render grid: rows=students (sorted by last name), cols=assessments
+  Inline editing: click cell → input → blur/enter saves via UPSERT
+  Locked assessment: cell is read-only, show lock icon
+  Auto-calculate running totals per row on the fly
+  Batch save button: saves all dirty cells in one transaction
+
+  ── CLASS REGISTER ──────────────────────────────────────────
+  Shows full student roster for a class
+  Columns: rank, name, all assessment scores, total, percentage, grade
+  Export: PDF (via html2pdf), Excel (via SheetJS/xlsx)
+  Print-optimised layout available
+
+  ── REPORT CARDS ────────────────────────────────────────────
+  Select: class → student → term
+  Layout: school header, student info, marks per subject per phase,
+          totals, grade, rank, attendance summary, decision banner,
+          teacher/principal signature area
+  Decision banner: computed by formula in Section 4.7
+  Batch print: generate PDF for all students in a class at once
+  Export individual: PDF download
+
+  ── ATTENDANCE ENTRY ────────────────────────────────────────
+  Select: class → date (default today)
+  Render student list with 4 buttons per row: Present / Absent / Late / Excused
+  Bulk actions: Mark All Present, Clear All
+  UPSERT on (student_id, date) — safe to re-submit
+  Highlight holidays (grey out date picker for holiday dates)
+
+  ── ATTENDANCE SUMMARY ──────────────────────────────────────
+  Table: student rows, columns = dates in selected range
+  Colour coding: green=present, red=absent, yellow=late, grey=excused
+  Totals row + totals column
+  Export CSV / PDF
+
+  ── STUDENT ENROLLMENT ──────────────────────────────────────
+  Required fields: first_name, last_name, class_id
+  Auto-generate student_code: 'LF' + year + 4-digit-seq
+  Optional: DOB, gender, guardian info, address
+  On save: generate student_fees for all active fee categories
+  Log to activity_logs
+
+  ── STUDENT PROMOTION ───────────────────────────────────────
+  Shows all active P6 students (or selected class) with their annual result
+  Admin selects "promote" or "repeat" per student
+  On confirm: UPDATE students SET class_id = next_class_id
+              INSERT into promotions
+  P6 promoted → status='Graduated', is_deleted=false (stays in system)
+  Batch promote button: promotes all passing students at once
+
+  ── FEE STRUCTURE ───────────────────────────────────────────
+  Table of fee_categories with amounts per class/year
+  Edit inline or via modal
+  "Copy from last year" button: duplicates fee_amounts for new year
+
+  ── RECORD PAYMENT ──────────────────────────────────────────
+  Search student by name or code
+  Show current balance before recording
+  Fields: amount, method, date, notes
+  On save: INSERT payment, refresh balance, show receipt modal
+
+  ── RECEIPTS ────────────────────────────────────────────────
+  Search by receipt_number or student name
+  Show receipt details
+  Print button → window.print() on receipt div
+  Reprint: same as first print
+
+  ── OVERDUE PAYMENTS ────────────────────────────────────────
+  List all students where balance > 0 AND past grace period
+  Sort by balance DESC
+  Bulk SMS reminder (if phone API configured)
+  Export list to Excel
+
+  ── BACKUP & RESTORE ────────────────────────────────────────
+  Export: fetch all tables → JSON → download as .json file
+  Import: upload .json → parse → INSERT all rows (delete first or upsert)
+  Auto-backup: runs every 6 hours, keeps last 5 in localStorage
+  Max backup size: localStorage limit (~5MB)
+
+  ── API SETTINGS ────────────────────────────────────────────
+  Fields: Supabase URL, Supabase anon key
+  Test connection: fetch school_settings → show success/error
+  Save: write to localStorage keys 'sb_url' and 'sb_key'
+  NOTE: No page reload needed — URL/key used dynamically via SUPABASE_URL var
+
+  ── TIMETABLE ───────────────────────────────────────────────
+  Grid: rows=time slots, cols=days (Mon-Fri)
+  Time slots defined in TIMETABLE_TIME_SLOTS constant
+  Breaks shown as merged cells (greyed)
+  Per class: shows which subject/teacher per slot
+  Constraints (from previous timetable generator project):
+    - No P9/P10 periods on Wednesday/Friday
+    - Mathematics: morning only (periods 1-5)
+    - Creative Arts: afternoon only (periods 6+)
+    - Max 2 consecutive periods per subject/teacher per class
+    - Teacher daily cap: <10 hrs/week → max 2/day; 10-15 → max 3/day
+    - Special teachers (Jeanette, Natson): max 5 periods/day per class
+
+
+══════════════════════════════════════════════════════════════
+SECTION 8 — ERROR HANDLING & OFFLINE
+══════════════════════════════════════════════════════════════
+
+  Network error during fetch:
+    → showToast('No internet connection...', 'warning')
+    → De-duplicate: only one toast per 10 seconds (notifyOffline guard)
+    → State remains unchanged (no partial updates)
+
+  Supabase error (non-2xx):
+    → throw Error(apiResp.message || 'HTTP ' + status)
+    → Caught by caller → showToast(error.message, 'error')
+
+  Optional tables (OPTIONAL_TABLES set):
+    → Wrap getAll() in .catch(() => []) so failure doesn't block boot
+
+  Validation errors:
+    → showToast(message, 'warning') — do NOT save
+    → Keep form open with values intact
+
+  Session expired:
+    → Redirect to login page, clear localStorage
+    → Show "Session expired, please log in again" message
+
+
+══════════════════════════════════════════════════════════════
+SECTION 9 — UI/UX CONVENTIONS
+══════════════════════════════════════════════════════════════
+
+  Toast notifications:
+    showToast(message, type, duration)
+    type: 'success' | 'error' | 'warning' | 'info'
+    duration: default 3000ms (4000ms for errors)
+    Position: top-right, stack up to 3
+
+  Modal pattern:
+    openModal(id) / closeModal(id)
+    Backdrop click closes modal
+    ESC key closes modal
+    Always include a cancel button
+
+  Loading states:
+    showLoading(message) / hideLoading()
+    Full-screen spinner overlay for long operations
+    Inline skeleton loaders for table data
+
+  Sidebar:
+    - 280px fixed, collapsible on mobile
+    - Active state: highlighted nav item
+    - Role-based: hide items user cannot access
+    - Mobile: slide-in drawer with overlay
+
+  Tables:
+    - Pagination: 20 rows per page (APP_CONFIG.itemsPerPage)
+    - Sortable columns (click header)
+    - Search/filter above table
+    - Empty state: illustration + helpful message
+    - Mobile: horizontal scroll or card view
+
+  Forms:
+    - Required fields marked with *
+    - Real-time validation on blur
+    - Disabled submit until valid
+    - Clear success state after save
+
+  Dates:
+    - Display format: DD/MM/YYYY (French convention)
+    - Input format: YYYY-MM-DD (HTML date input)
+    - API format: ISO 8601
+
+  Numbers:
+    - Currency: formatCurrency(amount) → 'RWF 1,500'
+    - Percentages: toFixed(1) + '%'
+    - Scores: toFixed(0) for whole marks, toFixed(2) for percentages
+
+
+══════════════════════════════════════════════════════════════
+SECTION 10 — FILE STRUCTURE REFERENCE
+══════════════════════════════════════════════════════════════
+
+  Root:
+    index.html        ← Main SPA entry point (37,623 lines currently)
+    frontend.txt      ← ASCII wireframes for all pages
+    backend.txt       ← This file: logic, formulas, rules
+    progress.txt      ← Task tracker (auto-updated by agents)
+    AGENT_PROMPT.md   ← Universal prompt for any AI agent
+
+  js/config/
+    app-config.js     ← APP_CONFIG, UPLOAD_LIMITS, CURRENCY constants
+    constants.js      ← DEFAULT_GRADES, PROMOTION_RULES, TIMETABLE slots
+    role-permissions.js ← ADMIN_ONLY, TEACHER, ACCOUNTANT module sets
+    supabase-config.js ← SUPABASE_URL, SUPABASE_KEY vars + init
+
+  js/core/
+    api.js            ← api(), getAll(), apiRequest() HTTP wrappers
+    auth.js           ← login(), logout(), checkSession(), sessionGuard()
+    boot.js           ← bootApp(), initApp(), buildSidebar(), navigateTo()
+    state.js          ← Global state object + invalidateCache()
+    data-refresh.js   ← loadInitialData(), refreshTable(), lookups
+    utils.js          ← formatCurrency(), fmtDate(), esc(), showToast()
+    offline.js        ← Service worker registration, offline detection
+    finance-formulas.js ← calculateStudentBalance(), fee assignment
+    academic-formulas.js ← getGrade(), isPassing(), attendance rate
+    window-exposure.js ← window.X = X for onclick= handlers
+
+  js/modules/         ← One file per feature area
+    dashboard.js, students.js, marks.js, assessments.js,
+    payments.js, fee-structure.js, staff.js, timetable.js,
+    report-cards.js, report-generator.js, transcripts.js,
+    ranking-engine.js, register-export.js, academic-reports.js,
+    finance-reports.js, notifications.js, settings.js,
+    background-services.js, family-management.js,
+    marks-import-export.js, academic-years.js,
+    assessment-locking.js, analytics-settings.js, api-settings.js
+
+  js/patches/         ← Temporary: functions missing from modules
+    missing-functions.js      ← 136KB — functions patched in
+    missing-functions-98.js   ← 329KB — v9.8 patch functions
+    window-exposure-98.js     ← 21KB  — window exposure for patches
+    v9-features.js            ← 45KB  — v9 new features
+    missing-helpers.js        ← helper utils
+    system-logs.js            ← system log renderer
+    announcements.js          ← announcements module
+    analytics-helpers.js      ← analytics helpers
+
+  js/mobile/          ← Mobile-specific enhancements
+  css/                ← Styles split by category
+  html/partials/      ← HTML shell components
+  docs/               ← Architecture, schema, workflow docs
+
+  Supabase:
+    Project: School Demo (ovmymtdrugdljnttiltd, eu-west-1)
+    23 tables — see Section 3 for full schema
+
+
+══════════════════════════════════════════════════════════════
+SECTION 11 — KNOWN BUGS & PENDING FIXES
+══════════════════════════════════════════════════════════════
+
+  BUG-001 [HIGH] calculateGrade() hardcoded
+    Location: index.html (multiple places), patches/missing-functions-98.js
+    Problem: Uses hardcoded grade boundaries instead of getGrade() + state.gradingScale
+    Fix: Replace all calculateGrade(pct) calls with getGrade(pct) which reads DB scale
+
+  BUG-002 [HIGH] Pass mark hardcoded
+    Location: ~10 places in index.html
+    Problem: Checks `>= 50` instead of `>= state.schoolSettings?.pass_mark`
+    Fix: Search for '>= 50' and replace with isPassing(pct) function call
+
+  BUG-003 [MEDIUM] Decision banner incomplete
+    Location: report card generation in patches/missing-functions-98.js
+    Problem: Text truncated — missing "TO SIT FOR SECOND SITTING EXAMINATIONS"
+             French text also incomplete
+    Fix: Replace with full text from Section 4.7
+
+  BUG-004 [MEDIUM] toggleSidebar overlay broken on mobile
+    Location: index.html toggleSidebar()
+    Problem: .active class never added to overlay → overlay stays display:none
+             → outside-click-to-close doesn't work on mobile
+    Fix: Add overlay.classList.add('active') when sidebar opens;
+         overlay.classList.remove('active') when it closes
+
+  BUG-005 [LOW] CRLF line endings
+    Location: new.html (the older backup file)
+    Problem: Windows line endings may cause issues on Linux servers
+    Fix: dos2unix or sed -i 's/\r//' — only affects the backup file
+
+  BUG-006 [LOW] 16 missing onclick handlers in new.html
+    Affects: applyFamilyDiscountToAll, doFullBackup, editFamilyDiscount,
+             exportAccountantDashboard, exportClassCollection, exportClassPerf,
+             exportCollectionByClass, exportMonthlyTrend, loadCarryHistory,
+             loadTeacherPerformance, printReceiptById, promptPromoteStudents,
+             refreshAccountantDashboard, showDatabaseSummary,
+             viewTeacherDetails, scrollTo
+    NOTE: These are fixed in index.html (index__1_.html) — use that version.
+
+  TECH-DEBT-001: 530KB of patch files
+    The js/patches/ folder exists because modules were incomplete.
+    Long-term goal: merge patch content into their proper modules,
+    then delete patch files. Do not add more patch files.
