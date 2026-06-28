@@ -242,8 +242,24 @@
          * Show/hide the username field depending on the selected role.
          */
         function onRoleChange() {
-            const role = document.getElementById('login-role').value;
-            document.getElementById('username-field').style.display = role === 'admin' ? 'none' : 'block';
+            const role     = document.getElementById('login-role').value;
+            const uField   = document.getElementById('username-field');
+            const subtitle = document.getElementById('login-subtitle');
+            const pwInput  = document.getElementById('login-password');
+
+            // Admin: no username, password only
+            if (uField)   uField.style.display = role === 'admin' ? 'none' : 'block';
+
+            // Update subtitle per role
+            const labels = {
+                admin:      'Head Teacher Portal — UWAYO GANZA Eugene',
+                teacher:    'Teacher Portal',
+                accountant: 'Finance Portal'
+            };
+            if (subtitle) subtitle.textContent = labels[role] || 'School Management System';
+
+            // Update password placeholder
+            if (pwInput) pwInput.placeholder = role === 'admin' ? 'Administrator password' : 'Password';
         }
 
 
