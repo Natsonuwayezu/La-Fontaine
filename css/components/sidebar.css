@@ -66,6 +66,32 @@ SECTION 15: SIDEBAR COMPLETE STYLES
             font-size: 0.7rem;
         }
 
+/* ══════════════════════════════════════════════════
+   SIDEBAR LOGO IMAGE  (add to css/components/sidebar.css)
+   Replaces the 🏫 emoji in the sidebar header
+   ══════════════════════════════════════════════════ */
+
+/* Sidebar logo container — was sized for emoji, now holds img */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+}
+
+/* The actual logo image in the sidebar */
+.sidebar-logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: block;
+  /* If logo has dark bg, use brightness filter to match sidebar theme */
+  /* filter: brightness(0) invert(1); */
+}
+
+
         /* ------------------------------------------------------------------
     15.3 Sidebar Navigation
     ------------------------------------------------------------------ */
