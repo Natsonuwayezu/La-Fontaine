@@ -117,13 +117,18 @@ for (const cls of teacherClasses) {
 const completionPct = totalPossible > 0 ? (totalFilled / totalPossible) * 100 : 0;
 ```
 
-### 8. Charts — ASCII ONLY, never Chart.js
+### 8. Charts — ASCII for simple bars, Chart.js for rich visuals
 ```javascript
+// Use ASCII bars for: inline progress bars, simple % comparisons,
+// fee collection bars, quick stats inside cards
 function asciiBar(pct, width=20) {
   const f = Math.round((pct/100)*width);
   return '█'.repeat(f) + '░'.repeat(width-f);
 }
-// For vertical column charts: build row-by-row from top (height) down to 0
+
+// Use Chart.js for: line trends, doughnut/pie charts, bar charts
+// with multiple datasets, analytics dashboards, teacher performance trends
+// Chart.js CDN is included in index.html — use it where it adds clarity
 ```
 
 ### 9. Subjects — post_midterm_only rule
@@ -264,7 +269,7 @@ Read `progress.txt` for the full list. Immediate priorities:
 
 | ❌ Mistake | ✅ Correct approach |
 |-----------|---------------------|
-| Using Chart.js | ASCII bar/column charts only |
+| Using Chart.js everywhere | ASCII for simple bars; Chart.js for multi-dataset/trend charts |
 | Hardcoding `>= 50` | `isPassing(pct)` using schoolSettings.pass_mark |
 | Using `calculateGrade()` | `getGrade(pct, state.gradingScale)` |
 | Silent `Math.min/max` clamping | Show inline popup (3 choices) |
