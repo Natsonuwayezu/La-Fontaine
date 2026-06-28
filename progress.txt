@@ -45,11 +45,10 @@ PHASE 0 — FOUNDATION
 [x] P0-12  Create all 26 database tables in new Supabase project
            DONE: 2026-06-28 | All tables seeded (classes, subjects, grading scale, admin)
 
-[ ] P0-13  Update Supabase URL/key in index.html + supabase-config.js
-           PRIORITY: HIGH — app won't connect to new DB without this
-           OLD URL: hejdppzparottbcnycjo.supabase.co
-           NEW URL: ovmymtdrugdljnttiltd.supabase.co
-           FILES: index.html + js/config/supabase-config.js
+[x] P0-13  Update Supabase URL/key in index.html + supabase-config.js
+           DONE: 2026-06-28 | New URL: ovmymtdrugdljnttiltd.supabase.co
+           Also: index.html converted from 37,623-line monolith to 527-line shell
+           All CSS/JS now imported from split files in css/ and js/ folders
 
 [ ] P0-14  Enable Row Level Security (RLS) on all Supabase tables
            PRIORITY: HIGH — security risk until done
