@@ -1,0 +1,173 @@
+<!-- html/dashboard/dashboard-home.html -->
+<!-- Main Dashboard Home View - Admin Dashboard -->
+<div class="dashboard-container">
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value" id="total-students">0</div>
+            <div class="stat-label">Total Students</div>
+            <div class="stat-trend neutral">All enrolled</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="active-students">0</div>
+            <div class="stat-label">Active Students</div>
+            <div class="stat-trend up">📈 Currently enrolled</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📝</div>
+            <div class="stat-value" id="assessments-count">0</div>
+            <div class="stat-label">Assessments (This Term)</div>
+            <div class="stat-trend neutral">Active assessments</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✏️</div>
+            <div class="stat-value" id="marks-count">0</div>
+            <div class="stat-label">Total Marks in DB</div>
+            <div class="stat-trend up" id="marks-trend">+0 this week</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">💰</div>
+            <div class="stat-value" id="collected-fees">0 RWF</div>
+            <div class="stat-label">Collected Fees</div>
+            <div class="stat-trend" id="collection-trend">0% of total</div>
+        </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="two-col">
+        <!-- Fee Collection Chart -->
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span class="dash-card-title">💰 Fee Collection by Class</span>
+                <button class="btn btn-sm btn-outline" onclick="exportCollectionByClass()">📥 Export</button>
+            </div>
+            <div class="dash-card-body">
+                <canvas id="fee-chart" height="220"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span class="dash-card-title">🔄 Recent Actions</span>
+                <span style="font-size:.75rem;color:var(--text-muted)">Live from activity log</span>
+            </div>
+            <div class="dash-card-body" style="padding:0">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>By</th>
+                                <th>When</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-actions-tbody">
+                            <tr>
+                                <td colspan="3" style="text-align:center;padding:40px">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Class Performance Summary -->
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📊 Class Performance Summary</span>
+            <button class="btn btn-sm btn-outline" onclick="exportClassPerf()">📥 Export</button>
+        </div>
+        <div class="dash-card-body" style="padding:0">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Students</th>
+                            <th>Avg %</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="class-performance-tbody">
+                        <tr>
+                            <td colspan="4" style="text-align:center;padding:40px">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">⚡ Quick Actions</span>
+        </div>
+        <div class="dash-card-body">
+            <div class="quick-actions">
+                <div class="quick-btn" onclick="navigateTo('enroll-student')">
+                    <div class="qb-icon">➕</div>
+                    <div class="qb-title">Enroll Student</div>
+                    <div class="qb-sub">Add new student</div>
+                </div>
+                <div class="quick-btn" onclick="navigateTo('fee-structure')">
+                    <div class="qb-icon">🏷️</div>
+                    <div class="qb-title">Fee Structure</div>
+                    <div class="qb-sub">Manage fees</div>
+                </div>
+                <div class="quick-btn" onclick="navigateTo('financial-reports')">
+                    <div class="qb-icon">📊</div>
+                    <div class="qb-title">Reports</div>
+                    <div class="qb-sub">Generate reports</div>
+                </div>
+                <div class="quick-btn" onclick="promptPromoteStudents()">
+                    <div class="qb-icon">👥➡️</div>
+                    <div class="qb-title">Promote Students</div>
+                    <div class="qb-sub">Next class</div>
+                </div>
+                <div class="quick-btn" onclick="doFullBackup()">
+                    <div class="qb-icon">💾</div>
+                    <div class="qb-title">Backup Data</div>
+                    <div class="qb-sub">Download JSON</div>
+                </div>
+                <div class="quick-btn" onclick="navigateTo('school-settings')">
+                    <div class="qb-icon">⚙️</div>
+                    <div class="qb-title">Settings</div>
+                    <div class="qb-sub">Configure</div>
+                </div>
+                <div class="quick-btn" onclick="navigateTo('marks-entry')">
+                    <div class="qb-icon">✏️</div>
+                    <div class="qb-title">Enter Marks</div>
+                    <div class="qb-sub">Record assessments</div>
+                </div>
+                <div class="quick-btn" onclick="navigateTo('record-payment')">
+                    <div class="qb-icon">💰</div>
+                    <div class="qb-title">Record Payment</div>
+                    <div class="qb-sub">Process payment</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

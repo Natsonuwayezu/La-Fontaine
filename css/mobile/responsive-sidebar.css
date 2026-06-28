@@ -1,0 +1,108 @@
+/* ============================================================
+   RESPONSIVE SIDEBAR STYLES
+   ============================================================ */
+/* Sidebar Overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Mobile Sidebar Open */
+@media (max-width: 768px) {
+    .sidebar.mobile-open+.sidebar-overlay {
+        display: block;
+    }
+
+    /* Sidebar Header */
+    .sidebar-header {
+        padding: var(--md);
+    }
+
+    .sidebar-logo {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+    }
+
+    .sidebar-school-name {
+        font-size: .75rem;
+    }
+
+    /* Navigation Items */
+    .nav-section-title {
+        padding: var(--xs) var(--md);
+        font-size: .6rem;
+    }
+
+    .nav-item {
+        padding: var(--xs) var(--md);
+        font-size: .8rem;
+    }
+
+    .nav-item .nav-icon {
+        font-size: 1rem;
+    }
+
+    /* Sidebar Footer */
+    .sidebar-footer {
+        padding: var(--sm) var(--md);
+    }
+
+    .sidebar-user-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+
+    .sidebar-user-name {
+        font-size: .75rem;
+    }
+
+    .sidebar-user-role {
+        font-size: .65rem;
+    }
+}
+
+/* Tablet Sidebar */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 240px;
+    }
+
+    .sidebar-header {
+        padding: var(--md);
+    }
+
+    .sidebar-school-name {
+        font-size: .75rem;
+    }
+
+    .nav-item {
+        padding: var(--xs) var(--md);
+        font-size: .8rem;
+    }
+}
+
+/* Desktop Sidebar (always visible) */
+@media (min-width: 1025px) {
+    .sidebar {
+        transform: translateX(0) !important;
+    }
+
+    .sidebar-overlay {
+        display: none !important;
+    }
+}

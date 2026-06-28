@@ -1,0 +1,120 @@
+<!-- html/students/student-profile.html -->
+<!-- Student Profile Page -->
+<div class="student-profile-container">
+    <div class="btn-group" style="margin-bottom:var(--md)">
+        <button class="btn btn-outline" onclick="navigateTo('student-list')">← Back to List</button>
+        <button class="btn btn-primary" onclick="editStudent()">✏️ Edit</button>
+    </div>
+
+    <div class="two-col">
+        <div class="dash-card">
+            <div class="dash-card-body" style="text-align:center">
+                <div style="font-size:6rem; margin-bottom:var(--sm)">👨‍🎓</div>
+                <button class="btn btn-sm btn-outline" onclick="changePhoto()">📸 Change Photo</button>
+            </div>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-card-body">
+                <h2 style="margin-bottom:4px">John Doe</h2>
+                <p style="color:var(--text-muted); margin-bottom:16px">Code: STU001</p>
+                <div class="form-grid" style="grid-template-columns:1fr 1fr">
+                    <div class="form-group"><label>Class</label><input readonly value="PRIMARY 4 A"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Status</label><input readonly value="Active" class="form-control">
+                    </div>
+                    <div class="form-group"><label>Gender</label><input readonly value="Male" class="form-control">
+                    </div>
+                    <div class="form-group"><label>Date of Birth</label><input readonly value="2015-06-15"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Age</label><input readonly value="10 years" class="form-control">
+                    </div>
+                    <div class="form-group"><label>Enrolled</label><input readonly value="2026-01-15"
+                            class="form-control"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:20px">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📋 PARENT/GUARDIAN INFORMATION</span>
+        </div>
+        <div class="dash-card-body">
+            <div class="form-grid">
+                <div class="form-group"><label>Guardian Name</label><input readonly value="Jane Doe"
+                        class="form-control"></div>
+                <div class="form-group"><label>Contact</label><input readonly value="+250788123456"
+                        class="form-control"></div>
+                <div class="form-group"><label>Email</label><input readonly value="jane@email.com" class="form-control">
+                </div>
+                <div class="form-group"><label>Address</label><input readonly value="Kigali, Rwanda"
+                        class="form-control"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tabs" style="display:flex; gap:2px; border-bottom:2px solid var(--border-light); margin:20px 0">
+        <button class="tab-btn active" onclick="switchTab('info', event)">📋 Info</button>
+        <button class="tab-btn" onclick="switchTab('fees', event)">💰 Fees</button>
+        <button class="tab-btn" onclick="switchTab('academics', event)">📊 Academics</button>
+        <button class="tab-btn" onclick="switchTab('family', event)">👨‍👩‍👧 Family</button>
+        <button class="tab-btn" onclick="switchTab('history', event)">📜 History</button>
+    </div>
+
+    <div id="tab-content" class="tab-content">
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .student-profile-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function editStudent() {
+        alert('Edit student information');
+    }
+
+    function changePhoto() {
+        alert('Change student photo');
+    }
+
+    function switchTab(tabName, event) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        const content = document.getElementById('tab-content');
+        if (tabName === 'info') {
+            content.innerHTML = `<div class="dash-card"><div class="dash-card-body"><p>Student information details would appear here.</p></div></div>`;
+        } else if (tabName === 'fees') {
+            content.innerHTML = `<div class="dash-card"><div class="dash-card-body"><p>Fee breakdown and payment history would appear here.</p></div></div>`;
+        } else if (tabName === 'academics') {
+            content.innerHTML = `<div class="dash-card"><div class="dash-card-body"><p>Academic performance and grades would appear here.</p></div></div>`;
+        } else if (tabName === 'family') {
+            content.innerHTML = `<div class="dash-card"><div class="dash-card-body"><p>Family and sibling information would appear here.</p></div></div>`;
+        } else if (tabName === 'history') {
+            content.innerHTML = `<div class="dash-card"><div class="dash-card-body"><p>Activity history would appear here.</p></div></div>`;
+        }
+    }
+
+    // Load default tab
+    document.getElementById('tab-content').innerHTML = `<div class="dash-card"><div class="dash-card-body"><p>Student information would be displayed here.</p></div></div>`;
+</script>

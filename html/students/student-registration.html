@@ -1,0 +1,179 @@
+<!-- html/students/student-registration.html -->
+<!-- Student Enrollment Page -->
+<div class="enrollment-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">➕ Enroll New Student</span>
+            <button class="btn btn-sm btn-outline" onclick="navigateTo('student-list')">← Back</button>
+        </div>
+        <div class="dash-card-body">
+            <div class="alert alert-info">Fill in the student information below. Fields marked * are required.</div>
+            <div id="enroll-error" class="alert alert-danger" style="display:none"></div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>First Name *</label>
+                    <input type="text" id="en-first" class="form-control" placeholder="First name">
+                </div>
+                <div class="form-group">
+                    <label>Last Name *</label>
+                    <input type="text" id="en-last" class="form-control" placeholder="Last name">
+                </div>
+                <div class="form-group">
+                    <label>Class *</label>
+                    <select id="en-class" class="form-control" onchange="previewFees()">
+                        <option value="">— Select class —</option>
+                        <option value="1">NURSERY 1</option>
+                        <option value="2">NURSERY 2</option>
+                        <option value="3">NURSERY 3</option>
+                        <option value="4">PRIMARY 1</option>
+                        <option value="5">PRIMARY 2</option>
+                        <option value="6">PRIMARY 3</option>
+                        <option value="7">PRIMARY 4</option>
+                        <option value="8">PRIMARY 5</option>
+                        <option value="9">PRIMARY 6</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select id="en-gender" class="form-control">
+                        <option value="">— Select —</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" id="en-dob" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Nationality</label>
+                    <input type="text" id="en-nationality" class="form-control" placeholder="e.g., Rwandan">
+                </div>
+                <div class="form-group">
+                    <label>Guardian Name *</label>
+                    <input type="text" id="en-guardian" class="form-control" placeholder="Parent/guardian full name">
+                </div>
+                <div class="form-group">
+                    <label>Guardian Phone</label>
+                    <input type="tel" id="en-phone" class="form-control" placeholder="+250 7xx xxx xxx">
+                </div>
+                <div class="form-group">
+                    <label>Guardian Email</label>
+                    <input type="email" id="en-email" class="form-control" placeholder="guardian@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Enrollment Date</label>
+                    <input type="date" id="en-date" class="form-control" value="2026-01-15">
+                </div>
+                <div class="form-group full">
+                    <label>Notes</label>
+                    <textarea id="en-notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+                </div>
+            </div>
+
+            <div id="fee-preview-section"
+                style="display:none; margin-top:20px; border:1px solid var(--border-medium); border-radius:var(--r-lg); overflow:hidden">
+                <div
+                    style="background:var(--bg-tertiary); padding:12px 16px; border-bottom:1px solid var(--border-light); display:flex; align-items:center; justify-content:space-between">
+                    <strong>💰 Fees to Apply on Enrollment</strong>
+                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer">
+                        <input type="checkbox" id="enroll-fee-all" onchange="toggleAllFees()" checked> Select All
+                    </label>
+                </div>
+                <div id="fee-preview-list" style="padding:0 16px"></div>
+                <div id="fee-preview-total"
+                    style="padding:10px 16px; font-weight:700; background:var(--bg-tertiary); border-top:1px solid var(--border-light)">
+                </div>
+            </div>
+
+            <div class="btn-group" style="margin-top:var(--lg)">
+                <button class="btn btn-success" onclick="submitEnrollment()">✅ Enroll Student</button>
+                <button class="btn btn-outline" onclick="navigateTo('student-list')">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .enrollment-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    const feeCategories = [
+        { id: 1, name: 'Tuition Fees', amount: 150000 },
+        { id: 2, name: 'Activity Fees', amount: 25000 },
+        { id: 3, name: 'Transport Fees', amount: 50000 }
+    ];
+
+    function previewFees() {
+        const classId = document.getElementById('en-class').value;
+        const previewSection = document.getElementById('fee-preview-section');
+        const listEl = document.getElementById('fee-preview-list');
+
+        if (!classId) {
+            previewSection.style.display = 'none';
+            return;
+        }
+
+        listEl.innerHTML = feeCategories.map(f => `
+            <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--border-light)">
+                <input type="checkbox" class="enroll-fee-cb" value="${f.id}" data-amount="${f.amount}" checked onchange="updateFeeTotal()">
+                <span style="flex:1">${f.name}</span>
+                <span style="font-weight:600">${f.amount.toLocaleString()} RWF</span>
+            </div>
+        `).join('');
+
+        document.getElementById('enroll-fee-all').checked = true;
+        updateFeeTotal();
+        previewSection.style.display = 'block';
+    }
+
+    function toggleAllFees() {
+        const checked = document.getElementById('enroll-fee-all').checked;
+        document.querySelectorAll('.enroll-fee-cb').forEach(cb => cb.checked = checked);
+        updateFeeTotal();
+    }
+
+    function updateFeeTotal() {
+        const checked = document.querySelectorAll('.enroll-fee-cb:checked');
+        const total = Array.from(checked).reduce((sum, cb) => sum + parseFloat(cb.dataset.amount), 0);
+        document.getElementById('fee-preview-total').innerHTML = `
+            <div style="display:flex; justify-content:space-between">
+                <span>TOTAL TO APPLY (${checked.length} fee${checked.length !== 1 ? 's' : ''})</span>
+                <span style="color:var(--role-primary)">${total.toLocaleString()} RWF</span>
+            </div>
+        `;
+    }
+
+    function submitEnrollment() {
+        const firstName = document.getElementById('en-first').value.trim();
+        const lastName = document.getElementById('en-last').value.trim();
+        const classId = document.getElementById('en-class').value;
+        const guardian = document.getElementById('en-guardian').value.trim();
+
+        if (!firstName || !lastName || !classId || !guardian) {
+            document.getElementById('enroll-error').textContent = 'Please fill all required fields';
+            document.getElementById('enroll-error').style.display = 'block';
+            return;
+        }
+
+        const selectedFees = Array.from(document.querySelectorAll('.enroll-fee-cb:checked')).map(cb => parseInt(cb.value));
+        alert(`Student enrolled successfully!\nSelected fees: ${selectedFees.length} categories`);
+        navigateTo('student-list');
+    }
+</script>

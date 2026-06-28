@@ -1,0 +1,130 @@
+<!-- html/students/student-statements.html -->
+<!-- Student Fee Statements Page -->
+<div class="statements-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📄 Student Fee Statements</span>
+        </div>
+        <div class="dash-card-body">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Select Student</label>
+                    <select id="statement-student" class="form-control" onchange="loadStatement()">
+                        <option value="">-- Select Student --</option>
+                        <option value="1">John Doe (STU001)</option>
+                        <option value="2">Jane Smith (STU002)</option>
+                        <option value="3">Peter Kagame (STU003)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Statement Type</label>
+                    <select id="statement-type" class="form-control" onchange="loadStatement()">
+                        <option value="summary">Summary Statement</option>
+                        <option value="detailed">Detailed Statement</option>
+                        <option value="tax">Tax Invoice</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Period</label>
+                    <select id="statement-period" class="form-control" onchange="loadStatement()">
+                        <option value="all">All Time</option>
+                        <option value="term1">Term 1</option>
+                        <option value="term2">Term 2</option>
+                        <option value="term3">Term 3</option>
+                        <option value="year">Academic Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="btn-group" style="margin-top:16px">
+                <button class="btn btn-primary" onclick="generateStatement()">📄 Generate Statement</button>
+                <button class="btn btn-outline" onclick="printStatement()">🖨️ Print</button>
+                <button class="btn btn-outline" onclick="exportStatementPDF()">📑 PDF</button>
+            </div>
+
+            <div id="statement-preview" class="statement-preview" style="margin-top:24px; display:none">
+                <div class="alert alert-info">Select a student and click Generate to view statement</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .statements-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    .statement-preview {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        padding: 20px;
+        font-family: monospace;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function loadStatement() {
+        // Reset preview when selection changes
+        document.getElementById('statement-preview').style.display = 'none';
+    }
+
+    function generateStatement() {
+        const student = document.getElementById('statement-student').value;
+        const type = document.getElementById('statement-type').value;
+        const period = document.getElementById('statement-period').value;
+
+        if (!student) {
+            alert('Please select a student');
+            return;
+        }
+
+        const preview = document.getElementById('statement-preview');
+        preview.style.display = 'block';
+        preview.innerHTML = `
+            <div style="text-align:center">
+                <h3>ECOLE LA FONTAINE</h3>
+                <h4>FEE STATEMENT</h4>
+                <p>Student: John Doe (STU001)</p>
+                <p>Statement Type: ${type} | Period: ${period}</p>
+                <hr>
+                <table style="width:100%; margin:16px 0">
+                    <tr><th>Date</th><th>Description</th><th>Debit</th><th>Credit</th><th>Balance</th></tr>
+                    <tr><td>2026-01-15</td><td>Tuition Fees</td><td>150,000</td><td>-</td><td>150,000</td></tr>
+                    <tr><td>2026-01-20</td><td>Payment Received</td><td>-</td><td>100,000</td><td>50,000</td></tr>
+                </table>
+                <hr>
+                <div><strong>Outstanding Balance: 50,000 RWF</strong></div>
+                <div class="footer" style="margin-top:16px; font-size:11px">Generated on ${new Date().toLocaleString()}</div>
+            </div>
+        `;
+    }
+
+    function printStatement() {
+        const preview = document.getElementById('statement-preview');
+        if (preview.style.display === 'none') {
+            alert('Please generate a statement first');
+            return;
+        }
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(preview.innerHTML);
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    function exportStatementPDF() {
+        alert('Exporting statement as PDF');
+    }
+</script>

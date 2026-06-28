@@ -1,0 +1,162 @@
+<!-- html/partials/loaders.html -->
+<!-- Loading indicators and skeletons -->
+
+<!-- Page Loader -->
+<div id="page-loader" class="page-loader" style="display:none">
+    <div class="loader-container">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+</div>
+
+<!-- Skeleton Loader for Tables -->
+<div class="skeleton-table">
+    <div class="skeleton-header">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+    </div>
+    <div class="skeleton-row">
+        <div class="skeleton-cell"></div>
+        <div class="skeleton-cell"></div>
+        <div class="skeleton-cell"></div>
+        <div class="skeleton-cell"></div>
+    </div>
+    <div class="skeleton-row">
+        <div class="skeleton-cell"></div>
+        <div class="skeleton-cell"></div>
+        <div class="skeleton-cell"></div>
+        <div class="skeleton-cell"></div>
+    </div>
+    <div class="skeleton-row">
+        <div class="skeleton-cell"></div>
+        <div class="skeleton-cell"></div>
+        <div class="skeleton-cell"></div>
+        <div class="skeleton-cell"></div>
+    </div>
+</div>
+
+<!-- Skeleton Loader for Cards -->
+<div class="skeleton-cards">
+    <div class="skeleton-card"></div>
+    <div class="skeleton-card"></div>
+    <div class="skeleton-card"></div>
+    <div class="skeleton-card"></div>
+</div>
+
+<!-- Inline Spinner -->
+<div class="inline-spinner" style="display:none">
+    <div class="spinner-sm"></div>
+    <span>Processing...</span>
+</div>
+
+<style>
+    .page-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .loader-container {
+        background: var(--bg-secondary);
+        padding: 30px;
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .skeleton-table {
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        padding: 16px;
+        border: 1px solid var(--border-light);
+    }
+
+    .skeleton-header {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .skeleton-row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 12px;
+    }
+
+    .skeleton-line {
+        height: 20px;
+        background: linear-gradient(90deg, var(--border-light) 25%, var(--bg-tertiary) 50%, var(--border-light) 75%);
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+        border-radius: 4px;
+        flex: 1;
+    }
+
+    .skeleton-cell {
+        height: 30px;
+        background: linear-gradient(90deg, var(--border-light) 25%, var(--bg-tertiary) 50%, var(--border-light) 75%);
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+        border-radius: 4px;
+        flex: 1;
+    }
+
+    .skeleton-card {
+        height: 120px;
+        background: linear-gradient(90deg, var(--border-light) 25%, var(--bg-tertiary) 50%, var(--border-light) 75%);
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+        border-radius: 12px;
+    }
+
+    .skeleton-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+    }
+
+    .spinner-sm {
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--border-light);
+        border-top-color: var(--role-primary);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        display: inline-block;
+    }
+
+    .inline-spinner {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--text-muted);
+    }
+
+    @keyframes skeleton-loading {
+        0% {
+            background-position: 200% 0;
+        }
+
+        100% {
+            background-position: -200% 0;
+        }
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>

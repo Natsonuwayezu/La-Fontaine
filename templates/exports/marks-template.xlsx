@@ -1,0 +1,70 @@
+// templates/exports/marks-template.xlsx
+// Marks import/export template structure
+
+/*
+Columns for marks import:
+
+Required columns:
+- Student Code (must match existing student)
+- Assessment Name (must match existing assessment or will be created)
+- Score (numeric)
+
+Optional columns:
+- Student Name (for reference)
+- Class Name (for reference)
+- Subject Name (for reference)
+- Max Marks (default from assessment)
+- Assessment Type (Quiz/Assignment/Mid-term/Exam/Final Exam)
+- Assessment Date (YYYY-MM-DD)
+
+Sample data:
+STU001,John Doe,PRIMARY 4,Mathematics,Quiz 1,45,50,2026-01-20
+STU002,Jane Smith,PRIMARY 4,Mathematics,Quiz 1,48,50,2026-01-20
+*/
+
+export function generateMarksImportTemplate() {
+    const template = [
+        {
+            'Student Code': 'STU001',
+            'Student Name': 'John Doe',
+            'Class': 'PRIMARY 4',
+            'Subject': 'Mathematics',
+            'Assessment Name': 'Quiz 1',
+            'Assessment Type': 'Quiz',
+            'Score': '',
+            'Max Marks': '50',
+            'Assessment Date': '2026-01-20'
+        },
+        {
+            'Student Code': 'STU002',
+            'Student Name': 'Jane Smith',
+            'Class': 'PRIMARY 4',
+            'Subject': 'Mathematics',
+            'Assessment Name': 'Quiz 1',
+            'Assessment Type': 'Quiz',
+            'Score': '',
+            'Max Marks': '50',
+            'Assessment Date': '2026-01-20'
+        }
+    ];
+    return template;
+}
+
+export function generateBulkMarksExportTemplate() {
+    const template = [
+        {
+            'Student Code': 'STU001',
+            'Student Name': 'John Doe',
+            'Class': 'PRIMARY 4',
+            'Subject': 'Mathematics',
+            'Assessment Name': 'Quiz 1',
+            'Score': '45',
+            'Max Marks': '50',
+            'Percentage': '90%',
+            'Grade': 'A+',
+            'Assessment Date': '2026-01-20',
+            'Term': 'Term 1'
+        }
+    ];
+    return template;
+}

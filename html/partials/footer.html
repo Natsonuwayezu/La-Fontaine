@@ -1,0 +1,53 @@
+<!-- html/partials/footer.html -->
+<!-- Footer structure -->
+<footer class="app-footer">
+    <div class="footer-content">
+        <div class="footer-copyright">
+            &copy; 2026 ECOLE LA FONTAINE. All rights reserved.
+        </div>
+        <div class="footer-links">
+            <a href="#" onclick="showAboutModal()">About</a>
+            <a href="#" onclick="showHelpModal()">Help</a>
+            <a href="#" onclick="showPrivacyModal()">Privacy</a>
+        </div>
+        <div class="footer-version">
+            Version 7.0.0
+        </div>
+    </div>
+</footer>
+
+<style>
+    .app-footer {
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-light);
+        padding: 12px 24px;
+        margin-top: auto;
+        font-size: 12px;
+        color: var(--text-muted);
+    }
+
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .footer-links a {
+        color: var(--text-muted);
+        text-decoration: none;
+        margin: 0 8px;
+    }
+
+    .footer-links a:hover {
+        color: var(--role-primary);
+    }
+
+    @media (max-width: 768px) {
+        .footer-content {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>

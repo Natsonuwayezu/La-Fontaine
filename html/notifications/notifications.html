@@ -1,0 +1,166 @@
+<!-- html/notifications/notifications.html -->
+<!-- Notifications Center Page -->
+<div class="notifications-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">🔔 Notifications Center</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-outline" onclick="markAllRead()">✅ Mark All as Read</button>
+                <button class="btn btn-sm btn-outline" onclick="clearAllNotifications()">🗑️ Clear All</button>
+            </div>
+        </div>
+        <div class="dash-card-body">
+            <div class="filters-bar">
+                <select id="notif-type-filter" class="form-control" style="width:130px"
+                    onchange="filterNotifications()">
+                    <option value="all">All Types</option>
+                    <option value="system">🔧 System</option>
+                    <option value="announcement">📢 Announcement</option>
+                    <option value="payment">💰 Payment</option>
+                    <option value="reminder">⏰ Reminder</option>
+                </select>
+                <select id="notif-status-filter" class="form-control" style="width:130px"
+                    onchange="filterNotifications()">
+                    <option value="all">All Status</option>
+                    <option value="unread">Unread</option>
+                    <option value="read">Read</option>
+                </select>
+                <input type="text" id="notif-search" class="form-control flex-1"
+                    placeholder="🔍 Search notifications..." oninput="filterNotifications()">
+                <span class="result-count" id="notif-count"></span>
+            </div>
+
+            <div id="notifications-list" class="notifications-list">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <p>Loading notifications...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .notifications-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    .notifications-list {
+        max-height: 600px;
+        overflow-y: auto;
+    }
+
+    .notification-item {
+        transition: all 0.2s;
+    }
+
+    .notification-item:hover {
+        transform: translateX(2px);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    let notificationsData = [
+        { id: 1, type: 'system', title: 'System Update', message: 'System maintenance scheduled for Sunday', createdAt: '2026-01-15T08:00:00', read: false },
+        { id: 2, type: 'announcement', title: 'Staff Meeting', message: 'All staff meeting on Friday at 2 PM', createdAt: '2026-01-14T10:30:00', read: true },
+        { id: 3, type: 'payment', title: 'Payment Received', message: 'Payment of 150,000 RWF received from John Doe', createdAt: '2026-01-13T14:15:00', read: false },
+        { id: 4, type: 'reminder', title: 'Assessment Due', message: 'Mathematics quiz due tomorrow', createdAt: '2026-01-12T09:00:00', read: false }
+    ];
+
+    function renderNotifications() {
+        const container = document.getElementById('notifications-list');
+        const typeFilter = document.getElementById('notif-type-filter').value;
+        const statusFilter = document.getElementById('notif-status-filter').value;
+        const search = document.getElementById('notif-search').value.toLowerCase();
+
+        let filtered = notificationsData.filter(n => {
+            if (typeFilter !== 'all' && n.type !== typeFilter) return false;
+            if (statusFilter === 'unread' && n.read) return false;
+            if (statusFilter === 'read' && !n.read) return false;
+            if (search && !n.title.toLowerCase().includes(search) && !n.message.toLowerCase().includes(search)) return false;
+            return true;
+        });
+
+        document.getElementById('notif-count').textContent = `${filtered.length} notification${filtered.length !== 1 ? 's' : ''}`;
+
+        if (filtered.length === 0) {
+            container.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-muted)">✨ No notifications</div>';
+            return;
+        }
+
+        const getTypeIcon = (type) => {
+            switch (type) {
+                case 'system': return '🔧';
+                case 'announcement': return '📢';
+                case 'payment': return '💰';
+                case 'reminder': return '⏰';
+                default: return '📬';
+            }
+        };
+
+        const getTypeClass = (type) => {
+            switch (type) {
+                case 'system': return 'badge-info';
+                case 'announcement': return 'badge-primary';
+                case 'payment': return 'badge-warning';
+                case 'reminder': return 'badge-info';
+                default: return 'badge-neutral';
+            }
+        };
+
+        container.innerHTML = filtered.map(n => `
+            <div class="notification-item" style="border-left:4px solid ${n.read ? 'var(--border-light)' : 'var(--role-primary)'};padding:16px;margin-bottom:12px;background:${n.read ? 'var(--bg-secondary)' : 'var(--info-bg)'};border-radius:8px;cursor:pointer" onclick="markAsRead(${n.id})">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                        <span style="font-size:1.2rem">${getTypeIcon(n.type)}</span>
+                        <span style="font-weight:700">${n.title}</span>
+                        <span class="badge ${getTypeClass(n.type)}">${n.type}</span>
+                        ${!n.read ? '<span class="badge badge-info" style="background:#3b82f6">📌 New</span>' : ''}
+                    </div>
+                    <span style="font-size:11px;color:var(--text-muted)">${new Date(n.createdAt).toLocaleString()}</span>
+                </div>
+                <div style="font-size:13px;color:var(--text-secondary)">${n.message}</div>
+            </div>
+        `).join('');
+    }
+
+    function markAsRead(id) {
+        const notification = notificationsData.find(n => n.id === id);
+        if (notification && !notification.read) {
+            notification.read = true;
+            renderNotifications();
+        }
+    }
+
+    function markAllRead() {
+        notificationsData.forEach(n => n.read = true);
+        renderNotifications();
+        alert('All notifications marked as read');
+    }
+
+    function clearAllNotifications() {
+        if (confirm('Clear all notifications?')) {
+            notificationsData = [];
+            renderNotifications();
+        }
+    }
+
+    function filterNotifications() {
+        renderNotifications();
+    }
+
+    // Initial render
+    renderNotifications();
+</script>

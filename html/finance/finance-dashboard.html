@@ -1,0 +1,166 @@
+<!-- html/finance/finance-dashboard.html -->
+<!-- Finance Dashboard Page -->
+<div class="finance-dashboard">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">💰</div>
+            <div class="stat-value">2,850,000 RWF</div>
+            <div class="stat-label">Total Expected Fees</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value">2,125,000 RWF</div>
+            <div class="stat-label">Total Collected</div>
+            <div class="stat-trend up">74.6% of total</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-value">725,000 RWF</div>
+            <div class="stat-label">Outstanding Balance</div>
+            <div class="stat-trend down">12 students</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-value">125,000 RWF</div>
+            <div class="stat-label">Credit Available</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-value">8</div>
+            <div class="stat-label">Overdue Payments</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-value">74.6%</div>
+            <div class="stat-label">Collection Rate</div>
+            <div style="background:var(--border-light);border-radius:99px;height:6px;margin-top:8px;overflow:hidden">
+                <div style="height:100%;width:74.6%;background:var(--role-primary);border-radius:99px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="two-col">
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span class="dash-card-title">📈 Monthly Collection Trend</span>
+                <button class="btn btn-sm btn-outline" onclick="exportMonthlyTrend()">📥 Export</button>
+            </div>
+            <div class="dash-card-body">
+                <canvas id="monthly-collection-chart" height="250"></canvas>
+            </div>
+        </div>
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span class="dash-card-title">🏆 Top Performing Classes</span>
+                <button class="btn btn-sm btn-outline" onclick="exportClassCollection()">📥 Export</button>
+            </div>
+            <div class="dash-card-body">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th style="text-align:right">Expected</th>
+                                <th style="text-align:right">Collected</th>
+                                <th style="text-align:center">Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>PRIMARY 6</strong></td>
+                                <td style="text-align:right">450,000 RWF</td>
+                                <td style="text-align:right">450,000 RWF</td>
+                                <td style="text-align:center"><span class="badge badge-success">100%</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>PRIMARY 4</strong></td>
+                                <td style="text-align:right">375,000 RWF</td>
+                                <td style="text-align:right">350,000 RWF</td>
+                                <td style="text-align:center"><span class="badge badge-success">93.3%</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>PRIMARY 5</strong></td>
+                                <td style="text-align:right">375,000 RWF</td>
+                                <td style="text-align:right">300,000 RWF</td>
+                                <td style="text-align:center"><span class="badge badge-warning">80%</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>NURSERY 3</strong></td>
+                                <td style="text-align:right">300,000 RWF</td>
+                                <td style="text-align:right">225,000 RWF</td>
+                                <td style="text-align:center"><span class="badge badge-warning">75%</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">⚡ Quick Actions</span>
+        </div>
+        <div class="dash-card-body">
+            <div class="quick-actions">
+                <div class="quick-btn" onclick="navigateTo('record-payment')">
+                    <div class="qb-icon">💰</div>
+                    <div class="qb-title">Record Payment</div>
+                    <div class="qb-sub">Add payment</div>
+                </div>
+                <div class="quick-btn" onclick="navigateTo('payment-history')">
+                    <div class="qb-icon">📜</div>
+                    <div class="qb-title">Payment History</div>
+                    <div class="qb-sub">View all</div>
+                </div>
+                <div class="quick-btn" onclick="navigateTo('financial-reports')">
+                    <div class="qb-icon">📊</div>
+                    <div class="qb-title">Financial Reports</div>
+                    <div class="qb-sub">Generate reports</div>
+                </div>
+                <div class="quick-btn" onclick="navigateTo('overdue-payments')">
+                    <div class="qb-icon">⚠️</div>
+                    <div class="qb-title">Overdue Payments</div>
+                    <div class="qb-sub">Follow up</div>
+                </div>
+                <div class="quick-btn" onclick="navigateTo('fee-structure')">
+                    <div class="qb-icon">🏷️</div>
+                    <div class="qb-title">Fee Structure</div>
+                    <div class="qb-sub">Manage fees</div>
+                </div>
+                <div class="quick-btn" onclick="navigateTo('receipts')">
+                    <div class="qb-icon">🧾</div>
+                    <div class="qb-title">Receipts</div>
+                    <div class="qb-sub">Print receipts</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .finance-dashboard {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function exportMonthlyTrend() {
+        alert('Exporting monthly trend data');
+    }
+    function exportClassCollection() {
+        alert('Exporting class collection data');
+    }
+</script>

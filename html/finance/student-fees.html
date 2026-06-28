@@ -1,0 +1,59 @@
+<!-- html/finance/student-fees.html -->
+<!-- Student Fees Page -->
+<div class="student-fees-page">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">💳 Student Fee Balances</span>
+            <button class="btn btn-sm btn-outline" onclick="exportBalances()">📥 Export</button>
+        </div>
+        <div class="dash-card-body">
+            <div class="filters-bar">
+                <select id="sf-class" class="form-control">
+                    <option>All Classes</option>
+                    <option>PRIMARY 4</option>
+                    <option>PRIMARY 5</option>
+                </select>
+                <input type="text" placeholder="🔍 Search student..." class="form-control flex-1">
+                <span class="result-count">25 students</span>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Class</th>
+                            <th>Total Fees</th>
+                            <th>Paid</th>
+                            <th>Balance</th>
+                            <th>%</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>John Doe</strong><br><small>STU001</small></td>
+                            <td>PRIMARY 4</td>
+                            <td>225,000 RWF</td>
+                            <td>150,000 RWF</td>
+                            <td class="text-danger">75,000 RWF</td>
+                            <td><span class="badge badge-warning">66.7%</span></td>
+                            <td><button class="btn btn-sm btn-primary">💰 Pay</button> <button
+                                    class="btn btn-sm btn-outline">⚙️</button></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jane Smith</strong><br><small>STU002</small></td>
+                            <td>PRIMARY 4</td>
+                            <td>225,000 RWF</td>
+                            <td>225,000 RWF</td>
+                            <td>0 RWF</td>
+                            <td><span class="badge badge-success">100%</span></td>
+                            <td><button class="btn btn-sm btn-primary">💰 Pay</button> <button
+                                    class="btn btn-sm btn-outline">⚙️</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>function exportBalances() { alert('Exporting balances'); }</script>

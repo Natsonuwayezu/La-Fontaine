@@ -1,0 +1,91 @@
+/* ============================================================
+   RECEIPTS PRINT STYLES
+   ============================================================ */
+@media print {
+    body {
+        background: #fff;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Receipt container */
+    .receipt-container {
+        max-width: 100%;
+        margin: 0;
+        padding: 10px;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+
+    /* Hide print button */
+    .btn-print,
+    .no-print {
+        display: none !important;
+    }
+
+    /* Receipt header */
+    .receipt-header {
+        background: #1a3a5c !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Receipt body */
+    .receipt-body {
+        padding: 15px;
+    }
+
+    /* Lines */
+    .dashed,
+    .solid,
+    .dotted {
+        border-color: #000;
+    }
+
+    /* Signatures */
+    .sign-line .line {
+        border-top: 1px solid #000;
+    }
+
+    /* Amount box */
+    .amount-box {
+        background: #d1fae5 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Footer */
+    .footer {
+        background: #f8fafc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+/* Thermal receipt (80mm) */
+@media print and (max-width: 80mm) {
+    .receipt-container {
+        font-size: 10px;
+        padding: 5px;
+    }
+
+    .receipt-header {
+        padding: 8px;
+    }
+
+    .school-name {
+        font-size: 14px;
+    }
+
+    .receipt-body {
+        padding: 8px;
+    }
+
+    .info-row {
+        padding: 4px 0;
+    }
+
+    .amount-value {
+        font-size: 18px;
+    }
+}

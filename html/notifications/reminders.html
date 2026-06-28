@@ -1,0 +1,212 @@
+<!-- html/notifications/reminders.html -->
+<!-- Reminders Management Page -->
+<div class="reminders-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">⏰ My Reminders</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-primary" onclick="openAddReminderModal()">➕ Add Reminder</button>
+                <button class="btn btn-sm btn-outline" onclick="exportReminders()">📥 Export</button>
+            </div>
+        </div>
+        <div class="dash-card-body">
+            <div class="stats-grid" style="grid-template-columns:repeat(4,1fr); margin-bottom:16px">
+                <div class="stat-card" style="padding:12px; text-align:center">
+                    <div class="stat-value" id="upcoming-count">0</div>
+                    <div class="stat-label">Upcoming</div>
+                </div>
+                <div class="stat-card" style="padding:12px; text-align:center; background:var(--danger-bg)">
+                    <div class="stat-value" style="color:var(--danger)" id="overdue-count">0</div>
+                    <div class="stat-label">Overdue</div>
+                </div>
+                <div class="stat-card" style="padding:12px; text-align:center">
+                    <div class="stat-value" id="completed-count">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card" style="padding:12px; text-align:center">
+                    <div class="stat-value" id="total-reminders">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+
+            <div class="tabs"
+                style="display:flex; gap:2px; border-bottom:2px solid var(--border-light); margin-bottom:16px">
+                <button class="tab-btn active" onclick="showReminderTab('upcoming', event)">📅 Upcoming</button>
+                <button class="tab-btn" onclick="showReminderTab('overdue', event)">⚠️ Overdue</button>
+                <button class="tab-btn" onclick="showReminderTab('completed', event)">✅ Completed</button>
+            </div>
+
+            <div id="upcoming-reminders-tab" class="tab-content">
+                <div class="table-wrapper" id="upcoming-reminders-table">
+                    <div class="loading-container">
+                        <div class="spinner"></div>
+                        <p>Loading reminders...</p>
+                    </div>
+                </div>
+            </div>
+            <div id="overdue-reminders-tab" class="tab-content" style="display:none">
+                <div class="table-wrapper" id="overdue-reminders-table"></div>
+            </div>
+            <div id="completed-reminders-tab" class="tab-content" style="display:none">
+                <div class="table-wrapper" id="completed-reminders-table"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .reminders-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    .reminder-row {
+        transition: all 0.2s;
+    }
+
+    .reminder-row:hover {
+        background: var(--bg-tertiary);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    let reminders = [
+        { id: 1, title: 'Submit grades', description: 'Complete grade submission for Term 1', dueDate: '2026-01-20', priority: 'high', completed: false },
+        { id: 2, title: 'Parent meeting', description: 'Schedule parent-teacher conference', dueDate: '2026-01-18', priority: 'medium', completed: false },
+        { id: 3, title: 'Fee collection', description: 'Follow up on pending fees', dueDate: '2026-01-10', priority: 'high', completed: false },
+        { id: 4, title: 'Prepare exam', description: 'Create final exam papers', dueDate: '2026-01-25', priority: 'low', completed: true }
+    ];
+
+    function renderReminders() {
+        const today = new Date().toISOString().split('T')[0];
+
+        const upcoming = reminders.filter(r => !r.completed && r.dueDate >= today);
+        const overdue = reminders.filter(r => !r.completed && r.dueDate < today);
+        const completed = reminders.filter(r => r.completed);
+
+        document.getElementById('upcoming-count').textContent = upcoming.length;
+        document.getElementById('overdue-count').textContent = overdue.length;
+        document.getElementById('completed-count').textContent = completed.length;
+        document.getElementById('total-reminders').textContent = reminders.length;
+
+        renderReminderTable('upcoming-reminders-table', upcoming, 'upcoming');
+        renderReminderTable('overdue-reminders-table', overdue, 'overdue');
+        renderReminderTable('completed-reminders-table', completed, 'completed');
+    }
+
+    function renderReminderTable(containerId, remindersList, type) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        if (remindersList.length === 0) {
+            container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted)">No reminders in this category</div>';
+            return;
+        }
+
+        const priorityBadge = (priority) => {
+            switch (priority) {
+                case 'high': return '<span class="badge badge-danger">🔴 High</span>';
+                case 'medium': return '<span class="badge badge-warning">🟡 Medium</span>';
+                default: return '<span class="badge badge-info">🟢 Low</span>';
+            }
+        };
+
+        container.innerHTML = `
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Due Date</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Priority</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${remindersList.map(r => `
+                        <tr class="reminder-row">
+                            <td style="${type === 'overdue' ? 'color:var(--danger); font-weight:600' : ''}">${r.dueDate}${type === 'overdue' ? ' 🔴' : ''}</span>
+                            <td><strong>${r.title}</strong></span>
+                            <td>${r.description || '—'}</span>
+                            <td style="text-align:center">${priorityBadge(r.priority)}</span>
+                            <td style="text-align:center">
+                                <div class="btn-group" style="gap:4px; justify-content:center">
+                                    ${type !== 'completed' ? `<button class="btn btn-sm btn-success" onclick="completeReminder(${r.id})">✅ Complete</button>` : ''}
+                                    <button class="btn btn-sm btn-outline" onclick="editReminder(${r.id})">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteReminder(${r.id})">🗑️</button>
+                                </div>
+                            </span>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+    }
+
+    function showReminderTab(tabName, event) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        document.getElementById('upcoming-reminders-tab').style.display = tabName === 'upcoming' ? 'block' : 'none';
+        document.getElementById('overdue-reminders-tab').style.display = tabName === 'overdue' ? 'block' : 'none';
+        document.getElementById('completed-reminders-tab').style.display = tabName === 'completed' ? 'block' : 'none';
+    }
+
+    function openAddReminderModal() {
+        const title = prompt('Reminder title:');
+        if (!title) return;
+        const dueDate = prompt('Due date (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
+        if (!dueDate) return;
+        const priority = prompt('Priority (high/medium/low):', 'medium');
+
+        reminders.push({
+            id: Date.now(),
+            title: title,
+            description: '',
+            dueDate: dueDate,
+            priority: priority,
+            completed: false
+        });
+        renderReminders();
+        alert('Reminder added');
+    }
+
+    function completeReminder(id) {
+        const reminder = reminders.find(r => r.id === id);
+        if (reminder) {
+            reminder.completed = true;
+            renderReminders();
+            alert('Reminder marked as complete');
+        }
+    }
+
+    function editReminder(id) {
+        alert(`Edit reminder ${id}`);
+    }
+
+    function deleteReminder(id) {
+        if (confirm('Delete this reminder?')) {
+            reminders = reminders.filter(r => r.id !== id);
+            renderReminders();
+            alert('Reminder deleted');
+        }
+    }
+
+    function exportReminders() {
+        alert('Exporting reminders to Excel');
+    }
+
+    // Initial render
+    renderReminders();
+</script>

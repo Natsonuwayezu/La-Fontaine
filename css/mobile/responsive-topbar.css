@@ -1,0 +1,103 @@
+/* ============================================================
+   RESPONSIVE TOPBAR STYLES
+   ============================================================ */
+@media (max-width: 768px) {
+    .topbar {
+        padding: 0 var(--md);
+        height: 56px;
+    }
+
+    .page-title {
+        font-size: .85rem;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .phase-badge-compact {
+        font-size: .6rem;
+        padding: 2px 6px;
+    }
+
+    .notif-bell {
+        font-size: 1rem;
+    }
+
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    /* Term Progress Bar */
+    .term-progress-bar {
+        padding: var(--xs) var(--md);
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .progress-label {
+        font-size: .65rem;
+        white-space: normal;
+    }
+
+    .progress-bar-wrap {
+        min-width: 100px;
+    }
+
+    .progress-text {
+        font-size: .6rem;
+    }
+
+    .progress-days {
+        font-size: .65rem;
+    }
+}
+
+/* Tablet Topbar */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .topbar {
+        padding: 0 var(--lg);
+    }
+
+    .page-title {
+        font-size: .9rem;
+    }
+}
+
+/* Desktop Topbar */
+@media (min-width: 1025px) {
+    .menu-toggle {
+        display: none;
+    }
+}
+
+/* Small Mobile (below 480px) */
+@media (max-width: 480px) {
+    .topbar {
+        padding: 0 var(--sm);
+    }
+
+    .page-title {
+        font-size: .75rem;
+        max-width: 120px;
+    }
+
+    .phase-badge-compact {
+        display: none;
+    }
+
+    .term-progress-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .progress-bar-wrap {
+        width: 100%;
+    }
+
+    .progress-days {
+        align-self: flex-end;
+    }
+}
