@@ -1,0 +1,305 @@
+<!-- templates/receipts/modern-receipt.html -->
+<!-- Modern Receipt Template with better styling -->
+<div class="modern-receipt" id="modern-receipt-template">
+    <div class="receipt-header">
+        <div class="header-left">
+            <div class="school-logo">{{SCHOOL_LOGO}}</div>
+        </div>
+        <div class="header-center">
+            <div class="school-name">{{SCHOOL_NAME}}</div>
+            <div class="school-address">{{SCHOOL_ADDRESS}}</div>
+            <div class="school-phone">Tel: {{SCHOOL_PHONE}}</div>
+        </div>
+        <div class="header-right">
+            <div class="receipt-badge">PAID</div>
+        </div>
+    </div>
+
+    <div class="receipt-title-section">
+        <h2>OFFICIAL PAYMENT RECEIPT</h2>
+        <div class="receipt-number">Receipt No: <strong>{{RECEIPT_NUMBER}}</strong></div>
+    </div>
+
+    <div class="receipt-body">
+        <div class="info-grid">
+            <div class="info-group">
+                <label>Student Information</label>
+                <div class="info-content">
+                    <div><strong>{{STUDENT_NAME}}</strong></div>
+                    <div>Code: {{STUDENT_CODE}}</div>
+                    <div>Class: {{CLASS_NAME}}</div>
+                </div>
+            </div>
+            <div class="info-group">
+                <label>Payment Information</label>
+                <div class="info-content">
+                    <div>Date: {{DATE}}</div>
+                    <div>Method: {{PAYMENT_METHOD}}</div>
+                    <div>Reference: {{REFERENCE}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fee-breakdown">
+            <h3>Fee Breakdown</h3>
+            <table class="fee-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount (RWF)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{FEE_ROWS}}
+                </tbody>
+                <tfoot>
+                    <tr class="total">
+                        <td><strong>TOTAL</strong></td>
+                        <td><strong>{{TOTAL_AMOUNT}}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="payment-status">
+            <div class="status-badge status-{{STATUS_CLASS}}">
+                {{STATUS_TEXT}}
+            </div>
+        </div>
+
+        <div class="terms-notes">
+            <p><strong>Terms & Conditions:</strong> This receipt is valid for {{VALIDITY_DAYS}} days. Please keep for
+                your records.</p>
+            {{NOTES}}
+        </div>
+    </div>
+
+    <div class="receipt-footer">
+        <div class="signatures">
+            <div class="signature">
+                <div class="line"></div>
+                <div class="label">Parent/Guardian Signature</div>
+            </div>
+            <div class="signature">
+                <div class="line"></div>
+                <div class="label">Cashier Signature</div>
+            </div>
+            <div class="signature">
+                <div class="stamp">SCHOOL STAMP</div>
+            </div>
+        </div>
+        <div class="footer-note">{{FOOTER_TEXT}}</div>
+        <div class="generated">Generated: {{GENERATED_DATE}}</div>
+    </div>
+</div>
+
+<style>
+    .modern-receipt {
+        max-width: 400px;
+        margin: 0 auto;
+        background: white;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .receipt-header {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #1a3a5c, #2d5a8e);
+        color: white;
+        gap: 15px;
+    }
+
+    .school-logo {
+        font-size: 48px;
+    }
+
+    .header-center {
+        flex: 1;
+        text-align: center;
+    }
+
+    .school-name {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+
+    .school-address,
+    .school-phone {
+        font-size: 9px;
+        opacity: 0.8;
+    }
+
+    .receipt-badge {
+        background: #10b981;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .receipt-title-section {
+        text-align: center;
+        padding: 20px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .receipt-title-section h2 {
+        font-size: 14px;
+        margin-bottom: 5px;
+        color: #1a3a5c;
+    }
+
+    .receipt-number {
+        font-size: 11px;
+        color: #64748b;
+    }
+
+    .receipt-body {
+        padding: 20px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .info-group label {
+        font-size: 9px;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #64748b;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .info-content {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .fee-breakdown h3 {
+        font-size: 11px;
+        margin-bottom: 8px;
+        color: #1a3a5c;
+    }
+
+    .fee-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10px;
+    }
+
+    .fee-table th,
+    .fee-table td {
+        padding: 6px 0;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .fee-table td:last-child,
+    .fee-table th:last-child {
+        text-align: right;
+    }
+
+    .fee-table .total {
+        border-top: 2px solid #1a3a5c;
+        font-weight: bold;
+    }
+
+    .payment-status {
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .status-paid {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .status-partial {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .status-due {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .terms-notes {
+        font-size: 9px;
+        color: #64748b;
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .receipt-footer {
+        background: #f8fafc;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .signatures {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .signature {
+        text-align: center;
+        width: 30%;
+    }
+
+    .signature .line {
+        border-top: 1px solid #cbd5e1;
+        margin-bottom: 6px;
+        padding-top: 4px;
+    }
+
+    .signature .label {
+        font-size: 7px;
+        color: #64748b;
+    }
+
+    .signature .stamp {
+        font-size: 8px;
+        font-weight: bold;
+        color: #94a3b8;
+        border: 1px dashed #94a3b8;
+        padding: 4px;
+        border-radius: 4px;
+    }
+
+    .footer-note {
+        font-size: 8px;
+        margin-bottom: 6px;
+    }
+
+    .generated {
+        font-size: 7px;
+        color: #94a3b8;
+    }
+
+    @media print {
+        .modern-receipt {
+            box-shadow: none;
+            margin: 0;
+        }
+    }
+</style>

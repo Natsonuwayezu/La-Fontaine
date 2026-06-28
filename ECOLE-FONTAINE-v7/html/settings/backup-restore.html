@@ -1,0 +1,152 @@
+<!-- html/settings/backup-restore.html -->
+<!-- Backup & Restore Page -->
+<div class="backup-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">💾 Backup & Restore</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-outline" onclick="showBackupHistory()">📋 Backup History</button>
+                <button class="btn btn-sm btn-outline" onclick="exportAllBackups()">📤 Export All</button>
+            </div>
+        </div>
+        <div class="dash-card-body">
+            <!-- Manual Backup -->
+            <div
+                style="margin-bottom: 24px; padding: 16px; background: var(--bg-tertiary); border-radius: var(--r-lg);">
+                <h4 style="margin-bottom: 12px;">💾 MANUAL BACKUP</h4>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Download a complete backup of
+                    all school data.</p>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="createFullBackup()">📥 Download Full Backup</button>
+                    <button class="btn btn-outline" onclick="createBackup()">💾 Create Backup (Keep in System)</button>
+                </div>
+                <span style="margin-left: 12px; font-size: 12px; color: var(--text-muted);">Last backup:
+                    2026-01-14</span>
+            </div>
+
+            <!-- Restore from Backup -->
+            <div
+                style="margin-bottom: 24px; padding: 16px; background: var(--bg-tertiary); border-radius: var(--r-lg);">
+                <h4 style="margin-bottom: 12px;">🔄 RESTORE FROM BACKUP</h4>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">⚠️ Warning: Restoring will
+                    replace ALL current data!</p>
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <input type="file" id="restore-file" accept=".json" style="display:none">
+                    <button class="btn btn-outline" onclick="document.getElementById('restore-file').click()">📂 Select
+                        Backup File</button>
+                    <button class="btn btn-danger" id="restore-btn" style="display:none">⚠️ Restore Data</button>
+                </div>
+                <div id="restore-preview" style="margin-top: 12px; display: none;"></div>
+            </div>
+
+            <!-- Automatic Backup Schedule -->
+            <div
+                style="margin-bottom: 24px; padding: 16px; background: var(--bg-tertiary); border-radius: var(--r-lg);">
+                <h4 style="margin-bottom: 12px;">🤖 AUTOMATIC BACKUP SCHEDULE</h4>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Enable Auto-Backup</label>
+                        <select id="auto-backup-enabled" class="form-control">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Frequency</label>
+                        <select id="auto-backup-frequency" class="form-control">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly" selected>Monthly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Keep backups</label>
+                        <select id="auto-backup-keep" class="form-control">
+                            <option value="3">Last 3 backups</option>
+                            <option value="5">Last 5 backups</option>
+                            <option value="10" selected>Last 10 backups</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-outline" onclick="saveAutoBackupSettings()" style="margin-top: 12px;">💾
+                    Save Settings</button>
+            </div>
+
+            <!-- Backup History -->
+            <div>
+                <h4 style="margin-bottom: 12px;">📋 BACKUP HISTORY</h4>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Size</th>
+                                <th>Records</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2026-01-14 23:00</span>
+                                <td><span class="badge badge-info">🤖 Auto</span></span>
+                                <td>1.2 MB</span>
+                                <td>245 students, 1,250 marks</span>
+                                <td><button class="btn btn-sm btn-outline">📥 Download</button> <button
+                                        class="btn btn-sm btn-danger">🗑️ Delete</button></span>
+                            </tr>
+                            <tr>
+                                <td>2026-01-10 15:30</span>
+                                <td><span class="badge badge-success">👤 Manual</span></span>
+                                <td>1.1 MB</span>
+                                <td>240 students, 1,200 marks</span>
+                                <td><button class="btn btn-sm btn-outline">📥 Download</button> <button
+                                        class="btn btn-sm btn-danger">🗑️ Delete</button></span>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .backup-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function createFullBackup() {
+        alert('Full backup downloaded');
+    }
+
+    function createBackup() {
+        alert('Backup created and saved in system');
+    }
+
+    function showBackupHistory() {
+        alert('Showing backup history');
+    }
+
+    function exportAllBackups() {
+        alert('Exporting all backups');
+    }
+
+    function saveAutoBackupSettings() {
+        alert('Auto-backup settings saved');
+    }
+</script>

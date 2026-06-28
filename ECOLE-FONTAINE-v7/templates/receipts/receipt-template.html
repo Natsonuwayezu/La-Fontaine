@@ -1,0 +1,176 @@
+<!-- templates/receipts/receipt-template.html -->
+<!-- Standard Receipt Template for Payment Receipts -->
+<div class="receipt" id="receipt-template">
+    <div class="receipt-header">
+        <div class="school-logo">{{SCHOOL_LOGO}}</div>
+        <div class="school-name">{{SCHOOL_NAME}}</div>
+        <div class="receipt-title">OFFICIAL PAYMENT RECEIPT</div>
+        <div class="receipt-number">#{{RECEIPT_NUMBER}}</div>
+    </div>
+    
+    <div class="receipt-divider"></div>
+    
+    <div class="receipt-info">
+        <div class="info-row">
+            <span class="info-label">Date:</span>
+            <span class="info-value">{{DATE}}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Student Name:</span>
+            <span class="info-value">{{STUDENT_NAME}}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Student Code:</span>
+            <span class="info-value">{{STUDENT_CODE}}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Class:</span>
+            <span class="info-value">{{CLASS_NAME}}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Term:</span>
+            <span class="info-value">{{TERM_NAME}}</span>
+        </div>
+    </div>
+    
+    <div class="receipt-divider"></div>
+    
+    <div class="receipt-payment-details">
+        <div class="info-row">
+            <span class="info-label">Payment Method:</span>
+            <span class="info-value">{{PAYMENT_METHOD}}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Reference:</span>
+            <span class="info-value">{{REFERENCE}}</span>
+        </div>
+    </div>
+    
+    <div class="receipt-divider"></div>
+    
+    <div class="receipt-fees">
+        <table class="fees-table">
+            <thead>
+                <tr><th>Fee Category</th><th>Amount (RWF)</th></tr>
+            </thead>
+            <tbody>
+                {{FEE_ROWS}}
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td><strong>TOTAL PAID</strong></td>
+                    <td><strong>{{TOTAL_AMOUNT}}</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+    <div class="receipt-divider"></div>
+    
+    <div class="receipt-signatures">
+        <div class="signature-line">
+            <div class="signature-label">Parent/Guardian Signature</div>
+            <div class="signature-space">_________________</div>
+        </div>
+        <div class="signature-line">
+            <div class="signature-label">Cashier Signature</div>
+            <div class="signature-space">_________________</div>
+        </div>
+    </div>
+    
+    <div class="receipt-footer">
+        <div class="footer-text">{{FOOTER_TEXT}}</div>
+        <div class="generated-date">Generated on {{GENERATED_DATE}}</div>
+    </div>
+</div>
+
+<style>
+    .receipt {
+        max-width: 350px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        background: white;
+        border: 1px solid #ccc;
+    }
+    .receipt-header {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .school-logo {
+        font-size: 32px;
+        margin-bottom: 5px;
+    }
+    .school-name {
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .receipt-title {
+        font-size: 10px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-top: 5px;
+    }
+    .receipt-number {
+        font-size: 9px;
+        background: #f0f0f0;
+        display: inline-block;
+        padding: 2px 8px;
+        margin-top: 5px;
+    }
+    .receipt-divider {
+        border-top: 1px dashed #999;
+        margin: 10px 0;
+    }
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 5px 0;
+    }
+    .info-label {
+        font-weight: bold;
+    }
+    .fees-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+    }
+    .fees-table td, .fees-table th {
+        padding: 4px 0;
+        text-align: left;
+    }
+    .fees-table td:last-child, .fees-table th:last-child {
+        text-align: right;
+    }
+    .total-row {
+        border-top: 1px solid #000;
+        font-weight: bold;
+    }
+    .signature-line {
+        text-align: center;
+        margin-top: 15px;
+    }
+    .signature-space {
+        border-top: 1px solid #000;
+        width: 80%;
+        margin: 5px auto 0;
+        padding-top: 3px;
+        font-size: 8px;
+    }
+    .receipt-footer {
+        text-align: center;
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px solid #ccc;
+        font-size: 8px;
+        color: #666;
+    }
+    @media print {
+        .receipt {
+            border: none;
+            padding: 0;
+        }
+    }
+</style>

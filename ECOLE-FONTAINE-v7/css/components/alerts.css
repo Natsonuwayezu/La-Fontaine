@@ -1,0 +1,60 @@
+/* ============================================================
+   ALERT STYLES
+   ============================================================ */
+.alert {
+    padding: var(--md) var(--lg);
+    border-radius: var(--r-md);
+    font-size: .875rem;
+    margin-bottom: var(--md);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sm);
+}
+
+.alert-success {
+    background: var(--success-bg);
+    color: #065f46;
+}
+
+.alert-warning {
+    background: var(--warning-bg);
+    color: #92400e;
+}
+
+.alert-danger {
+    background: var(--danger-bg);
+    color: #991b1b;
+}
+
+.alert-info {
+    background: var(--info-bg);
+    color: #1e40af;
+}
+
+.alert-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.alert-content {
+    flex: 1;
+}
+
+.alert-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: inherit;
+    opacity: 0.6;
+    padding: 0;
+}
+
+.alert-close:hover {
+    opacity: 1;
+}

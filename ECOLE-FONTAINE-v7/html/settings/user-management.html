@@ -1,0 +1,161 @@
+<!-- html/settings/user-management.html -->
+<!-- User Management Page -->
+<div class="user-management-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">👥 User Management</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-primary" onclick="openAddUserModal()">➕ Create User</button>
+                <button class="btn btn-sm btn-outline" onclick="exportUsers()">📥 Export</button>
+            </div>
+        </div>
+        <div class="dash-card-body">
+            <div class="filters-bar">
+                <select id="user-role-filter" class="form-control" style="width:150px" onchange="filterUsers()">
+                    <option value="">All Roles</option>
+                    <option value="admin">Admin</option>
+                    <option value="accountant">Accountant</option>
+                    <option value="teacher">Teacher</option>
+                </select>
+                <select id="user-status-filter" class="form-control" style="width:130px" onchange="filterUsers()">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                <input type="text" id="user-search" class="form-control flex-1" placeholder="🔍 Search users..."
+                    oninput="filterUsers()">
+                <span class="result-count" id="user-count"></span>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                        <tr>
+                            <td>
+                                <div class="user-avatar">👨‍💼</div>
+                            </td>
+                            <td><strong>Administrator</strong></td>
+                            <td>admin@school.com</td>
+                            <td><code>admin</code></td>
+                            <td><span class="badge badge-danger">admin</span></td>
+                            <td><span class="badge badge-success">Active</span></td>
+                            <td>2026-01-15</td>
+                            <td><button class="btn btn-sm btn-outline">✏️</button> <button
+                                    class="btn btn-sm btn-warning">🔒</button> <button
+                                    class="btn btn-sm btn-danger">Deactivate</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-avatar">💰</div>
+                            </td>
+                            <td><strong>John Accountant</strong></td>
+                            <td>john@school.com</td>
+                            <td><code>john.a</code></td>
+                            <td><span class="badge badge-warning">accountant</span></td>
+                            <td><span class="badge badge-success">Active</span></td>
+                            <td>2026-01-14</td>
+                            <td><button class="btn btn-sm btn-outline">✏️</button> <button
+                                    class="btn btn-sm btn-warning">🔒</button> <button
+                                    class="btn btn-sm btn-danger">Deactivate</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-avatar">👩‍🏫</div>
+                            </td>
+                            <td><strong>Jane Teacher</strong></td>
+                            <td>jane@school.com</td>
+                            <td><code>jane.t</code></td>
+                            <td><span class="badge badge-info">teacher</span></td>
+                            <td><span class="badge badge-success">Active</span></td>
+                            <td>2026-01-13</td>
+                            <td><button class="btn btn-sm btn-outline">✏️</button> <button
+                                    class="btn btn-sm btn-warning">🔒</button> <button
+                                    class="btn btn-sm btn-danger">Deactivate</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:20px">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📊 User Statistics</span>
+        </div>
+        <div class="dash-card-body">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Admins</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Teachers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .user-management-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        background: var(--role-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function openAddUserModal() {
+        alert('Add user modal would open');
+    }
+
+    function filterUsers() {
+        alert('Filtering users');
+    }
+
+    function exportUsers() {
+        alert('Exporting users to Excel');
+    }
+</script>

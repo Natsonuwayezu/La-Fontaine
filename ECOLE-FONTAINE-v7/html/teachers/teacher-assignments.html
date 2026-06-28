@@ -1,0 +1,159 @@
+<!-- html/teachers/teacher-assignments.html -->
+<!-- Teacher Assignments Management Page -->
+<div class="assignments-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📌 Teacher Assignments</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-primary" onclick="openAssignmentModal()">➕ Assign</button>
+                <button class="btn btn-sm btn-outline" onclick="exportAssignments()">📥 Export</button>
+            </div>
+        </div>
+        <div class="dash-card-body">
+            <div class="filters-bar">
+                <select id="assign-teacher-filter" class="form-control" style="width:200px" onchange="filterAssignments()">
+                    <option value="">All Teachers</option>
+                    <option value="1">John MUKESA</option>
+                    <option value="2">Jane UWIMANA</option>
+                    <option value="3">Peter KAGAME</option>
+                </select>
+                <select id="assign-year-filter" class="form-control" style="width:150px" onchange="filterAssignments()">
+                    <option value="">All Years</option>
+                    <option value="2025">2025-2026</option>
+                    <option value="2026">2026-2027</option>
+                </select>
+                <span class="result-count" id="assign-count"></span>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Teacher</th>
+                            <th>Department</th>
+                            <th>Assigned Classes & Subjects</th>
+                            <th>Load</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assignments-tbody">
+                        <tr><td colspan="5" style="text-align:center;padding:40px">Loading assignments...</span></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:20px">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📊 Assignment Summary</span>
+        </div>
+        <div class="dash-card-body">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-assignments">0</div>
+                    <div class="stat-label">Total Assignments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="assigned-teachers">0</div>
+                    <div class="stat-label">Teachers with Assignments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="unassigned-teachers">0</div>
+                    <div class="stat-label">Unassigned Teachers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avg-load">0</div>
+                    <div class="stat-label">Average Load</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .assignments-container {
+        animation: fadeIn 0.3s ease;
+    }
+    .assignment-badge {
+        display: inline-block;
+        background: var(--info-bg);
+        color: var(--info);
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        margin: 2px;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    let assignmentsData = [
+        { teacherId: 1, teacherName: 'John MUKESA', department: 'Mathematics', assignments: [{ class: 'PRIMARY 4', subject: 'Mathematics' }, { class: 'PRIMARY 5', subject: 'Mathematics' }] },
+        { teacherId: 2, teacherName: 'Jane UWIMANA', department: 'English', assignments: [{ class: 'PRIMARY 4', subject: 'English' }, { class: 'PRIMARY 6', subject: 'English' }] },
+        { teacherId: 3, teacherName: 'Peter KAGAME', department: 'Science', assignments: [{ class: 'PRIMARY 5', subject: 'Science' }] }
+    ];
+
+    function renderAssignments() {
+        const tbody = document.getElementById('assignments-tbody');
+        
+        document.getElementById('total-assignments').textContent = assignmentsData.reduce((sum, t) => sum + t.assignments.length, 0);
+        document.getElementById('assigned-teachers').textContent = assignmentsData.length;
+        document.getElementById('avg-load').textContent = (assignmentsData.reduce((sum, t) => sum + t.assignments.length, 0) / assignmentsData.length).toFixed(1);
+
+        if (assignmentsData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px">No assignments found</span></tr>';
+            return;
+        }
+
+        tbody.innerHTML = assignmentsData.map(t => `
+            <tr>
+                <td><strong>${t.teacherName}</strong><br><small>${t.department}</small></span>
+                <td>${t.department}</span>
+                <td>
+                    ${t.assignments.map(a => `<span class="assignment-badge">${a.class} - ${a.subject}</span>`).join('') || '—'}
+                 </span>
+                <td style="text-align:center">${t.assignments.length}</span>
+                <td style="text-align:center">
+                    <div class="btn-group" style="gap:4px">
+                        <button class="btn btn-sm btn-outline" onclick="editAssignments(${t.teacherId})">✏️ Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="clearAssignments(${t.teacherId})">🗑️ Clear</button>
+                    </div>
+                </span>
+            </tr>
+        `).join('');
+    }
+
+    function filterAssignments() {
+        renderAssignments();
+    }
+
+    function openAssignmentModal() {
+        alert('Open assignment modal - select teacher, class, and subject');
+    }
+
+    function editAssignments(teacherId) {
+        alert(`Edit assignments for teacher ${teacherId} - matrix view would open`);
+    }
+
+    function clearAssignments(teacherId) {
+        if (confirm('Clear all assignments for this teacher?')) {
+            const teacher = assignmentsData.find(t => t.teacherId === teacherId);
+            if (teacher) {
+                teacher.assignments = [];
+                renderAssignments();
+                alert('Assignments cleared');
+            }
+        }
+    }
+
+    function exportAssignments() {
+        alert('Exporting assignments to Excel');
+    }
+
+    // Initial render
+    renderAssignments();
+</script>

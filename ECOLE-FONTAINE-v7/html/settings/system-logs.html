@@ -1,0 +1,126 @@
+<!-- html/settings/system-logs.html -->
+<!-- System Logs Page -->
+<div class="logs-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📋 System Logs</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-outline" onclick="exportLogs()">📥 Export</button>
+                <button class="btn btn-sm btn-outline" onclick="clearOldLogs()">🗑️ Clear Old Logs</button>
+                <button class="btn btn-sm btn-outline" onclick="refreshLogs()">🔄 Refresh</button>
+            </div>
+        </div>
+        <div class="dash-card-body">
+            <div class="filters-bar">
+                <select id="log-user-filter" class="form-control" style="width:130px" onchange="filterLogs()">
+                    <option value="">All Users</option>
+                    <option value="admin">Admin</option>
+                    <option value="accountant">Accountant</option>
+                    <option value="teacher">Teacher</option>
+                </select>
+                <select id="log-action-filter" class="form-control" style="width:150px" onchange="filterLogs()">
+                    <option value="">All Actions</option>
+                    <option value="login">Login</option>
+                    <option value="logout">Logout</option>
+                    <option value="insert">Created</option>
+                    <option value="update">Modified</option>
+                    <option value="delete">Deleted</option>
+                </select>
+                <input type="date" id="log-date-start" class="form-control" style="width:140px" onchange="filterLogs()">
+                <input type="date" id="log-date-end" class="form-control" style="width:140px" onchange="filterLogs()">
+                <input type="text" id="log-search" class="form-control flex-1" placeholder="🔍 Search logs..."
+                    oninput="filterLogs()">
+                <span class="result-count" id="log-count"></span>
+            </div>
+
+            <div class="table-wrapper" id="logs-table" style="max-height: 500px; overflow-y: auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                            <th>Entity Type</th>
+                            <th>Entity ID</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2026-01-15 08:30:45</span>
+                            <td>Admin</span>
+                            <td><span class="badge badge-danger">admin</span></span>
+                            <td>User logged in</span>
+                            <td>—</span>
+                            <td>—</span>
+                            <td>—</span>
+                        </tr>
+                        <tr>
+                            <td>2026-01-15 09:15:22</span>
+                            <td>John Teacher</span>
+                            <td><span class="badge badge-info">teacher</span></span>
+                            <td>Entered marks</span>
+                            <td>assessment</span>
+                            <td>45</span>
+                            <td>PRIMARY 4 - Mathematics Quiz</span>
+                        </tr>
+                        <tr>
+                            <td>2026-01-14 14:20:10</span>
+                            <td>Jane Accountant</span>
+                            <td><span class="badge badge-warning">accountant</span></span>
+                            <td>Recorded payment</span>
+                            <td>payment</span>
+                            <td>123</span>
+                                וניב50,000 RWF from John Doe</span>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" style="margin-top:16px">
+                <div class="page-btn active">1</div>
+                <div class="page-btn">2</div>
+                <div class="page-btn">3</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .logs-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function filterLogs() {
+        alert('Filtering logs');
+    }
+
+    function exportLogs() {
+        alert('Exporting logs to Excel');
+    }
+
+    function clearOldLogs() {
+        if (confirm('Clear logs older than 3 months?')) {
+            alert('Old logs cleared');
+        }
+    }
+
+    function refreshLogs() {
+        alert('Refreshing logs');
+    }
+</script>

@@ -1,0 +1,175 @@
+<!-- html/users/permissions.html -->
+<!-- User Permissions Management Page -->
+<div class="permissions-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">🔐 Role-Based Permissions</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-primary" onclick="addCustomRole()">➕ Add Custom Role</button>
+                <button class="btn btn-sm btn-outline" onclick="exportPermissions()">📥 Export</button>
+            </div>
+        </div>
+        <div class="dash-card-body">
+            <div class="role-tabs">
+                <button class="role-tab active" onclick="showRolePermissions('admin')">👨‍💼 Admin</button>
+                <button class="role-tab" onclick="showRolePermissions('accountant')">💰 Accountant</button>
+                <button class="role-tab" onclick="showRolePermissions('teacher')">👩‍🏫 Teacher</button>
+                <button class="role-tab" onclick="showRolePermissions('custom')">⚙️ Custom Roles</button>
+            </div>
+
+            <div id="permissions-table-container" class="table-wrapper" style="margin-top:20px">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Module</th>
+                            <th>View</th>
+                            <th>Create</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                            <th>Export</th>
+                        </tr>
+                    </thead>
+                    <tbody id="permissions-tbody">
+                        <!-- Permissions loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:20px">
+        <div class="dash-card-header">
+            <span class="dash-card-title">👥 User Role Assignments</span>
+            <button class="btn btn-sm btn-primary" onclick="assignUserRole()">➕ Assign Role</button>
+        </div>
+        <div class="dash-card-body" style="padding:0">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Current Role</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-roles-tbody">
+                        <tr>
+                            <td colspan="5" style="text-align:center;padding:40px">Loading users...</span>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .permissions-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    .role-tabs {
+        display: flex;
+        gap: 4px;
+        border-bottom: 2px solid var(--border-light);
+        margin-bottom: 20px;
+    }
+
+    .role-tab {
+        padding: 10px 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--text-muted);
+        transition: all 0.2s;
+    }
+
+    .role-tab:hover {
+        color: var(--text-primary);
+        background: var(--bg-tertiary);
+    }
+
+    .role-tab.active {
+        color: var(--role-primary);
+        border-bottom: 2px solid var(--role-primary);
+    }
+
+    .permission-checkbox {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function showRolePermissions(role) {
+        // Update active tab styling
+        document.querySelectorAll('.role-tab').forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
+
+        const tbody = document.getElementById('permissions-tbody');
+        const permissions = {
+            admin: [
+                { module: 'Dashboard', view: true, create: true, edit: true, delete: true, export: true },
+                { module: 'Students', view: true, create: true, edit: true, delete: true, export: true },
+                { module: 'Teachers', view: true, create: true, edit: true, delete: true, export: true },
+                { module: 'Finance', view: true, create: true, edit: true, delete: true, export: true },
+                { module: 'Settings', view: true, create: true, edit: true, delete: true, export: true }
+            ],
+            accountant: [
+                { module: 'Dashboard', view: true, create: false, edit: false, delete: false, export: true },
+                { module: 'Students', view: true, create: false, edit: false, delete: false, export: true },
+                { module: 'Finance', view: true, create: true, edit: true, delete: false, export: true },
+                { module: 'Reports', view: true, create: false, edit: false, delete: false, export: true }
+            ],
+            teacher: [
+                { module: 'Dashboard', view: true, create: false, edit: false, delete: false, export: false },
+                { module: 'Marks Entry', view: true, create: true, edit: true, delete: false, export: true },
+                { module: 'Class Register', view: true, create: false, edit: false, delete: false, export: true },
+                { module: 'Assessments', view: true, create: true, edit: true, delete: false, export: false }
+            ]
+        };
+
+        const perms = permissions[role] || permissions.admin;
+        tbody.innerHTML = perms.map(p => `
+            <tr>
+                <td><strong>${p.module}</strong></td>
+                <td style="text-align:center"><input type="checkbox" class="permission-checkbox" ${p.view ? 'checked' : ''} ${role !== 'custom' ? 'disabled' : ''}></span>
+                <td style="text-align:center"><input type="checkbox" class="permission-checkbox" ${p.create ? 'checked' : ''} ${role !== 'custom' ? 'disabled' : ''}></span>
+                <td style="text-align:center"><input type="checkbox" class="permission-checkbox" ${p.edit ? 'checked' : ''} ${role !== 'custom' ? 'disabled' : ''}></span>
+                <td style="text-align:center"><input type="checkbox" class="permission-checkbox" ${p.delete ? 'checked' : ''} ${role !== 'custom' ? 'disabled' : ''}></span>
+                <td style="text-align:center"><input type="checkbox" class="permission-checkbox" ${p.export ? 'checked' : ''} ${role !== 'custom' ? 'disabled' : ''}></span>
+            </tr>
+        `).join('');
+    }
+
+    function addCustomRole() {
+        alert('Add custom role functionality');
+    }
+
+    function exportPermissions() {
+        alert('Exporting permissions data');
+    }
+
+    function assignUserRole() {
+        alert('Assign user role functionality');
+    }
+
+    // Load default role (admin)
+    showRolePermissions('admin');
+</script>

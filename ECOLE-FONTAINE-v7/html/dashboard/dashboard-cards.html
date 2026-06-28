@@ -1,0 +1,250 @@
+<!-- html/dashboard/dashboard-cards.html -->
+<!-- Dashboard Cards Component -->
+<div class="dashboard-cards">
+    <!-- Student Statistics Card -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <div class="card-icon">👥</div>
+            <div class="card-title">Student Statistics</div>
+        </div>
+        <div class="card-body">
+            <div class="stat-row">
+                <span class="stat-label">Total Students</span>
+                <span class="stat-value" id="card-total-students">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Active Students</span>
+                <span class="stat-value" id="card-active-students">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">New This Month</span>
+                <span class="stat-value" id="card-new-students">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Graduated</span>
+                <span class="stat-value" id="card-graduated">0</span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="#" onclick="navigateTo('student-list')">View All →</a>
+        </div>
+    </div>
+
+    <!-- Financial Statistics Card -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <div class="card-icon">💰</div>
+            <div class="card-title">Financial Overview</div>
+        </div>
+        <div class="card-body">
+            <div class="stat-row">
+                <span class="stat-label">Total Fees</span>
+                <span class="stat-value" id="card-total-fees">0 RWF</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Collected</span>
+                <span class="stat-value success" id="card-collected">0 RWF</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Outstanding</span>
+                <span class="stat-value danger" id="card-outstanding">0 RWF</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Collection Rate</span>
+                <span class="stat-value" id="card-collection-rate">0%</span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="#" onclick="navigateTo('financial-reports')">View Reports →</a>
+        </div>
+    </div>
+
+    <!-- Academic Statistics Card -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <div class="card-icon">📚</div>
+            <div class="card-title">Academic Overview</div>
+        </div>
+        <div class="card-body">
+            <div class="stat-row">
+                <span class="stat-label">Assessments</span>
+                <span class="stat-value" id="card-assessments">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Marks Entered</span>
+                <span class="stat-value" id="card-marks">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Pass Rate</span>
+                <span class="stat-value" id="card-pass-rate">0%</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Top Class</span>
+                <span class="stat-value" id="card-top-class">—</span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="#" onclick="navigateTo('statistics')">View Analytics →</a>
+        </div>
+    </div>
+
+    <!-- Staff Statistics Card -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <div class="card-icon">👩‍🏫</div>
+            <div class="card-title">Staff Overview</div>
+        </div>
+        <div class="card-body">
+            <div class="stat-row">
+                <span class="stat-label">Total Teachers</span>
+                <span class="stat-value" id="card-teachers">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Active Teachers</span>
+                <span class="stat-value" id="card-active-teachers">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Classes</span>
+                <span class="stat-value" id="card-classes">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Subjects</span>
+                <span class="stat-value" id="card-subjects">0</span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="#" onclick="navigateTo('teachers-list')">Manage Staff →</a>
+        </div>
+    </div>
+
+    <!-- Pending Tasks Card -->
+    <div class="dashboard-card warning-card">
+        <div class="card-header">
+            <div class="card-icon">⏰</div>
+            <div class="card-title">Pending Tasks</div>
+        </div>
+        <div class="card-body">
+            <div class="stat-row">
+                <span class="stat-label">Marks Pending</span>
+                <span class="stat-value" id="card-pending-marks">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Overdue Payments</span>
+                <span class="stat-value danger" id="card-overdue">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Unlocked Assessments</span>
+                <span class="stat-value" id="card-unlocked">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Pending Sync</span>
+                <span class="stat-value" id="card-pending-sync">0</span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="#" onclick="navigateTo('overdue-payments')">View Tasks →</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
+    .dashboard-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-light);
+        border-radius: var(--r-lg);
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .dashboard-card.warning-card {
+        border-left: 4px solid var(--warning);
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        background: var(--bg-tertiary);
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .card-icon {
+        font-size: 28px;
+    }
+
+    .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .card-body {
+        padding: 16px 20px;
+    }
+
+    .stat-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .stat-row:last-child {
+        border-bottom: none;
+    }
+
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 13px;
+    }
+
+    .stat-value {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .stat-value.success {
+        color: var(--success);
+    }
+
+    .stat-value.danger {
+        color: var(--danger);
+    }
+
+    .card-footer {
+        padding: 12px 20px;
+        background: var(--bg-tertiary);
+        border-top: 1px solid var(--border-light);
+        text-align: right;
+    }
+
+    .card-footer a {
+        color: var(--role-primary);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .card-footer a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-cards {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

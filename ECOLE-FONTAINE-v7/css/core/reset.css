@@ -1,0 +1,98 @@
+/* ============================================================
+   RESET & BASE STYLES
+   ============================================================ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background var(--transition), color var(--transition);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--md);
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+}
+
+h4 {
+    font-size: 1rem;
+}
+
+a {
+    color: var(--info);
+    text-decoration: none;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+input,
+select,
+textarea,
+button {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+:focus-visible {
+    outline: 2px solid var(--role-primary);
+    outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-dark);
+}

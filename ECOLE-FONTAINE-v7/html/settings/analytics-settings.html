@@ -1,0 +1,130 @@
+<!-- html/settings/analytics-settings.html -->
+<!-- Analytics Settings Page -->
+<div class="analytics-settings-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📊 Analytics Settings</span>
+            <button class="btn btn-sm btn-success" onclick="saveAnalyticsSettings()">💾 Save Settings</button>
+        </div>
+        <div class="dash-card-body">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Default Analytics Period</label>
+                    <select id="analytics-period" class="form-control">
+                        <option value="current_term" selected>Current Term</option>
+                        <option value="current_year">Current Academic Year</option>
+                        <option value="last_3_years">Last 3 Years</option>
+                        <option value="all">All Time</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Dashboard Charts Refresh Rate (seconds)</label>
+                    <input type="number" id="analytics-refresh-rate" value="60" min="10" max="3600"
+                        class="form-control">
+                    <small>How often auto-refresh analytics charts (0 = disabled)</small>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="analytics-show-comparison" checked> Show Year-over-Year
+                        Comparison</label>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="analytics-show-trend-lines" checked> Show Trend Lines on
+                        Charts</label>
+                </div>
+                <div class="form-group full">
+                    <label>Default Report Format</label>
+                    <select id="analytics-default-format" class="form-control">
+                        <option value="pdf">PDF Document</option>
+                        <option value="excel" selected>Excel Spreadsheet</option>
+                        <option value="csv">CSV File</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:20px">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📈 Report Templates</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-outline" onclick="exportTemplates()">📥 Export Templates</button>
+                <button class="btn btn-sm btn-primary" onclick="uploadTemplate()">📤 Upload Custom Template</button>
+            </div>
+        </div>
+        <div class="dash-card-body">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Template Name</th>
+                            <th>Type</th>
+                            <th>Uploaded</th>
+                            <th>Size</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Standard Report Card</strong></td>
+                            <td>Report Card</span>
+                            <td>2026-01-10</span>
+                            <td>45 KB</span>
+                            <td><button class="btn btn-sm btn-outline">👁️</button> <button
+                                    class="btn btn-sm btn-danger">🗑️</button></span>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:20px">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📊 Cached Analytics Data</span>
+            <button class="btn btn-sm btn-danger" onclick="clearAnalyticsCache()">🗑️ Clear Cache</button>
+        </div>
+        <div class="dash-card-body">
+            <div class="alert alert-info">
+                Last cache update: 2026-01-15 08:30:00
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .analytics-settings-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function saveAnalyticsSettings() {
+        alert('Analytics settings saved');
+    }
+
+    function exportTemplates() {
+        alert('Exporting report templates');
+    }
+
+    function uploadTemplate() {
+        alert('Upload template modal would open');
+    }
+
+    function clearAnalyticsCache() {
+        if (confirm('Clear all cached analytics data?')) {
+            alert('Analytics cache cleared');
+        }
+    }
+</script>

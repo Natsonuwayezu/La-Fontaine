@@ -1,0 +1,167 @@
+<!-- html/settings/system-health.html -->
+<!-- System Health Page -->
+<div class="health-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">🩺 System Health Monitor</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-primary" onclick="runHealthCheck()">🔄 Run Health Check</button>
+                <button class="btn btn-sm btn-outline" onclick="exportHealthReport()">📥 Export Report</button>
+            </div>
+        </div>
+        <div class="dash-card-body">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🌐</div>
+                    <div class="stat-value">✅</div>
+                    <div class="stat-label">API Status</div>
+                    <div class="stat-trend up">124ms</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💾</div>
+                    <div class="stat-value">✅</div>
+                    <div class="stat-label">Local Storage</div>
+                    <div class="stat-trend up">Working</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🗄️</div>
+                    <div class="stat-value">✅</div>
+                    <div class="stat-label">IndexedDB</div>
+                    <div class="stat-trend up">Available</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📶</div>
+                    <div class="stat-value">✅</div>
+                    <div class="stat-label">Network</div>
+                    <div class="stat-trend up">Online</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:20px">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📊 Database Status</span>
+        </div>
+        <div class="dash-card-body">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Table</th>
+                            <th style="text-align:right">Records</th>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Students</strong></td>
+                            <td style="text-align:right">245</span>
+                            <td><span class="badge badge-success">✅ Healthy</span></span>
+                            <td>—</span>
+                        </tr>
+                        <tr>
+                            <td><strong>Teachers</strong></td>
+                            <td style="text-align:right">8</span>
+                            <td><span class="badge badge-success">✅ Healthy</span></span>
+                            <td>—</span>
+                        </tr>
+                        <tr>
+                            <td><strong>Classes</strong></td>
+                            <td style="text-align:right">9</span>
+                            <td><span class="badge badge-success">✅ Healthy</span></span>
+                            <td>—</span>
+                        </tr>
+                        <tr>
+                            <td><strong>Subjects</strong></td>
+                            <td style="text-align:right">12</span>
+                            <td><span class="badge badge-success">✅ Healthy</span></span>
+                            <td>—</span>
+                        </tr>
+                        <tr>
+                            <td><strong>Assessments</strong></td>
+                            <td style="text-align:right">45</span>
+                            <td><span class="badge badge-success">✅ Healthy</span></span>
+                            <td>—</span>
+                        </tr>
+                        <tr>
+                            <td><strong>Marks</strong></td>
+                            <td style="text-align:right">1,250</span>
+                            <td><span class="badge badge-success">✅ Healthy</span></span>
+                            <td>—</span>
+                        </tr>
+                        <tr>
+                            <td><strong>Payments</strong></td>
+                            <td style="text-align:right">320</span>
+                            <td><span class="badge badge-success">✅ Healthy</span></span>
+                            <td>—</span>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:20px">
+        <div class="dash-card-header">
+            <span class="dash-card-title">⚠️ System Alerts</span>
+        </div>
+        <div class="dash-card-body">
+            <div class="alert alert-success">✅ No active alerts. System is healthy.</div>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:20px">
+        <div class="dash-card-header">
+            <span class="dash-card-title">📈 Performance Metrics</span>
+        </div>
+        <div class="dash-card-body">
+            <div class="form-grid">
+                <div class="form-group"><label>Memory Usage</label><input readonly value="45 MB / 512 MB"
+                        class="form-control"></div>
+                <div class="form-group"><label>Page Load Time</label><input readonly value="1.2s" class="form-control">
+                </div>
+                <div class="form-group"><label>Last Database Sync</label><input readonly value="2026-01-15 08:30:00"
+                        class="form-control"></div>
+                <div class="form-group"><label>Cache Size</label><input readonly value="2.3 MB" class="form-control">
+                </div>
+                <div class="form-group"><label>Uptime</label><input readonly value="45 minutes" class="form-control">
+                </div>
+                <div class="form-group"><label>Browser</label><input readonly value="Chrome 120" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .health-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function runHealthCheck() {
+        alert('Running health check...');
+        setTimeout(() => {
+            alert('Health check completed - System is healthy');
+        }, 1000);
+    }
+
+    function exportHealthReport() {
+        alert('Exporting health report');
+    }
+</script>

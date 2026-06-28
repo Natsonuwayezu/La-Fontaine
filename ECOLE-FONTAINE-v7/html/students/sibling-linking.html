@@ -1,0 +1,159 @@
+<!-- html/students/sibling-linking.html -->
+<!-- Sibling Linking Page -->
+<div class="sibling-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">👨‍👩‍👧 Family & Sibling Management</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-primary" onclick="createFamily()">➕ Create Family</button>
+                <button class="btn btn-sm btn-outline" onclick="autoDetectSiblings()">🔍 Auto-Detect</button>
+            </div>
+        </div>
+        <div class="dash-card-body">
+            <div class="tabs"
+                style="display:flex; gap:2px; border-bottom:2px solid var(--border-light); margin-bottom:16px">
+                <button class="tab-btn active" onclick="showTab('families', event)">🏠 Families</button>
+                <button class="tab-btn" onclick="showTab('linked', event)">👥 Linked Students</button>
+                <button class="tab-btn" onclick="showTab('unlinked', event)">📋 Unlinked Students</button>
+            </div>
+
+            <div id="families-tab" class="tab-content">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Family Code</th>
+                                <th>Guardian Name</th>
+                                <th>Phone</th>
+                                <th>Students</th>
+                                <th>Discount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>FAM-001</code></td>
+                                <td>John Doe</td>
+                                <td>+250788123456</td>
+                                <td>2</td>
+                                <td>10,000 RWF</td>
+                                <td><button class="btn btn-sm btn-outline">✏️</button> <button
+                                        class="btn btn-sm btn-danger">🗑️</button></td>
+                            </tr>
+                            <tr>
+                                <td><code>FAM-002</code></td>
+                                <td>Jane Smith</td>
+                                <td>+250788654321</td>
+                                <td>1</td>
+                                <td>0 RWF</td>
+                                <td><button class="btn btn-sm btn-outline">✏️</button> <button
+                                        class="btn btn-sm btn-danger">🗑️</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="linked-tab" class="tab-content" style="display:none">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Class</th>
+                                <th>Family Code</th>
+                                <th>Guardian</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" style="text-align:center">No linked students</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="unlinked-tab" class="tab-content" style="display:none">
+                <div class="filters-bar"><input type="text" id="unlinked-search" placeholder="🔍 Search students..."
+                        class="form-control" oninput="filterUnlinked()"></div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Class</th>
+                                <th>Guardian</th>
+                                <th>Phone</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unlinked-tbody">
+                            <tr>
+                                <td>John Doe</td>
+                                <td>PRIMARY 4</td>
+                                <td>Jane Doe</td>
+                                <td>+250788123456</td>
+                                <td><button class="btn btn-sm btn-primary">🔗 Link</button></td>
+                            </tr>
+                            <tr>
+                                <td>Mary Doe</td>
+                                <td>PRIMARY 1</td>
+                                <td>Jane Doe</td>
+                                <td>+250788123456</td>
+                                <td><button class="btn btn-sm btn-primary">🔗 Link</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .sibling-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function showTab(tabName, event) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        document.getElementById('families-tab').style.display = tabName === 'families' ? 'block' : 'none';
+        document.getElementById('linked-tab').style.display = tabName === 'linked' ? 'block' : 'none';
+        document.getElementById('unlinked-tab').style.display = tabName === 'unlinked' ? 'block' : 'none';
+    }
+
+    function createFamily() {
+        alert('Create family modal would open');
+    }
+
+    function autoDetectSiblings() {
+        alert('Auto-detecting sibling groups');
+    }
+
+    function filterUnlinked() {
+        const search = document.getElementById('unlinked-search').value.toLowerCase();
+        const rows = document.querySelectorAll('#unlinked-tbody tr');
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(search) ? '' : 'none';
+        });
+    }
+</script>

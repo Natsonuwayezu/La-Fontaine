@@ -1,0 +1,117 @@
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-small {
+    font-size: 0.75rem;
+}
+
+.text-medium {
+    font-size: 0.875rem;
+}
+
+.text-large {
+    font-size: 1rem;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+}
+
+.text-bold {
+    font-weight: 700;
+}
+
+.text-semibold {
+    font-weight: 600;
+}
+
+.text-normal {
+    font-weight: 400;
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.text-primary {
+    color: var(--text-primary);
+}
+
+.text-success {
+    color: var(--success);
+}
+
+.text-warning {
+    color: var(--warning);
+}
+
+.text-danger {
+    color: var(--danger);
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Line clamp utility - limits text to 2 lines */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* Standard property (modern browsers) */
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    overflow: hidden;
+    /* Fallback for very old browsers */
+    max-height: 2.8em;
+    /* Roughly 2 lines depending on line-height */
+    line-height: 1.4;
+}
+
+/* 3 line clamp variant */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    overflow: hidden;
+    max-height: 4.2em;
+    line-height: 1.4;
+}
+
+/* 1 line clamp variant */
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    overflow: hidden;
+}

@@ -1,0 +1,160 @@
+/* ============================================================
+   ASSESSMENTS PAGE STYLES
+   ============================================================ */
+.assessment-filters {
+    display: flex;
+    gap: var(--md);
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-bottom: var(--lg);
+    padding: var(--md);
+    background: var(--bg-tertiary);
+    border-radius: var(--r-lg);
+}
+
+.assessment-filters .form-group {
+    margin: 0;
+    min-width: 150px;
+}
+
+.assessment-section {
+    margin-bottom: var(--xl);
+}
+
+.assessment-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--md);
+    padding-bottom: var(--sm);
+    border-bottom: 2px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--sm);
+}
+
+/* Assessment Cards */
+.assessment-item {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-lg);
+    margin-bottom: var(--sm);
+    transition: all var(--transition);
+}
+
+.assessment-item:hover {
+    border-color: var(--border-medium);
+    box-shadow: var(--shadow-sm);
+}
+
+.assessment-item-header {
+    padding: var(--md) var(--lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--sm);
+    cursor: pointer;
+}
+
+.assessment-item-title {
+    font-weight: 600;
+    font-size: .9rem;
+    display: flex;
+    align-items: center;
+    gap: var(--sm);
+    flex-wrap: wrap;
+}
+
+.assessment-item-meta {
+    display: flex;
+    gap: var(--lg);
+    font-size: .75rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+}
+
+.assessment-item-body {
+    padding: var(--md) var(--lg);
+    border-top: 1px solid var(--border-light);
+    display: none;
+}
+
+.assessment-item.expanded .assessment-item-body {
+    display: block;
+}
+
+.assessment-stats {
+    display: flex;
+    gap: var(--lg);
+    margin-bottom: var(--md);
+    flex-wrap: wrap;
+}
+
+.assessment-stat {
+    background: var(--bg-tertiary);
+    padding: var(--sm) var(--md);
+    border-radius: var(--r-md);
+    font-size: .8rem;
+}
+
+.assessment-stat-label {
+    color: var(--text-muted);
+    margin-right: var(--sm);
+}
+
+.assessment-stat-value {
+    font-weight: 600;
+    color: var(--role-primary);
+}
+
+/* Lock/Unlock Button */
+.btn-lock {
+    background: var(--warning);
+    color: #fff;
+}
+
+.btn-unlock {
+    background: var(--success);
+    color: #fff;
+}
+
+/* Bulk Lock Modal */
+.bulk-lock-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.bulk-lock-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sm);
+    padding: var(--sm) var(--md);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.bulk-lock-item:last-child {
+    border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .assessment-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .assessment-filters .form-group {
+        width: 100%;
+    }
+
+    .assessment-item-meta {
+        gap: var(--md);
+    }
+
+    .assessment-stats {
+        flex-direction: column;
+        gap: var(--sm);
+    }
+}

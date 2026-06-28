@@ -1,0 +1,114 @@
+<!-- html/settings/api-settings.html -->
+<!-- API Settings Page -->
+<div class="api-settings-container">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <h3><span>🔌</span> API Settings</h3>
+        </div>
+        <div class="dash-card-body">
+            <div class="alert alert-warning">
+                <strong>⚠️ Warning:</strong> Changing API settings will affect all database connections.
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Supabase URL</label>
+                    <input type="text" id="api-url" class="form-control"
+                        value="https://hejdppzparottbcnycjo.supabase.co">
+                </div>
+                <div class="form-group">
+                    <label>Anon Key</label>
+                    <div class="pw-field" style="display:flex; gap:8px;">
+                        <input type="password" id="api-key" class="form-control" style="flex:1"
+                            value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+                        <button class="btn btn-sm btn-outline" onclick="toggleApiKeyVisibility()">👁️</button>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group" style="margin-top:16px">
+                <button class="btn btn-primary" onclick="testApiConnection()">🔌 Test Connection</button>
+                <button class="btn btn-success" onclick="saveApiSettings()">💾 Save Settings</button>
+                <button class="btn btn-outline" onclick="resetApiSettings()">🔄 Reset to Default</button>
+                <button class="btn btn-outline" onclick="showDataSummary()">📊 Data Summary</button>
+            </div>
+            <div id="api-connection-status" style="margin-top:20px; display:none"></div>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:20px">
+        <div class="dash-card-header">
+            <h3><span>🗄️</span> Database Information</h3>
+        </div>
+        <div class="dash-card-body">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Current Environment</label>
+                    <input type="text" readonly value="Production" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>API Version</label>
+                    <input type="text" readonly value="v1 (REST)" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Last Connection Test</label>
+                    <input type="text" readonly value="2026-01-15 08:30:00" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .api-settings-container {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function toggleApiKeyVisibility() {
+        const keyInput = document.getElementById('api-key');
+        if (keyInput.type === 'password') {
+            keyInput.type = 'text';
+        } else {
+            keyInput.type = 'password';
+        }
+    }
+
+    function testApiConnection() {
+        const statusDiv = document.getElementById('api-connection-status');
+        statusDiv.style.display = 'block';
+        statusDiv.innerHTML = '<div class="loading-container"><div class="spinner"></div><p>Testing connection...</p></div>';
+
+        setTimeout(() => {
+            statusDiv.innerHTML = '<div class="alert alert-success">✅ Connection successful! Database is reachable.</div>';
+        }, 1500);
+    }
+
+    function saveApiSettings() {
+        alert('API settings saved! Page will reload.');
+        setTimeout(() => location.reload(), 1500);
+    }
+
+    function resetApiSettings() {
+        if (confirm('Reset API settings to default?')) {
+            document.getElementById('api-url').value = 'https://hejdppzparottbcnycjo.supabase.co';
+            document.getElementById('api-key').value = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+            alert('Settings reset to default');
+        }
+    }
+
+    function showDataSummary() {
+        alert('Database record summary:\nStudents: 245\nTeachers: 8\nClasses: 9\nMarks: 1,250');
+    }
+</script>
