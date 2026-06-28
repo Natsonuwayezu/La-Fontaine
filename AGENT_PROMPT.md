@@ -1,334 +1,303 @@
-# AGENT PROMPT — ÉCOLE LA FONTAINE SCHOOL MANAGEMENT SYSTEM
-# ============================================================
-# READ THIS FIRST before touching any file in this repository.
-# This prompt is designed for any AI agent (Claude, GPT, Gemini,
-# Copilot, or any other) to immediately understand the project,
-# pick up where the last agent left off, and contribute correctly.
-# ============================================================
-
-
-## 1. WHAT IS THIS PROJECT?
-
-A **school management SPA** (Single-Page Application) for
-**École La Fontaine**, a primary school (P1–P6) in Kigali, Rwanda.
-
-The app manages: student enrollment, academic marks, report cards,
-attendance, staff, fee collection, receipts, and all school settings.
-
-**Technology stack:**
-- Frontend: Pure HTML + CSS + Vanilla JavaScript (no framework)
-- Database: Supabase (PostgreSQL), REST API
-- Hosting: GitHub Pages / Netlify (static)
-- Language: Bilingual — French primary, English secondary
-- Currency: RWF (Rwandan Franc)
-
-**School details:**
-- Name: École La Fontaine
-- Location: Kigali, Rwanda
-- Classes: P1, P2, P2B, P3, P4, P5, P6 (7 total, P2B is parallel class)
-- Academic year: 2025–2026 (3 terms)
-
-**Repository:** https://github.com/Natsonuwayezu/La-Fontaine
-**Supabase project:** ovmymtdrugdljnttiltd (region: eu-west-1)
-**Admin login:** username=admin, password=admin123
-
-
-## 2. FOUR KEY FILES — READ THEM ALL
-
-| File | Purpose |
-|------|---------|
-| `frontend.txt` | 14,355-line ASCII wireframes of every page/screen |
-| `backend.txt`  | All formulas, business logic, DB schema, rules |
-| `progress.txt` | Task tracker — shows what's done, in progress, TODO |
-| `AGENT_PROMPT.md` | This file — how to contribute correctly |
-
-**Before doing ANY work:**
-1. Read `progress.txt` to see current state and what's next
-2. Read `backend.txt` for the specific section you'll work on
-3. Check `frontend.txt` for the wireframe of the page you're building
-4. After completing a task, update `progress.txt` (change [ ] to [x])
-
-
-## 3. CURRENT STATE OF THE CODE
-
-The main working file is **`index.html`** (37,623 lines).
-It contains all HTML, CSS, and JavaScript in one file.
-This is intentional — it works as a fully offline-capable SPA.
-
-**Do NOT refactor into separate files** unless specifically asked.
-The multi-file structure in `js/`, `css/`, `html/` is aspirational
-and currently incomplete (patches folder = 530KB of overflow code).
-
-**Working modules (SHELL + LOGIC exists):**
-marks entry, payments, fee structure, staff, students list,
-report cards, transcripts, class register, attendance entry,
-attendance summary, dashboard, settings, academic years,
-grading scale, backup/restore, API settings, system logs,
-announcements, reminders, timetable
-
-**Not yet built (TODO):**
-student profile, family groups, teacher performance,
-fee waivers, student balances, payment reversals,
-statistics/analytics, bulk import/export, system health,
-attendance reports, academic calendar
-
-
-## 4. DATABASE — SUPABASE
-
-**Connection:**
-```
-URL: https://ovmymtdrugdljnttiltd.supabase.co
-Anon key: stored in localStorage key 'sb_key'
-          (visible in js/config/supabase-config.js — UPDATE THIS)
-```
-
-**CRITICAL:** The code currently points to the OLD Supabase project
-(hejdppzparottbcnycjo). You MUST update it to use the new project.
-See progress.txt task P0-10 / P1-05.
-
-**All 23 tables exist and are seeded** (created 2026-06-28).
-See `backend.txt` Section 3 for full schema of every table.
-
-**API pattern used:**
-```javascript
-// GET
-const rows = await api('students?is_deleted=eq.false&order=last_name', 'GET');
-
-// POST (insert)
-const result = await api('students', 'POST', { first_name, last_name, ... });
-
-// PATCH (update)
-await api('students?id=eq.' + id, 'PATCH', { status: 'Inactive' });
-
-// UPSERT (insert or update)
-await api('marks', 'POST', payload);
-// with header: 'Prefer': 'resolution=merge-duplicates'
-```
-
-**RLS is currently DISABLED** — all tables are public.
-This is a security risk. Task P0-04 needs RLS policies.
-Suggested policy (apply to each table):
-```sql
--- Allow all authenticated reads, restrict writes to admin
-CREATE POLICY "read_all" ON tablename FOR SELECT USING (true);
-CREATE POLICY "admin_write" ON tablename FOR ALL
-  USING (auth.role() = 'authenticated');
-```
-NOTE: Since the app uses custom auth (not Supabase Auth), RLS is complex.
-For now, the risk is acceptable for a school intranet. Do not block on this.
-
-
-## 5. HOW TO WORK ON A FEATURE
-
-### If building a new page:
-1. Find the wireframe in `frontend.txt` (search by page name)
-2. Read the behaviour spec in `backend.txt` Section 7
-3. Find the JS module file in `js/modules/` (or `index.html` for inline)
-4. Implement: render function → data fetch → event handlers → exports
-5. Register in the navigation system (buildSidebar, navigateTo)
-6. Expose functions via `window.functionName = functionName`
-7. Test: load page, CRUD operations, edge cases (empty state, errors)
-8. Update `progress.txt`: change `[ ]` to `[x]`, add DONE_BY + DATE
-
-### If fixing a bug:
-1. Find the bug in `backend.txt` Section 11 (BUG-001 to BUG-006)
-2. Read the fix instructions
-3. Apply the fix in the correct file
-4. Update `progress.txt`: find the task (P1-01 to P1-05) and mark done
-
-### If modifying the database:
-1. Use Supabase MCP tool or SQL editor
-2. Document any new tables/columns in `backend.txt` Section 3
-3. Add a migration note to `docs/changelog.md`
-
-
-## 6. CODE CONVENTIONS
-
-**JavaScript:**
-```javascript
-// All functions exposed via window for onclick= handlers
-window.myFunction = myFunction;
-
-// API calls always go through api() wrapper
-async function api(path, method = 'GET', body = null) { ... }
-
-// State is a single global object
-const state = { students: [], teachers: [], ... };
-
-// Escape HTML before rendering (prevent XSS)
-function esc(str) { return String(str || '').replace(/[&<>"']/g, ...); }
-
-// Format currency
-function formatCurrency(amount) { return 'RWF ' + Math.round(amount).toLocaleString(); }
-
-// Format date for display (DD/MM/YYYY)
-function fmtDate(dateStr) { ... }
-```
-
-**DO NOT:**
-- Use React, Vue, Angular, or any framework
-- Use Supabase JS client library (uses direct REST fetch instead)
-- Use Supabase Auth (uses custom auth stored in localStorage)
-- Add new external CDN dependencies without checking if already loaded
-- Hardcode grade boundaries or pass marks (always read from state)
-- Create new patch files — put code in the correct module instead
-
-**DO:**
-- Always call `esc()` before inserting user data into HTML
-- Always refresh state after mutations: `await refreshTable('tablename')`
-- Always log mutations: `logActivity(action, tableName, recordId)`
-- Always show feedback: `showToast('Success message', 'success')`
-- Always handle errors: `try { ... } catch(e) { showToast(e.message, 'error') }`
-
-
-## 7. ROLE SYSTEM
-
-Three roles — always check before rendering admin-only features:
-
-```javascript
-const isAdmin = () => state.currentUser?.role === 'admin';
-const isTeacher = () => state.currentUser?.role === 'teacher';
-const isAccountant = () => state.currentUser?.role === 'accountant';
-
-// Hide/disable admin-only buttons for non-admins
-if (!isAdmin()) {
-  document.getElementById('delete-btn')?.remove();
-}
-```
-
-See `backend.txt` Section 2 for full list of which modules each role can access.
-See `js/config/role-permissions.js` for the ADMIN_ONLY_MODULES set.
-
-
-## 8. KEY FORMULAS (quick reference)
-
-**Grade from percentage:**
-```javascript
-function getGrade(pct) {
-  const scale = state.gradingScale.length ? state.gradingScale : DEFAULT_GRADES;
-  return scale.find(g => pct >= g.min_percentage && pct <= g.max_percentage)
-    || scale[scale.length - 1]; // fallback to lowest
-}
-```
-
-**Pass/fail:**
-```javascript
-function isPassing(pct) {
-  return pct >= parseFloat(state.schoolSettings?.pass_mark || 50);
-}
-```
-
-**Student balance:**
-```javascript
-const totalFees = studentFees.reduce((s, f) => s + (!f.is_waived ? f.amount : 0), 0);
-const totalPaid = payments.reduce((s, p) => s + (!p.is_reversed ? p.amount : 0), 0);
-const balance = totalFees - totalPaid; // positive = owes money
-```
-
-**Attendance rate:**
-```javascript
-const presentDays = attendance.filter(a => a.status === 'present').length
-  + attendance.filter(a => a.status === 'late').length * 0.5;
-const rate = (presentDays / schoolDays) * 100;
-```
-
-Full formulas: `backend.txt` Sections 4 and 5.
-
-
-## 9. WHAT TO DO RIGHT NOW (Priority Order)
-
-Based on `progress.txt` current state:
-
-**BLOCKING (do first):**
-1. **P0-10 / P1-05** — Update Supabase URL in `index.html` and
-   `js/config/supabase-config.js` from old project to new one.
-   Old: `hejdppzparottbcnycjo.supabase.co`
-   New: `ovmymtdrugdljnttiltd.supabase.co`
-   Also update the anon key (get it from Supabase dashboard → Settings → API)
-
-**HIGH PRIORITY:**
-2. **P1-01** — Fix `calculateGrade()` to use `getGrade()` from DB
-3. **P1-02** — Fix hardcoded `>= 50` pass mark checks (10 places)
-4. **P1-03** — Fix decision banner full text (EN + FR)
-5. **P1-04** — Fix mobile sidebar overlay `.active` bug
-
-**THEN (in order):**
-6. P3-01 to P3-03 — Core academic + finance formula implementations
-7. P2-07 — Student profile page
-8. P2-28 to P2-30 — Fee waivers, student balances, payment reversals
-9. P2-18 — Statistics/analytics page
-10. P4-01 to P4-04 — Merge patch files into proper modules
-
-
-## 10. COMMIT CONVENTIONS
-
-When you push changes to GitHub:
-```
-git add -A
-git commit -m "TYPE: Short description
-
-- Detail 1
-- Detail 2
-TASKS: P1-01, P1-02"
-git push origin main
-```
-
-Types: FIX | FEAT | REFACTOR | DOCS | DB | STYLE | TEST
-
-Always include which progress.txt tasks were completed in the commit message.
-
-
-## 11. TESTING YOUR CHANGES
-
-After making changes, verify:
-1. Open `index.html` in a browser (needs a local server for JS modules,
-   use `python3 -m http.server 8080` or VS Code Live Server)
-2. Log in with admin/admin123 — if Supabase URL is updated correctly,
-   this will work against the real DB
-3. Navigate to the page you changed
-4. Test happy path: create, read, update, delete
-5. Test error path: invalid input, network error (disconnect wifi)
-6. Check browser console for JavaScript errors (should be 0)
-7. Check mobile view (Chrome DevTools → toggle device toolbar)
-
-
-## 12. FILES OVERVIEW
-
-```
-La-Fontaine/
-├── index.html              ← MAIN FILE — entire SPA (37,623 lines)
-├── frontend.txt            ← Wireframes for all pages
-├── backend.txt             ← Logic, formulas, schema reference
-├── progress.txt            ← Task tracker (UPDATE WHEN DONE)
-├── AGENT_PROMPT.md         ← This file
-├── js/
-│   ├── config/             ← app-config, constants, roles, supabase-config
-│   ├── core/               ← api, auth, boot, state, utils, formulas
-│   ├── modules/            ← One file per feature (25 modules)
-│   ├── patches/            ← TEMPORARY overflow (merge into modules)
-│   └── mobile/             ← Mobile-specific enhancements
-├── css/                    ← Stylesheets by category
-├── html/partials/          ← Shell HTML fragments (mostly empty)
-├── docs/                   ← Architecture docs (all empty — fill these)
-├── assets/                 ← Images, logos, exports
-└── data/                   ← Static data files
-```
-
-
-## 13. CONTACTS & CREDENTIALS
-
-| Item | Value |
-|------|-------|
-| School | École La Fontaine, Kigali, Rwanda |
-| Owner/Dev | Natson Uwayezu |
-| GitHub | Natsonuwayezu/La-Fontaine |
-| GitHub PAT | [REDACTED-USE-YOUR-OWN-PAT] |
-| Supabase project | School Demo (ovmymtdrugdljnttiltd) |
-| Supabase region | eu-west-1 |
-| App admin | username: admin / password: admin123 |
+# ECOLE LA FONTAINE — UNIVERSAL AGENT PROMPT
+## Read this first. Every agent. Every session. No exceptions.
 
 ---
 
-**You are now fully briefed. Check `progress.txt`, pick the highest-priority
-TODO task, implement it correctly using `backend.txt` and `frontend.txt` as
-your guide, then mark it done in `progress.txt` and commit.**
+## WHAT THIS PROJECT IS
+
+A complete **school management system** for **Ecole La Fontaine**, a school in **Rubavu, Rwanda**
+(Nursery 1–3 + Primary 1–5, i.e. 8 classes total — NO Primary 6).
+It is a **single-file SPA** (`index.html`) backed by **Supabase** (PostgreSQL via REST API).
+No framework. No bundler. Vanilla JavaScript in `'use strict'` mode.
+Currency: **RWF** (Rwandan Franc). UI language: English. Report cards: French (Nursery) / English (Primary).
+
+**Live repo:**         https://github.com/Natsonuwayezu/La-Fontaine
+**Working file:**      `index.html` in repo root (37,000+ lines)
+**Supabase project:**  `ovmymtdrugdljnttiltd.supabase.co`  ← NEW project (not the old one)
+**Admin login:**       username=admin  password=admin123
+
+---
+
+## THE FOUR REFERENCE FILES — READ THEM ALL BEFORE CODING
+
+| File | Purpose |
+|------|---------|
+| `frontend.txt`   | 14,355-line ASCII wireframes for every screen |
+| `backend.txt`    | All formulas, DB schema (26 tables), business rules, API contracts |
+| `progress.txt`   | What is done, what is next, what is blocked |
+| `AGENT_PROMPT.md`| This file — how to work on this project |
+
+**Before writing a single line of code:**
+1. `progress.txt` → find what's done and what's next
+2. `backend.txt` → understand the formula or rule you're implementing
+3. `frontend.txt` → understand what the UI should look like
+
+---
+
+## ROLES IN THE SYSTEM
+
+| Role | Login | Access |
+|------|-------|--------|
+| **Admin** | password only (no username) | Full access to everything |
+| **Accountant** | username + password | Finance modules only |
+| **Teacher** | username + password | Academic modules only |
+| **Class Teacher** | teacher where `classes.class_teacher_id = teacher.id` | + attendance, register, timetable, marks entry (all subjects) for their class |
+
+Role CSS theming:
+  Admin: `body.role-admin` → `--role-primary: #1a3a5c` (navy)
+  Accountant: `body.role-accountant` → `--role-primary: #0d9488` (teal)
+  Teacher: `body.role-teacher` → `--role-primary: #7c3aed` (purple)
+
+---
+
+## CRITICAL RULES — NEVER VIOLATE THESE
+
+### 1. Pass mark — NEVER hardcode 50
+```javascript
+// ❌ WRONG
+if (pct >= 50) passCount++;
+
+// ✅ CORRECT
+const passMark = parseFloat(state.schoolSettings?.pass_mark || 50);
+if (pct >= passMark) passCount++;
+```
+
+### 2. Grading — NEVER use calculateGrade() directly
+```javascript
+// ❌ WRONG — ignores school's grading scale from DB
+calculateGrade(pct)
+
+// ✅ CORRECT — reads grading_scale table via state
+getGrade(pct, state.gradingScale || null)
+```
+
+### 3. Marks validation — NEVER silently clamp
+```javascript
+// ❌ WRONG — user never knows their value was changed
+const n = Math.min(max, Math.max(0, Number(val)));
+
+// ✅ CORRECT — show inline popup on the input field
+// Popup offers: auto-correct | manual fix | clear
+// See updateMarkGrade() in index.html for the implementation
+```
+
+### 4. Save marks — ALWAYS gate on completeness
+```javascript
+// Block save if:
+// A) Any validation popup is currently open
+if (document.querySelectorAll('[id^="val-popup-"]').length > 0) BLOCK;
+// B) Any student has empty input AND is not marked absent
+if (emptyInputs.length > 0) BLOCK;
+```
+
+### 5. Notifications — ALWAYS dispatch on payment and marks
+```javascript
+// Admin records payment → notify accountant; Accountant → notify admin
+// Teacher saves marks → notify admin
+// Admin edits marks → notify original teacher
+// Use: notifyAction(action, details, targetRoles)
+```
+
+### 6. window.* exports — ALL onclick= functions must be on window
+```javascript
+window.myFunction = myFunction;  // at bottom of script, or inline after definition
+```
+
+### 7. Completion rate — use the CORRECT formula (not students/total)
+```javascript
+let totalPossible = 0, totalFilled = 0;
+for (const cls of teacherClasses) {
+  const studentCount = activeStudents.filter(s => s.class_id === cls.id).length;
+  const assessmentsInTerm = assessments.filter(a => a.class_id === cls.id && a.term_id === termId);
+  for (const a of assessmentsInTerm) {
+    totalPossible += studentCount;
+    totalFilled += a.is_locked ? studentCount : marks.filter(m => m.assessment_id === a.id).length;
+  }
+}
+const completionPct = totalPossible > 0 ? (totalFilled / totalPossible) * 100 : 0;
+```
+
+### 8. Charts — ASCII ONLY, never Chart.js
+```javascript
+function asciiBar(pct, width=20) {
+  const f = Math.round((pct/100)*width);
+  return '█'.repeat(f) + '░'.repeat(width-f);
+}
+// For vertical column charts: build row-by-row from top (height) down to 0
+```
+
+### 9. Subjects — post_midterm_only rule
+```javascript
+// Reading, Creative Arts, Sports (Primary) and Expression Orale,
+// Développement Social (Nursery) have appears_only_post_midterm = TRUE
+// → Teacher enters EX only; system auto-copies MG = EX
+// → Display MG with ★ superscript in register
+```
+
+### 10. Class register denominator rule (CRITICAL for correct %)
+```javascript
+// WRONG: divide by (all subjects × max)
+// CORRECT: divide by sum of max marks for subjects that HAVE assessments
+const totalMaxPossible = subjects
+  .filter(s => hasAssessmentThisTerm(s.id, classId, termId))
+  .reduce((sum, s) => sum + s.mg_max + s.ex_max, 0);
+```
+
+---
+
+## CODE ARCHITECTURE
+
+### State Object
+```javascript
+state = {
+  currentUser, classes, subjects, terms, academicYears,
+  students, teachers, assessments, marks, feeCategories,
+  feeAmounts, studentFees, payments, schoolSettings, gradingScale,
+  families, notifications, reminders, timetableSlots, holidays,
+  currentTerm, currentAcadYear,
+  cache: { studentBalances: Map, classStats: Map, ranks: Map }
+}
+```
+
+### Module Router
+```javascript
+loadModule(id) → renders to document.getElementById('dynamic-content')
+// Access control checked here:
+//   ACCOUNTANT_BLOCKED_MODULES Set
+//   TEACHER_BLOCKED_MODULES Set
+//   Class teacher: classes.class_teacher_id === user.id → unlocks extra modules
+```
+
+### API Layer
+```javascript
+get(table, params)          // GET with auto-pagination
+getAll(table, filters)      // high-level, limit 50000
+getById(table, id)          // single row
+insert(table, data)         // POST
+update(table, id, data)     // PATCH
+delete_(table, id)          // DELETE
+apiRequest(endpoint, method, body)  // raw wrapper
+// Supabase URL: https://ovmymtdrugdljnttiltd.supabase.co/rest/v1/
+```
+
+### UI Patterns
+```javascript
+showToast(msg, type, duration)   // top-right toast (success/error/warning/info)
+showModal(html)                  // inject into #modals-container
+closeModal(id)
+confirmDialog(msg)               // returns Promise<boolean>
+navigateTo(moduleId)
+esc(str)                         // HTML-escape — always use before innerHTML
+formatCurrency(n)                // 'RWF 1,500'
+fmtDate(str)                     // DD/MM/YYYY display
+```
+
+---
+
+## HOW TO MAKE A CHANGE TO index.html
+
+```bash
+# 1. Clone or pull latest
+git clone https://<PAT>@github.com/Natsonuwayezu/La-Fontaine.git /home/claude/La-Fontaine
+# or: cd /home/claude/La-Fontaine && git pull
+
+# 2. Edit using Python str_replace (avoids shell escaping issues for large blocks):
+python3 - << 'EOF'
+with open('/home/claude/La-Fontaine/index.html', 'r', encoding='utf-8') as f:
+    content = f.read()
+content = content.replace(OLD_TEXT, NEW_TEXT, 1)
+with open('/home/claude/La-Fontaine/index.html', 'w', encoding='utf-8') as f:
+    f.write(content)
+EOF
+
+# 3. Verify the replacement
+grep -n "your_new_text" /home/claude/La-Fontaine/index.html
+
+# 4. Syntax check
+node --check /home/claude/La-Fontaine/index.html 2>&1 | head -20
+
+# 5. Mark progress and commit
+cd /home/claude/La-Fontaine
+git add index.html progress.txt
+git commit -m "feat: description  TASKS: P1-08"
+git push origin main
+```
+
+---
+
+## COMMIT CONVENTIONS
+
+```
+TYPE: Short description
+
+- Detail 1
+- Detail 2
+TASKS: P1-08, P2-05
+```
+Types: `FIX` | `FEAT` | `REFACTOR` | `DOCS` | `DB` | `STYLE` | `TEST`
+Always list which progress.txt tasks were completed in the commit message.
+
+---
+
+## WHAT TO WORK ON NEXT (as of 2026-06-28)
+
+Read `progress.txt` for the full list. Immediate priorities:
+
+1. **P0-13** — Update Supabase URL in index.html (BLOCKING — nothing connects without this)
+   - Find: `hejdppzparottbcnycjo.supabase.co`
+   - Replace: `ovmymtdrugdljnttiltd.supabase.co`
+   - Also update anon key (get from Supabase dashboard → Settings → API)
+
+2. **P1-08** — Admin dashboard rebuild
+   - Replace Chart.js canvas charts with ASCII bars
+   - Fee collection by class, marks completion overview, recent activity log
+
+3. **P2-05** — Marks database: edit → notify teacher + admin
+
+4. **P5-01** — Attendance module (record daily per-student P/A/L/E)
+
+5. **P4-06** — Notification center full page (tabs, mark read, deep-link)
+
+---
+
+## COMMON MISTAKES TO AVOID
+
+| ❌ Mistake | ✅ Correct approach |
+|-----------|---------------------|
+| Using Chart.js | ASCII bar/column charts only |
+| Hardcoding `>= 50` | `isPassing(pct)` using schoolSettings.pass_mark |
+| Using `calculateGrade()` | `getGrade(pct, state.gradingScale)` |
+| Silent `Math.min/max` clamping | Show inline popup (3 choices) |
+| Saving marks without completeness check | Gate save — check all students |
+| No notification after payment | Always call `notifyAction()` |
+| Functions without `window.*` export | Add `window.fn = fn` |
+| `innerHTML` with unsanitized data | Wrap in `esc()` |
+| Creating new patch files | Put code in the correct module instead |
+| Hardcoding class list or subject list | Always read from `state.classes` / `state.subjects` |
+| Dividing by all subjects in register | Use denominator rule — assessed subjects only |
+| Assuming school is in Kigali | School is in **Rubavu**, Rwanda |
+| Assuming Primary goes to P6 | Progression ends at Primary 5 → GRADUATED |
+
+---
+
+## FILE LOCATIONS
+
+| Path | Description |
+|------|-------------|
+| `/home/claude/La-Fontaine/index.html` | Working copy of the app |
+| `/home/claude/La-Fontaine/frontend.txt` | All UI wireframes |
+| `/home/claude/La-Fontaine/backend.txt` | All formulas and business rules |
+| `/home/claude/La-Fontaine/progress.txt` | Build progress tracker |
+| `/mnt/user-data/uploads/` | User-uploaded files (READ ONLY — copy before editing) |
+
+---
+
+## DEPLOYMENT
+
+Any push to `main` branch is the live version.
+Connect repo to Netlify (free tier) for a public URL — no build step needed.
+`index.html` IS the app — zero configuration required.
+
+---
+
+*Last updated: 2026-06-28. Update this file when you make significant project changes.*
