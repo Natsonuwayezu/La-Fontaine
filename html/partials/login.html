@@ -1,100 +1,110 @@
-<!-- SECTION B: LOGIN PAGE                                            -->
-    <!-- ================================================================ -->
+<!-- SECTION B: LOGIN PAGE -->
+<!-- ================================================================ -->
 
-    <div id="login-page">
+<div id="login-page">
 
-        <!-- B1: Particles Background -->
-        <div class="particles-bg" id="particles-bg"></div>
+    <!-- B1: Particles Background -->
+    <div class="particles-bg" id="particles-bg"></div>
 
-        <!-- B2: Login Scene Container -->
-        <div class="login-scene">
+    <!-- B2: Login Scene Container -->
+    <div class="login-scene">
 
-            <!-- B3: Card Wrap (Floating Animation) -->
-            <div class="card-wrap" id="card-wrap">
+        <!-- B3: Card Wrap (Floating Animation) -->
+        <div class="card-wrap" id="card-wrap">
 
-                <!-- B4: Neon Border Effect -->
-                <div class="neon-border"></div>
+            <!-- B4: Neon Border Effect -->
+            <div class="neon-border"></div>
 
-                <!-- B5: Login Card -->
-                <div class="login-card">
+            <!-- B5: Login Card -->
+            <div class="login-card">
 
-                    <!-- B6: Fold Cover (Opening Animation) -->
-                    <div class="fold-cover" id="fold-cover" onclick="openLoginCard()">
-                        <div class="cover-title">
-                            <span class="cover-emoji">🏫</span>
-                            ECOLE LA FONTAINE
+                <!-- B6: Fold Cover — shows school logo, click to open -->
+                <div class="fold-cover" id="fold-cover" onclick="openLoginCard()">
+                    <div class="cover-title">
+                        <div class="cover-logo-wrap">
+                            <img src="assets/logos/school-logo-light.png"
+                                 alt="École La Fontaine"
+                                 class="cover-logo-img"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                            <span class="cover-logo-fallback" style="display:none">🏫</span>
                         </div>
+                        <span class="cover-school-name">ECOLE LA FONTAINE</span>
+                    </div>
+                    <div class="cover-hint">Tap to sign in</div>
+                </div>
+
+                <!-- B7: Login Content (revealed after card opens) -->
+                <div class="login-content">
+
+                    <!-- B8: Logo Box — loads from assets/logos/school-logo.png -->
+                    <div class="logo-box" id="login-logo-box">
+                        <img src="assets/logos/school-logo.png"
+                             alt="École La Fontaine"
+                             id="login-logo-img"
+                             onerror="this.style.display='none';document.getElementById('login-logo-fallback').style.display='flex'">
+                        <span id="login-logo-fallback" style="display:none;font-size:40px;align-items:center;justify-content:center">🏫</span>
                     </div>
 
-                    <!-- B7: Login Content (Hidden until card opens) -->
-                    <div class="login-content">
+                    <!-- B9: School Name -->
+                    <div class="school-name">ECOLE LA FONTAINE</div>
+                    <div class="login-subtitle">Complete School Management System</div>
 
-                        <!-- B8: Logo Box -->
-                        <div class="logo-box" id="login-logo-box">
-                            <span>🏫</span>
+                    <!-- B10: Login Form -->
+                    <div class="login-form">
+
+                        <!-- B11: Role Selection -->
+                        <div class="login-field">
+                            <select id="login-role" onchange="onRoleChange()">
+                                <option value="admin">👨‍💼 Administrator</option>
+                                <option value="accountant">💰 Accountant</option>
+                                <option value="teacher">👩‍🏫 Teacher</option>
+                            </select>
                         </div>
 
-                        <!-- B9: School Name -->
-                        <div class="school-name">ECOLE LA FONTAINE</div>
-                        <div class="login-subtitle">Complete School Management System</div>
+                        <!-- B12: Username Field (hidden for admin) -->
+                        <div class="login-field" id="username-field" style="display:none">
+                            <input type="text" id="login-username" placeholder="Username" autocomplete="username">
+                        </div>
 
-                        <!-- B10: Login Form -->
-                        <div class="login-form">
+                        <!-- B13: Password Field with Toggle -->
+                        <div class="login-field pw-wrap">
+                            <input type="password" id="login-password" placeholder="Password"
+                                autocomplete="current-password"
+                                onkeydown="if(event.key==='Enter') doLogin()">
+                            <button class="pw-toggle" type="button" onclick="toggleLoginPw()"
+                                title="Show/hide password">👁️</button>
+                        </div>
 
-                            <!-- B11: Role Selection -->
-                            <div class="login-field">
-                                <select id="login-role" onchange="onRoleChange()">
-                                    <option value="admin">👨‍💼 Administrator</option>
-                                    <option value="accountant">💰 Accountant</option>
-                                    <option value="teacher">👩‍🏫 Teacher</option>
-                                </select>
-                            </div>
+                        <!-- B14: Biometric Login Button (shown if device supports it) -->
+                        <div id="biometric-btn-wrap" style="display:none; margin-top:8px">
+                            <button class="login-btn" id="biometric-btn" onclick="doBiometricLogin()"
+                                style="background:linear-gradient(135deg,#1a3a5c,#2563eb);display:flex;align-items:center;justify-content:center;gap:8px">
+                                <span>🔑</span> Sign In with Biometrics
+                            </button>
+                        </div>
 
-                            <!-- B12: Username Field (hidden for admin) -->
-                            <div class="login-field" id="username-field" style="display:none">
-                                <input type="text" id="login-username" placeholder="Username" autocomplete="username">
-                            </div>
+                        <!-- B15: Error Alert -->
+                        <div class="login-alert" id="login-alert" style="display:none"></div>
 
-                            <!-- B13: Password Field with Toggle -->
-                            <div class="login-field pw-wrap">
-                                <input type="password" id="login-password" placeholder="Password"
-                                    autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
-                                <button class="pw-toggle" type="button" onclick="toggleLoginPw()"
-                                    title="Show/hide password">👁️</button>
-                            </div>
+                        <!-- B16: Submit Button -->
+                        <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In →</button>
 
-                            <!-- B14: Biometric Login Button (shown if available) -->
-                            <div id="biometric-btn-wrap" style="display:none; margin-top:8px">
-                                <button class="login-btn" id="biometric-btn" onclick="doBiometricLogin()"
-                                    style="background:linear-gradient(135deg,#1a3a5c,#2563eb); display:flex; align-items:center; justify-content:center; gap:8px">
-                                    <span>🔑</span> Sign In with Biometrics
-                                </button>
-                            </div>
+                        <!-- B17: Biometric Setup Link -->
+                        <div style="text-align:center;margin-top:8px;font-size:.75rem">
+                            <a href="#" onclick="setupBiometricLogin();return false;"
+                                style="color:rgba(255,255,255,.5)">
+                                ⚙️ Set up biometric login
+                            </a>
+                        </div>
 
-                            <!-- B15: Error Alert -->
-                            <div class="login-alert" id="login-alert" style="display:none"></div>
+                    </div><!-- End Login Form -->
 
-                            <!-- B16: Submit Button -->
-                            <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In →</button>
+                </div><!-- End Login Content -->
 
-                            <!-- B17: Biometric Setup Link -->
-                            <div style="text-align:center; margin-top:8px; font-size:.75rem">
-                                <a href="#" onclick="setupBiometricLogin(); return false;"
-                                    style="color:rgba(255,255,255,.5)">
-                                    ⚙️ Set up biometric login
-                                </a>
-                            </div>
+            </div><!-- End Login Card -->
 
-                        </div><!-- End Login Form -->
+        </div><!-- End Card Wrap -->
 
-                    </div><!-- End Login Content -->
+    </div><!-- End Login Scene -->
 
-                </div><!-- End Login Card -->
-
-            </div><!-- End Card Wrap -->
-
-        </div><!-- End Login Scene -->
-
-    </div><!-- End Login Page -->
-
-    <!-- ================================================================ -->
+</div><!-- End Login Page -->
