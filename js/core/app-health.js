@@ -2,8 +2,6 @@
 // APP HEALTH - Performance monitoring and health checks
 // ============================================================
 
-import { info, warn, error as logError } from './logger.js';
-import { checkDbHealth } from './db-safe-query.js';
 
 // Health status
 let healthStatus = {
@@ -19,7 +17,7 @@ let healthStatus = {
 };
 
 // Check application health
-export async function checkAppHealth() {
+async function checkAppHealth() {
     const checks = await Promise.all([
         checkApiHealth(),
         checkMemoryHealth(),
@@ -126,7 +124,7 @@ async function checkDatabaseHealth() {
 }
 
 // Monitor performance metrics
-export function monitorPerformance() {
+function monitorPerformance() {
     if (window.performance && window.performance.getEntriesByType) {
         const navigationEntries = performance.getEntriesByType('navigation');
         if (navigationEntries.length > 0) {
@@ -142,7 +140,7 @@ export function monitorPerformance() {
 
 // Check if app is responsive (not frozen)
 let lastInteraction = Date.now();
-export function startResponsivenessMonitor() {
+function startResponsivenessMonitor() {
     const events = ['click', 'keydown', 'mousemove', 'scroll', 'touchstart'];
     events.forEach(ev => {
         document.addEventListener(ev, () => {
@@ -159,12 +157,12 @@ export function startResponsivenessMonitor() {
 }
 
 // Get health status summary
-export function getHealthSummary() {
+function getHealthSummary() {
     return healthStatus;
 }
 
 // Run self-healing actions
-export async function runSelfHealing() {
+async function runSelfHealing() {
     const issues = healthStatus.issues;
     let fixed = 0;
 

@@ -2,22 +2,20 @@
 // THEME MANAGER - Light/dark theme management
 // ============================================================
 
-import { saveTheme, getSavedTheme } from '../core/storage.js';
-import { showToast } from './modals.js';
 
 // Theme constants
-export const THEMES = {
+const THEMES = {
     LIGHT: 'light',
     DARK: 'dark'
 };
 
 // Get current theme
-export function getCurrentTheme() {
+function getCurrentTheme() {
     return document.documentElement.getAttribute('data-theme') || THEMES.LIGHT;
 }
 
 // Set theme
-export function setTheme(theme) {
+function setTheme(theme) {
     if (theme !== THEMES.LIGHT && theme !== THEMES.DARK) return;
 
     document.documentElement.setAttribute('data-theme', theme);
@@ -39,7 +37,7 @@ export function setTheme(theme) {
 }
 
 // Toggle between light and dark
-export function toggleTheme() {
+function toggleTheme() {
     const current = getCurrentTheme();
     const newTheme = current === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK;
     setTheme(newTheme);
@@ -47,7 +45,7 @@ export function toggleTheme() {
 }
 
 // Initialize theme on page load
-export function initTheme() {
+function initTheme() {
     const savedTheme = getSavedTheme();
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialTheme = savedTheme || (prefersDark ? THEMES.DARK : THEMES.LIGHT);
@@ -63,13 +61,13 @@ export function initTheme() {
 }
 
 // Apply role-based theme colors
-export function applyRoleTheme(role) {
+function applyRoleTheme(role) {
     document.body.classList.remove('role-admin', 'role-accountant', 'role-teacher');
     document.body.classList.add(`role-${role}`);
 }
 
 // Get theme color for charts
-export function getChartThemeColors() {
+function getChartThemeColors() {
     const isDark = getCurrentTheme() === THEMES.DARK;
     return {
         textColor: isDark ? '#e2e8f0' : '#1e293b',

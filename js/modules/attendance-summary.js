@@ -2,16 +2,9 @@
 // ATTENDANCE SUMMARY MODULE - View attendance summaries
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getStudentById } from '../core/state.js';
-import { getCurrentUser, isAdmin, isTeacher } from '../core/auth.js';
-import { fmtDate, esc } from '../core/utils.js';
-import { getAll } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { showToast } from '../ui/modals.js';
 
 // Render Attendance Summary page
-export async function renderAttendanceSummary(container) {
+async function renderAttendanceSummary(container) {
     await ensureStateLoaded();
     
     let classes = (state.classes || []).filter(c => c.is_active !== false);

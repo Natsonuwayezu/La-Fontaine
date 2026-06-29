@@ -3,7 +3,7 @@
 // ============================================================
 
 // Pagination component class
-export class Pagination {
+class Pagination {
     constructor(container, options = {}) {
         this.container = container;
         this.totalItems = options.totalItems || 0;
@@ -119,7 +119,7 @@ export class Pagination {
 }
 
 // Create pagination for a table
-export function createTablePagination(containerId, tableId, options = {}) {
+function createTablePagination(containerId, tableId, options = {}) {
     const container = document.getElementById(containerId);
     if (!container) return null;
 
@@ -158,7 +158,7 @@ export function createTablePagination(containerId, tableId, options = {}) {
 }
 
 // Create pagination for data array
-export function createArrayPagination(containerId, data, renderFn, options = {}) {
+function createArrayPagination(containerId, data, renderFn, options = {}) {
     const container = document.getElementById(containerId);
     if (!container) return null;
 
@@ -185,7 +185,7 @@ export function createArrayPagination(containerId, data, renderFn, options = {})
 }
 
 // Update pagination when data changes
-export function updatePaginationData(paginationInstance, newTotalItems) {
+function updatePaginationData(paginationInstance, newTotalItems) {
     if (paginationInstance) {
         paginationInstance.updateTotalItems(newTotalItems);
     }

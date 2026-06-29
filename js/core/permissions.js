@@ -2,11 +2,9 @@
 // PERMISSIONS - Role-based access control
 // ============================================================
 
-import { state, isAdmin, isTeacher, isAccountant, getCurrentUser } from './state.js';
-import { showToast } from './helpers.js';
 
 // Permission definitions
-export const PERMISSIONS = {
+const PERMISSIONS = {
     // Finance permissions
     VIEW_FEES: ['admin', 'accountant'],
     MANAGE_FEES: ['admin', 'accountant'],
@@ -79,7 +77,7 @@ const MODULE_PERMISSIONS = {
 };
 
 // Check if current user has a specific permission
-export function hasPermission(permission) {
+function hasPermission(permission) {
     const userRole = getCurrentUser()?.role;
     if (!userRole) return false;
 
@@ -90,7 +88,7 @@ export function hasPermission(permission) {
 }
 
 // Check if current user can access a module
-export function canAccessModule(moduleId) {
+function canAccessModule(moduleId) {
     const userRole = getCurrentUser()?.role;
     if (!userRole) return false;
 
@@ -104,7 +102,7 @@ export function canAccessModule(moduleId) {
 }
 
 // Check if current user can perform an action on a student
-export function canModifyStudent(studentId = null) {
+function canModifyStudent(studentId = null) {
     const userRole = getCurrentUser()?.role;
     if (userRole === 'admin') return true;
     if (userRole === 'accountant') return false;
@@ -121,25 +119,25 @@ export function canModifyStudent(studentId = null) {
 }
 
 // Check if current user can view student fees
-export function canViewStudentFees() {
+function canViewStudentFees() {
     const userRole = getCurrentUser()?.role;
     return userRole === 'admin' || userRole === 'accountant';
 }
 
 // Check if current user can view student academics
-export function canViewStudentAcademics() {
+function canViewStudentAcademics() {
     const userRole = getCurrentUser()?.role;
     return userRole === 'admin' || userRole === 'teacher';
 }
 
 // Check if current user can edit student fees
-export function canEditStudentFees() {
+function canEditStudentFees() {
     const userRole = getCurrentUser()?.role;
     return userRole === 'admin' || userRole === 'accountant';
 }
 
 // Get allowed student tabs based on role
-export function getAllowedStudentTabs() {
+function getAllowedStudentTabs() {
     const userRole = getCurrentUser()?.role;
 
     const allTabs = ['info', 'fees', 'academics', 'family', 'history'];
@@ -152,13 +150,13 @@ export function getAllowedStudentTabs() {
 }
 
 // Check if a tab should be shown for a student
-export function canViewStudentTab(tabName) {
+function canViewStudentTab(tabName) {
     const allowedTabs = getAllowedStudentTabs();
     return allowedTabs.includes(tabName);
 }
 
 // Get navigation items based on user role
-export function getNavigationConfig() {
+function getNavigationConfig() {
     const userRole = getCurrentUser()?.role;
     if (!userRole) return [];
 
@@ -209,7 +207,7 @@ export function getNavigationConfig() {
 }
 
 // Guard function for modules (shows access denied)
-export function checkModuleAccess(moduleId) {
+function checkModuleAccess(moduleId) {
     if (!canAccessModule(moduleId)) {
         const container = document.getElementById('dynamic-content');
         if (container) {

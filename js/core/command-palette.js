@@ -2,10 +2,6 @@
 // COMMAND PALETTE - Ctrl+K quick navigation and actions
 // ============================================================
 
-import { quickSearch } from './search-engine.js';
-import { navigateTo } from './router.js';
-import { getCurrentUser } from './auth.js';
-import { showToast } from './helpers.js';
 
 let isOpen = false;
 let commandPalette = null;
@@ -67,7 +63,7 @@ function createCommandPalette() {
 }
 
 // Show command palette
-export function showCommandPalette() {
+function showCommandPalette() {
     if (isOpen) return;
 
     if (!commandPalette) {
@@ -93,7 +89,7 @@ export function showCommandPalette() {
 }
 
 // Hide command palette
-export function hideCommandPalette() {
+function hideCommandPalette() {
     if (commandPalette) {
         commandPalette.style.display = 'none';
     }
@@ -256,7 +252,7 @@ window.executeCommand = function (index) {
 };
 
 // Initialize command palette keyboard shortcut
-export function initCommandPalette() {
+function initCommandPalette() {
     document.addEventListener('keydown', (e) => {
         // Ctrl+K or Cmd+K
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {

@@ -1,14 +1,8 @@
 // js/modules/fee-assignments.js
 // Fee Assignments Module - Assign fee categories to classes and students
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById, getStudentById, getFullStudentBalance } from './student-fees.js';
 
-export async function renderFeeAssignments(container) {
+async function renderFeeAssignments(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

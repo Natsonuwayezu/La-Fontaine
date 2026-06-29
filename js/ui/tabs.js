@@ -3,7 +3,7 @@
 // ============================================================
 
 // Tab manager class
-export class TabManager {
+class TabManager {
     constructor(container, options = {}) {
         this.container = container;
         this.tabs = [];
@@ -105,7 +105,7 @@ export class TabManager {
 }
 
 // Create a simple tab component
-export function createTabs(containerId, tabs, defaultTab = null) {
+function createTabs(containerId, tabs, defaultTab = null) {
     const container = document.getElementById(containerId);
     if (!container) return null;
 
@@ -125,7 +125,7 @@ export function createTabs(containerId, tabs, defaultTab = null) {
 }
 
 // Role-based student tabs
-export function getStudentTabsByRole(role, studentId) {
+function getStudentTabsByRole(role, studentId) {
     const allTabs = [
         { id: 'info', label: '📋 Info', icon: '📋', roles: ['admin', 'teacher', 'accountant'] },
         { id: 'fees', label: '💰 Fees', icon: '💰', roles: ['admin', 'accountant'] },
@@ -138,7 +138,7 @@ export function getStudentTabsByRole(role, studentId) {
 }
 
 // Switch student tab (used in student details)
-export function switchStudentTab(tabName, studentId, event) {
+function switchStudentTab(tabName, studentId, event) {
     // Update tab button styles
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -159,7 +159,7 @@ export function switchStudentTab(tabName, studentId, event) {
 }
 
 // Simple tab switching without manager
-export function switchTab(tabId, containerId) {
+function switchTab(tabId, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 

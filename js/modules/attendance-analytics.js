@@ -2,18 +2,9 @@
 // ATTENDANCE ANALYTICS MODULE - Charts and analytics
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getStudentById } from '../core/state.js';
-import { getCurrentUser, isAdmin, isTeacher } from '../core/auth.js';
-import { fmtDate, esc } from '../core/utils.js';
-import { getAll } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { createLineChart, createBarChart } from '../ui/charts.js';
-import { exportToExcel } from '../core/utils.js';
-import { showToast } from '../ui/modals.js';
 
 // Render Attendance Analytics page
-export async function renderAttendanceAnalytics(container) {
+async function renderAttendanceAnalytics(container) {
     await ensureStateLoaded();
 
     let classes = (state.classes || []).filter(c => c.is_active !== false);

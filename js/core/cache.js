@@ -10,7 +10,7 @@ const DEFAULT_TTL = 300000; // 5 minutes
 const MAX_CACHE_SIZE = 100; // Maximum number of cache entries
 
 // Set cache entry
-export function cacheSet(key, value, ttl = DEFAULT_TTL) {
+function cacheSet(key, value, ttl = DEFAULT_TTL) {
     // Enforce max cache size (LRU - remove oldest)
     if (memoryCache.size >= MAX_CACHE_SIZE) {
         const oldestKey = memoryCache.keys().next().value;
@@ -27,7 +27,7 @@ export function cacheSet(key, value, ttl = DEFAULT_TTL) {
 }
 
 // Get cache entry (returns null if expired or not found)
-export function cacheGet(key, allowStale = false) {
+function cacheGet(key, allowStale = false) {
     const entry = memoryCache.get(key);
     if (!entry) return null;
     
@@ -42,7 +42,7 @@ export function cacheGet(key, allowStale = false) {
 }
 
 // Check if cache entry exists and is valid
-export function cacheHas(key) {
+function cacheHas(key) {
     const entry = memoryCache.get(key);
     if (!entry) return false;
     if (Date.now() > entry.expires) {
@@ -53,18 +53,18 @@ export function cacheHas(key) {
 }
 
 // Delete cache entry
-export function cacheDelete(key) {
+function cacheDelete(key) {
     return memoryCache.delete(key);
 }
 
 // Clear entire cache
-export function cacheClear() {
+function cacheClear() {
     memoryCache.clear();
     return true;
 }
 
 // Get cache statistics
-export function cacheStats() {
+function cacheStats() {
     let validCount = 0;
     let expiredCount = 0;
     const now = Date.now();
@@ -100,7 +100,7 @@ function getOldestEntryAge() {
 }
 
 // Delete all entries matching a pattern
-export function cacheDeletePattern(pattern) {
+function cacheDeletePattern(pattern) {
     let deleted = 0;
     const regex = new RegExp(pattern, 'i');
     
@@ -115,7 +115,7 @@ export function cacheDeletePattern(pattern) {
 }
 
 // Get or set cache (atomic operation)
-export async function cacheGetOrSet(key, fetchFn, ttl = DEFAULT_TTL) {
+async function cacheGetOrSet(key, fetchFn, ttl = DEFAULT_TTL) {
     const cached = cacheGet(key);
     if (cached) return cached;
     
@@ -127,13 +127,13 @@ export async function cacheGetOrSet(key, fetchFn, ttl = DEFAULT_TTL) {
 }
 
 // Warm up cache with multiple keys
-export async function cacheWarm(keys, fetchFn) {
+async function cacheWarm(keys, fetchFn) {
     const promises = keys.map(key => cacheGetOrSet(key, () => fetchFn(key)));
     return await Promise.all(promises);
 }
 
 // Persistent cache using localStorage (for offline support)
-export function persistentCacheSet(key, value, ttl = DEFAULT_TTL) {
+function persistentCacheSet(key, value, ttl = DEFAULT_TTL) {
     try {
         const item = {
             value,
@@ -148,7 +148,7 @@ export function persistentCacheSet(key, value, ttl = DEFAULT_TTL) {
     }
 }
 
-export function persistentCacheGet(key) {
+function persistentCacheGet(key) {
     try {
         const item = localStorage.getItem(`p_cache_${key}`);
         if (!item) return null;
@@ -165,7 +165,7 @@ export function persistentCacheGet(key) {
     }
 }
 
-export function persistentCacheClear() {
+function persistentCacheClear() {
     const keys = Object.keys(localStorage);
     for (const key of keys) {
         if (key.startsWith('p_cache_')) {

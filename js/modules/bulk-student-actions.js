@@ -2,17 +2,9 @@
 // BULK STUDENT ACTIONS MODULE - Bulk import/export operations
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById } from '../core/state.js';
-import { getCurrentUser, isAdmin } from '../core/auth.js';
-import { fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { insert, getAll } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { showToast } from '../ui/modals.js';
-import { logActivity } from '../core/helpers.js';
 
 // Render Bulk Import page
-export async function renderBulkImport(container) {
+async function renderBulkImport(container) {
     if (!isAdmin()) {
         container.innerHTML = '<div class="alert alert-danger">Access denied. Admin privileges required.</div>';
         return;
@@ -84,7 +76,7 @@ window.executeBulkImport = async function (rows) {
 };
 
 // Render Bulk Export page
-export async function renderBulkExport(container) {
+async function renderBulkExport(container) {
     if (!isAdmin()) {
         container.innerHTML = '<div class="alert alert-danger">Access denied. Admin privileges required.</div>';
         return;

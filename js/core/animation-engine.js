@@ -9,7 +9,7 @@ const ANIMATION_DEFAULTS = {
 };
 
 // Fade in an element
-export function fadeIn(element, duration = ANIMATION_DEFAULTS.duration) {
+function fadeIn(element, duration = ANIMATION_DEFAULTS.duration) {
     if (!element) return;
     element.style.opacity = '0';
     element.style.display = 'block';
@@ -25,7 +25,7 @@ export function fadeIn(element, duration = ANIMATION_DEFAULTS.duration) {
 }
 
 // Fade out an element
-export function fadeOut(element, duration = ANIMATION_DEFAULTS.duration, remove = true) {
+function fadeOut(element, duration = ANIMATION_DEFAULTS.duration, remove = true) {
     if (!element) return;
     element.style.transition = `opacity ${duration}ms ease`;
     element.style.opacity = '0';
@@ -39,7 +39,7 @@ export function fadeOut(element, duration = ANIMATION_DEFAULTS.duration, remove 
 }
 
 // Slide down an element
-export function slideDown(element, duration = ANIMATION_DEFAULTS.duration) {
+function slideDown(element, duration = ANIMATION_DEFAULTS.duration) {
     if (!element) return;
     const height = element.scrollHeight;
     element.style.overflow = 'hidden';
@@ -59,7 +59,7 @@ export function slideDown(element, duration = ANIMATION_DEFAULTS.duration) {
 }
 
 // Slide up an element
-export function slideUp(element, duration = ANIMATION_DEFAULTS.duration, remove = true) {
+function slideUp(element, duration = ANIMATION_DEFAULTS.duration, remove = true) {
     if (!element) return;
     const height = element.scrollHeight;
     element.style.overflow = 'hidden';
@@ -79,7 +79,7 @@ export function slideUp(element, duration = ANIMATION_DEFAULTS.duration, remove 
 }
 
 // Toggle slide (expand/collapse)
-export function slideToggle(element, duration = ANIMATION_DEFAULTS.duration) {
+function slideToggle(element, duration = ANIMATION_DEFAULTS.duration) {
     if (!element) return;
     const isVisible = element.style.display !== 'none' && element.offsetHeight > 0;
     if (isVisible) {
@@ -90,7 +90,7 @@ export function slideToggle(element, duration = ANIMATION_DEFAULTS.duration) {
 }
 
 // Pulse animation (attention grabber)
-export function pulse(element, duration = 500) {
+function pulse(element, duration = 500) {
     if (!element) return;
     element.style.transition = `transform ${duration / 2}ms ease`;
     element.style.transform = 'scale(1.05)';
@@ -104,7 +104,7 @@ export function pulse(element, duration = 500) {
 }
 
 // Shake animation (error indication)
-export function shake(element, duration = 400) {
+function shake(element, duration = 400) {
     if (!element) return;
     element.style.transition = `transform ${duration / 3}ms ease`;
     element.style.transform = 'translateX(-5px)';
@@ -127,7 +127,7 @@ export function shake(element, duration = 400) {
 }
 
 // Highlight animation (flash)
-export function highlight(element, color = '#fef3c7', duration = 1000) {
+function highlight(element, color = '#fef3c7', duration = 1000) {
     if (!element) return;
     const originalBg = element.style.backgroundColor;
     element.style.transition = `background-color ${duration / 2}ms ease`;
@@ -142,7 +142,7 @@ export function highlight(element, color = '#fef3c7', duration = 1000) {
 }
 
 // Animate number counter
-export function animateNumber(element, start, end, duration = 1000, suffix = '') {
+function animateNumber(element, start, end, duration = 1000, suffix = '') {
     if (!element) return;
     const range = end - start;
     const stepTime = Math.abs(Math.floor(duration / range));
@@ -157,7 +157,7 @@ export function animateNumber(element, start, end, duration = 1000, suffix = '')
 }
 
 // Animate progress bar
-export function animateProgressBar(element, targetPercent, duration = 500) {
+function animateProgressBar(element, targetPercent, duration = 500) {
     if (!element) return;
     element.style.transition = `width ${duration}ms ${ANIMATION_DEFAULTS.easing}`;
     element.style.width = `${targetPercent}%`;
@@ -168,7 +168,7 @@ export function animateProgressBar(element, targetPercent, duration = 500) {
 }
 
 // Page transition
-export function pageTransition(enterAnimation, exitAnimation, callback) {
+function pageTransition(enterAnimation, exitAnimation, callback) {
     const content = document.getElementById('dynamic-content');
     if (!content) {
         if (callback) callback();
@@ -185,7 +185,7 @@ export function pageTransition(enterAnimation, exitAnimation, callback) {
 }
 
 // Loading spinner with animation
-export function showLoadingSpinner(container) {
+function showLoadingSpinner(container) {
     if (!container) container = document.getElementById('dynamic-content');
     if (!container) return;
 
@@ -199,7 +199,7 @@ export function showLoadingSpinner(container) {
 }
 
 // Hide loading spinner
-export function hideLoadingSpinner(container) {
+function hideLoadingSpinner(container) {
     const spinner = container?.querySelector('.loading-container');
     if (spinner) {
         fadeOut(spinner, 200, true);
@@ -207,7 +207,7 @@ export function hideLoadingSpinner(container) {
 }
 
 // Animate table rows (staggered)
-export function animateTableRows(tableBody, staggerDelay = 30) {
+function animateTableRows(tableBody, staggerDelay = 30) {
     if (!tableBody) return;
     const rows = Array.from(tableBody.children);
     rows.forEach((row, index) => {

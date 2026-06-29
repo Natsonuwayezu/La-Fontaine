@@ -1,16 +1,10 @@
 // js/modules/analytics.js
 // Analytics Dashboard - Advanced analytics and reporting
 
-import { state } from '../core/state.js';
-import { getAll } from '../core/supabase-client.js';
-import { showToast, showModal } from '../ui/modals.js';
-import { fmtCurrency, fmtPct, fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById, getSubjectById, getStudentById, getTeacherById } from './student-fees.js';
 
 let analyticsChart = null;
 
-export async function renderAnalytics(container) {
+async function renderAnalytics(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

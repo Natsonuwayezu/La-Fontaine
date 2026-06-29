@@ -3,14 +3,14 @@
 // ============================================================
 
 // Supabase Configuration (can be overridden via API Settings)
-export const SUPABASE_URL_DEFAULT = localStorage.getItem('sb_url') || 'https://hejdppzparottbcnycjo.supabase.co';
-export const SUPABASE_KEY_DEFAULT = localStorage.getItem('sb_key') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlamRwcHpwYXJvdHRiY255Y2pvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4Nzg3OTMsImV4cCI6MjA5NDQ1NDc5M30.vi7Xa3eF9D9OTCkDZUYn6ScsyuQPwb0eN9nNazPpFcc';
+const SUPABASE_URL_DEFAULT = localStorage.getItem('sb_url') || 'https://hejdppzparottbcnycjo.supabase.co';
+const SUPABASE_KEY_DEFAULT = localStorage.getItem('sb_key') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlamRwcHpwYXJvdHRiY255Y2pvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4Nzg3OTMsImV4cCI6MjA5NDQ1NDc5M30.vi7Xa3eF9D9OTCkDZUYn6ScsyuQPwb0eN9nNazPpFcc';
 
-export let SUPABASE_URL = SUPABASE_URL_DEFAULT;
-export let SUPABASE_KEY = SUPABASE_KEY_DEFAULT;
+let SUPABASE_URL = SUPABASE_URL_DEFAULT;
+let SUPABASE_KEY = SUPABASE_KEY_DEFAULT;
 
 // App Configuration
-export const APP_CONFIG = {
+const APP_CONFIG = {
     name: 'ECOLE LA FONTAINE',
     version: '6.0',
     sessionDuration: 60 * 60 * 1000, // 1 hour
@@ -21,7 +21,7 @@ export const APP_CONFIG = {
 };
 
 // File Upload Limits
-export const UPLOAD_LIMITS = {
+const UPLOAD_LIMITS = {
     maxLogoSize: 2 * 1024 * 1024, // 2MB
     maxBulkImportRows: 500,
     allowedImageTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
@@ -29,7 +29,7 @@ export const UPLOAD_LIMITS = {
 };
 
 // Date Formats
-export const DATE_FORMATS = {
+const DATE_FORMATS = {
     display: 'DD/MM/YYYY',
     api: 'YYYY-MM-DD',
     report: 'DD MMM YYYY',
@@ -38,7 +38,7 @@ export const DATE_FORMATS = {
 };
 
 // Currency Settings
-export const CURRENCY = {
+const CURRENCY = {
     code: 'RWF',
     symbol: 'RWF',
     locale: 'en-RW',
@@ -46,7 +46,7 @@ export const CURRENCY = {
 };
 
 // Default Grading Scale (loaded if no custom scale in DB)
-export const DEFAULT_GRADES = [
+const DEFAULT_GRADES = [
     { grade: 'A+', min: 90, max: 100, desc: 'Excellent', color: '#10b981' },
     { grade: 'A', min: 80, max: 89, desc: 'Very Good', color: '#34d399' },
     { grade: 'B', min: 70, max: 79, desc: 'Good', color: '#60a5fa' },
@@ -56,7 +56,7 @@ export const DEFAULT_GRADES = [
 ];
 
 // Promotion Rules (from class to next class)
-export const PROMOTION_MAP = {
+const PROMOTION_MAP = {
     'NURSERY 1': 'NURSERY 2',
     'NURSERY 2': 'NURSERY 3',
     'NURSERY 3': 'PRIMARY 1',
@@ -68,7 +68,7 @@ export const PROMOTION_MAP = {
     'PRIMARY 6': 'GRADUATED'
 };
 
-export const PROMOTION_RULES = [
+const PROMOTION_RULES = [
     { from: 'NURSERY 1', to: 'NURSERY 2' },
     { from: 'NURSERY 2', to: 'NURSERY 3' },
     { from: 'NURSERY 3', to: 'PRIMARY 1' },
@@ -81,18 +81,18 @@ export const PROMOTION_RULES = [
 ];
 
 // Timetable Configuration
-export const TIMETABLE_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-export const TIMETABLE_TIME_SLOTS = [
+const TIMETABLE_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const TIMETABLE_TIME_SLOTS = [
     '08:20-09:00', '09:00-09:40', '09:40-10:20', '10:20-10:40',
     '10:40-11:20', '11:20-12:00', '12:00-13:00', '13:00-13:40',
     '13:40-14:20', '14:20-15:00', '15:00-15:20', '15:20-16:00', '16:00-16:40'
 ];
 
-export function isBreakSlot(ts) {
+function isBreakSlot(ts) {
     return ts === '10:20-10:40' || ts === '12:00-13:00' || ts === '15:00-15:20';
 }
 
-export function getBreakIcon(ts) {
+function getBreakIcon(ts) {
     if (ts === '10:20-10:40') return '🍎';
     if (ts === '12:00-13:00') return '🍽️';
     if (ts === '15:00-15:20') return '☕';
@@ -100,7 +100,7 @@ export function getBreakIcon(ts) {
 }
 
 // Notification Types
-export const NOTIFICATION_TYPES = {
+const NOTIFICATION_TYPES = {
     NEW: 'new',
     UNREAD: 'unread',
     READ: 'read',
@@ -111,25 +111,25 @@ export const NOTIFICATION_TYPES = {
 };
 
 // Payment Methods
-export const PAYMENT_METHODS = ['Cash', 'Mobile-Money', 'Bank Transfer', 'Cheque'];
+const PAYMENT_METHODS = ['Cash', 'Mobile-Money', 'Bank Transfer', 'Cheque'];
 
 // Assessment Types
-export const ASSESSMENT_TYPES = ['Quiz', 'Assignment', 'Mid-term', 'Exam', 'Final Exam'];
+const ASSESSMENT_TYPES = ['Quiz', 'Assignment', 'Mid-term', 'Exam', 'Final Exam'];
 
 // Fee Reset Frequencies
-export const FEE_RESET_FREQUENCIES = ['one_time', 'termly', 'monthly', 'annual'];
+const FEE_RESET_FREQUENCIES = ['one_time', 'termly', 'monthly', 'annual'];
 
 // Student Statuses
-export const STUDENT_STATUSES = ['Active', 'Inactive', 'Transferred', 'Graduated'];
+const STUDENT_STATUSES = ['Active', 'Inactive', 'Transferred', 'Graduated'];
 
 // Gender Options
-export const GENDERS = ['Male', 'Female', 'Other'];
+const GENDERS = ['Male', 'Female', 'Other'];
 
 // Teacher Roles
-export const USER_ROLES = ['admin', 'accountant', 'teacher'];
+const USER_ROLES = ['admin', 'accountant', 'teacher'];
 
 // Tables that may be optional (graceful handling)
-export const OPTIONAL_TABLES = new Set([
+const OPTIONAL_TABLES = new Set([
     'promotions', 'student_archive', 'timetable_slots', 'holidays',
     'families', 'teacher_assignments', 'notifications', 'payment_allocations',
     'announcements', 'activity_logs'

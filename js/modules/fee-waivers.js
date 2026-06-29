@@ -1,14 +1,8 @@
 // js/modules/fee-waivers.js
 // Fee Waivers Module - Manage fee waivers, discounts, scholarships
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, esc } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getStudentById, getClassById, getFullStudentBalance } from './student-fees.js';
 
-export async function renderFeeWaivers(container) {
+async function renderFeeWaivers(container) {
     await ensureStateLoaded();
 
     const waivers = state.studentFees.filter(f => f.is_waived === true);

@@ -1,13 +1,8 @@
 // js/modules/system-logs.js
 // System Logs Module - View, filter, and export system activity logs
 
-import { state } from '../core/state.js';
-import { getAll } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal } from '../ui/modals.js';
-import { fmtDate, fmtDateTime, esc, exportToExcel } from '../core/utils.js';
-import { ensureStateLoaded } from '../core/data-loader.js';
 
-export async function renderSystemLogs(container) {
+async function renderSystemLogs(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

@@ -2,17 +2,9 @@
 // GRADING SYSTEM MODULE - Configure grade boundaries
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getCurrentUser, isAdmin } from '../core/auth.js';
-import { esc } from '../core/utils.js';
-import { showToast } from '../core/helpers.js';
-import { confirmDialog } from '../ui/modals.js';;
-import { insert, update, removeWhere } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { DEFAULT_GRADES } from '../core/constants.js';
 
 // Render Grading Scale page
-export async function renderGradingScale(container) {
+async function renderGradingScale(container) {
     if (!isAdmin()) {
         container.innerHTML = '<div class="alert alert-danger">Access denied. Admin privileges required.</div>';
         return;

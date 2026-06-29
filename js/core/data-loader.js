@@ -2,30 +2,24 @@
 // DATA LOADER - Loading and refreshing application data
 // ============================================================
 
-import { getAll, getSchoolSettings } from './supabase-client.js';
-import { state, updateState, getCurrentUser } from './state.js';
-import { showToast } from './helpers.js';
-import { DEFAULT_GRADES, OPTIONAL_TABLES } from './config.js';
-import { info, error as logError } from './logger.js';
-import { handleError } from './error-handler.js';
 
 // Track loading state
 let isLoading = false;
 let loadPromise = null;
 
 // Add this to data-loader.js
-export async function ensureStateLoaded() {
+async function ensureStateLoaded() {
     if (isStateLoaded()) return true;
     return await loadInitialData();
 }
 
 // Check if state is already loaded
-export function isStateLoaded() {
+function isStateLoaded() {
     return state.students.length > 0 && state.classes.length > 0;
 }
 
 // Load all initial data in parallel with error handling
-export async function loadInitialData(forceRefresh = false) {
+async function loadInitialData(forceRefresh = false) {
     if (isLoading && loadPromise) {
         return loadPromise;
     }
@@ -133,7 +127,7 @@ export async function loadInitialData(forceRefresh = false) {
 }
 
 // Refresh a specific table
-export async function refreshTable(tableName) {
+async function refreshTable(tableName) {
     try {
         info(`Refreshing table: ${tableName}`, null, 'data-loader');
 
@@ -149,13 +143,13 @@ export async function refreshTable(tableName) {
 }
 
 // Refresh multiple tables
-export async function refreshTables(tableNames) {
+async function refreshTables(tableNames) {
     const results = await Promise.all(tableNames.map(name => refreshTable(name)));
     return results.every(r => r === true);
 }
 
 // Reload entire state
-export async function reloadAllData() {
+async function reloadAllData() {
     showToast('Refreshing data...', 'info');
     await loadInitialData(true);
     showToast('Data refreshed', 'success');
@@ -168,7 +162,7 @@ export async function reloadAllData() {
 }
 
 // Load data with progress callback
-export async function loadDataWithProgress(tables, onProgress) {
+async function loadDataWithProgress(tables, onProgress) {
     const total = tables.length;
     let completed = 0;
 
@@ -194,7 +188,7 @@ export async function loadDataWithProgress(tables, onProgress) {
 }
 
 // Check if a table has data
-export async function hasTableData(tableName) {
+async function hasTableData(tableName) {
     if (state[tableName]?.length > 0) return true;
 
     try {
@@ -206,7 +200,7 @@ export async function hasTableData(tableName) {
 }
 
 // Preload data for a specific module
-export async function preloadModuleData(moduleName) {
+async function preloadModuleData(moduleName) {
     const moduleTables = {
         'finance': ['fee_categories', 'fee_amounts', 'student_fees', 'payments'],
         'students': ['students', 'classes', 'families'],

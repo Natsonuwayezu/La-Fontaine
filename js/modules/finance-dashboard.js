@@ -1,16 +1,10 @@
 // js/modules/finance-dashboard.js
 // Finance Dashboard Module - Overview of all financial metrics
 
-import { state } from '../core/state.js';
-import { getAll } from '../core/supabase-client.js';
-import { showToast } from '../ui/modals.js';
-import { fmtCurrency, fmtPct, esc } from '../core/utils.js';
-import { ensureStateLoaded } from '../core/data-loader.js';
-import { getStudentById, getClassById, getFullStudentBalance, getStudentCreditBalance } from './student-fees.js';
 
 let financeChart = null;
 
-export async function renderFinanceDashboard(container) {
+async function renderFinanceDashboard(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

@@ -2,22 +2,12 @@
 // STUDENT PROFILE MODULE - 5-tab student details view
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getStudentById, getTeacherById } from '../core/state.js';
-import { getCurrentUser, isAdmin, isTeacher, isAccountant } from '../core/auth.js';
-import { fmtCurrency, fmtDate, fmtDateTime, esc, getGrade, getGradeClass } from '../core/utils.js';
-import { getFullStudentBalance } from '../core/helpers.js';;
-import { getAll } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { showToast } from '../ui/modals.js';
-import { navigateTo } from '../core/router.js';
-import { openEditStudentModal, deleteStudentPrompt } from './students.js';
 
 let _currentStudentId = null;
 let _activeStudentTab = 'info';
 
 // Render Student Details page
-export async function renderStudentDetails(container) {
+async function renderStudentDetails(container) {
     const id = parseInt(localStorage.getItem('elf_view_student'));
     const s = id ? getStudentById(id) : null;
 
@@ -89,7 +79,7 @@ window.switchStudentTab = async function (tabName, studentId, event) {
 };
 
 // Load tab content
-export async function loadStudentTabContent(tabName, studentId) {
+async function loadStudentTabContent(tabName, studentId) {
     const container = document.getElementById('student-tab-content');
     if (!container) return;
 

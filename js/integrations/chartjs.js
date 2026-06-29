@@ -4,7 +4,7 @@
 // Chart instance registry to prevent duplicates
 const chartRegistry = new Map();
 
-export function initChartIntegration() {
+function initChartIntegration() {
     if (typeof Chart === 'undefined') {
         console.warn('Chart.js not loaded');
         return false;
@@ -12,7 +12,7 @@ export function initChartIntegration() {
     return true;
 }
 
-export function createChart(ctx, type, data, options = {}) {
+function createChart(ctx, type, data, options = {}) {
     if (!initChartIntegration()) return null;
 
     // Destroy existing chart if it exists
@@ -62,17 +62,17 @@ export function createChart(ctx, type, data, options = {}) {
     return chart;
 }
 
-export function createBarChart(ctx, labels, datasets, options = {}) {
+function createBarChart(ctx, labels, datasets, options = {}) {
     const data = { labels, datasets };
     return createChart(ctx, 'bar', data, options);
 }
 
-export function createLineChart(ctx, labels, datasets, options = {}) {
+function createLineChart(ctx, labels, datasets, options = {}) {
     const data = { labels, datasets };
     return createChart(ctx, 'line', data, options);
 }
 
-export function createPieChart(ctx, labels, dataValues, colors = null, options = {}) {
+function createPieChart(ctx, labels, dataValues, colors = null, options = {}) {
     const defaultColors = ['#1a3a5c', '#3b82f6', '#0d9488', '#14b8a6', '#7c3aed', '#ec4899', '#f59e0b', '#10b981'];
     const backgroundColor = colors || labels.map((_, i) => defaultColors[i % defaultColors.length]);
 
@@ -88,11 +88,11 @@ export function createPieChart(ctx, labels, dataValues, colors = null, options =
     return createChart(ctx, 'doughnut', data, options);
 }
 
-export function createDoughnutChart(ctx, labels, dataValues, colors = null, options = {}) {
+function createDoughnutChart(ctx, labels, dataValues, colors = null, options = {}) {
     return createPieChart(ctx, labels, dataValues, colors, options);
 }
 
-export function destroyChart(ctx) {
+function destroyChart(ctx) {
     const chart = chartRegistry.get(ctx);
     if (chart) {
         chart.destroy();
@@ -100,14 +100,14 @@ export function destroyChart(ctx) {
     }
 }
 
-export function destroyAllCharts() {
+function destroyAllCharts() {
     for (const [ctx, chart] of chartRegistry.entries()) {
         chart.destroy();
     }
     chartRegistry.clear();
 }
 
-export function updateChart(ctx, newData, newLabels = null) {
+function updateChart(ctx, newData, newLabels = null) {
     const chart = chartRegistry.get(ctx);
     if (!chart) return false;
 
@@ -117,7 +117,7 @@ export function updateChart(ctx, newData, newLabels = null) {
     return true;
 }
 
-export function getChartColors(count) {
+function getChartColors(count) {
     const colors = [
         '#1a3a5c', '#3b82f6', '#0d9488', '#14b8a6', '#7c3aed',
         '#ec4899', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6',
@@ -167,7 +167,7 @@ function isObject(item) {
 }
 
 // Theme-aware chart update
-export function updateChartTheme() {
+function updateChartTheme() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const textColor = isDark ? '#f1f5f9' : '#1e293b';
     const gridColor = isDark ? '#334155' : '#e2e8f0';

@@ -4,7 +4,7 @@
 let bottomNav = null;
 let currentMobileTab = 'dashboard';
 
-export function initMobileNavigation() {
+function initMobileNavigation() {
     createBottomNav();
     initMobileMenuToggle();
     initMobileSubmenuHandling();
@@ -169,7 +169,7 @@ function initMobileSubmenuHandling() {
     });
 }
 
-export function updateMobileNavBadge(count) {
+function updateMobileNavBadge(count) {
     if (!bottomNav) return;
 
     const notifBtn = bottomNav.querySelector('.mobile-nav-btn[data-page="notifications"]');
@@ -188,7 +188,7 @@ export function updateMobileNavBadge(count) {
     }
 }
 
-export function hideBottomNav() {
+function hideBottomNav() {
     if (bottomNav) {
         bottomNav.style.display = 'none';
         const mainContent = document.querySelector('.main-content');
@@ -196,7 +196,7 @@ export function hideBottomNav() {
     }
 }
 
-export function showBottomNav() {
+function showBottomNav() {
     if (bottomNav && window.innerWidth <= 768) {
         bottomNav.style.display = 'flex';
         const mainContent = document.querySelector('.main-content');

@@ -1,17 +1,12 @@
 // js/modules/academic-calendar.js
 // Academic Calendar Management - Term dates, holidays, auto-reset rules
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, fmtDateTime, esc } from '../core/utils.js';
-import { refreshTable } from '../core/data-loader.js';
 
 /**
  * Render Academic Calendar page
  * @param {HTMLElement} container - DOM element to render into
  */
-export async function renderAcademicCalendar(container) {
+async function renderAcademicCalendar(container) {
     await ensureStateLoaded();
 
     const currentYear = state.currentAcadYear || state.academicYears[0];
@@ -403,7 +398,5 @@ async function importRwandaHolidays() {
 }
 
 // Helper imports
-import { updateSchoolSetting } from '../core/supabase-client.js';
-import { loadInitialData, ensureStateLoaded } from '../core/data-loader.js';;
-import { exportToExcel } from '../core/utils.js';
-import { getById } from '../core/supabase-client.js';;
+
+

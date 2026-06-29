@@ -2,12 +2,9 @@
 // NOTIFICATIONS UI - Notification center and announcement display
 // ============================================================
 
-import { showModal, closeModal } from './modals.js';
-import { formatDate, formatAgo } from '../core/utils.js';
-import { getCurrentUser } from '../core/auth.js';
 
 // Render notification item
-export function renderNotificationItem(notification, onRead, onDismiss) {
+function renderNotificationItem(notification, onRead, onDismiss) {
     const typeIcons = {
         critical: '🔴',
         urgent: '⚠️',
@@ -101,7 +98,7 @@ export function renderNotificationItem(notification, onRead, onDismiss) {
 }
 
 // Render announcement item
-export function renderAnnouncementItem(announcement) {
+function renderAnnouncementItem(announcement) {
     const typeIcons = {
         urgent: '⚠️',
         event: '📅',
@@ -146,7 +143,7 @@ export function renderAnnouncementItem(announcement) {
 }
 
 // Show notifications modal
-export function showNotificationsModal(notifications, announcements, onMarkRead, onMarkAllRead, onClearAll) {
+function showNotificationsModal(notifications, announcements, onMarkRead, onMarkAllRead, onClearAll) {
     const unreadCount = notifications.filter(n => !n.read).length;
 
     const modalHtml = `
@@ -204,7 +201,7 @@ export function showNotificationsModal(notifications, announcements, onMarkRead,
 }
 
 // Update notification badge in topbar
-export function updateNotificationBadge(count) {
+function updateNotificationBadge(count) {
     const dot = document.getElementById('notif-dot');
     const bell = document.querySelector('.notif-bell');
 
@@ -230,7 +227,7 @@ function escapeHtml(str) {
         return m;
     });
 }
-export function updateNotificationBadgeCount(count) {
+function updateNotificationBadgeCount(count) {
     const badge = document.getElementById('notification-badge');
     if (!badge) return;
     if (count > 0) {

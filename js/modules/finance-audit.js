@@ -1,14 +1,8 @@
 // js/modules/finance-audit.js
 // Finance Audit Module - Track and audit all financial transactions
 
-import { state } from '../core/state.js';
-import { getAll, insert } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal } from '../ui/modals.js';
-import { fmtCurrency, fmtDateTime, esc, exportToExcel } from '../core/utils.js';
-import { ensureStateLoaded } from '../core/data-loader.js';
-import { getStudentById, getClassById } from './student-fees.js';
 
-export async function renderFinanceAudit(container) {
+async function renderFinanceAudit(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

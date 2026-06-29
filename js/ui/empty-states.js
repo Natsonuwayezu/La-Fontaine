@@ -3,7 +3,7 @@
 // ============================================================
 
 // Create empty state component
-export function createEmptyState(icon, title, message, action = null) {
+function createEmptyState(icon, title, message, action = null) {
     const container = document.createElement('div');
     container.className = 'empty-state';
 
@@ -18,7 +18,7 @@ export function createEmptyState(icon, title, message, action = null) {
 }
 
 // Create compact empty state (smaller version)
-export function createCompactEmptyState(icon, message) {
+function createCompactEmptyState(icon, message) {
     const container = document.createElement('div');
     container.className = 'empty-state empty-state-compact';
 
@@ -31,7 +31,7 @@ export function createCompactEmptyState(icon, message) {
 }
 
 // Create table empty state (for tables with no data)
-export function createTableEmptyState(message = 'No data available', colSpan = 1) {
+function createTableEmptyState(message = 'No data available', colSpan = 1) {
     const tr = document.createElement('tr');
     tr.className = 'table-empty-state';
     tr.innerHTML = `
@@ -44,7 +44,7 @@ export function createTableEmptyState(message = 'No data available', colSpan = 1
 }
 
 // Create search empty state
-export function createSearchEmptyState(searchTerm, onClear) {
+function createSearchEmptyState(searchTerm, onClear) {
     const container = document.createElement('div');
     container.className = 'empty-state';
 
@@ -66,7 +66,7 @@ export function createSearchEmptyState(searchTerm, onClear) {
 }
 
 // Create filter empty state
-export function createFilterEmptyState(onReset) {
+function createFilterEmptyState(onReset) {
     const container = document.createElement('div');
     container.className = 'filter-empty-state';
 
@@ -88,7 +88,7 @@ export function createFilterEmptyState(onReset) {
 }
 
 // Create no notifications empty state
-export function createNoNotificationsEmptyState() {
+function createNoNotificationsEmptyState() {
     return createEmptyState(
         '🔔',
         'No Notifications',
@@ -97,7 +97,7 @@ export function createNoNotificationsEmptyState() {
 }
 
 // Create no students empty state
-export function createNoStudentsEmptyState(onAddStudent) {
+function createNoStudentsEmptyState(onAddStudent) {
     const addButton = '<button class="btn btn-primary" id="add-student-btn">➕ Add Student</button>';
     const container = createEmptyState(
         '👥',
@@ -115,7 +115,7 @@ export function createNoStudentsEmptyState(onAddStudent) {
 }
 
 // Create no payments empty state
-export function createNoPaymentsEmptyState(onRecordPayment) {
+function createNoPaymentsEmptyState(onRecordPayment) {
     const addButton = '<button class="btn btn-primary" id="record-payment-btn">💰 Record Payment</button>';
     const container = createEmptyState(
         '💸',
@@ -133,7 +133,7 @@ export function createNoPaymentsEmptyState(onRecordPayment) {
 }
 
 // Create no assessments empty state
-export function createNoAssessmentsEmptyState(onCreateAssessment) {
+function createNoAssessmentsEmptyState(onCreateAssessment) {
     const addButton = '<button class="btn btn-primary" id="create-assessment-btn">➕ Create Assessment</button>';
     const container = createEmptyState(
         '📝',
@@ -162,7 +162,7 @@ function escapeHtml(str) {
 }
 
 // Fill container with empty state
-export function showEmptyState(container, icon, title, message, action = null) {
+function showEmptyState(container, icon, title, message, action = null) {
     if (!container) return;
     container.innerHTML = '';
     container.appendChild(createEmptyState(icon, title, message, action));

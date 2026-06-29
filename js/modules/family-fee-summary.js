@@ -1,14 +1,8 @@
 // js/modules/family-fee-summary.js
 // Family Fee Summary Module - View combined fee status for all family members
 
-import { state } from '../core/state.js';
-import { getAll } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { ensureStateLoaded } from '../core/data-loader.js';
-import { getStudentById, getClassById, getFullStudentBalance, getStudentCreditBalance } from './student-fees.js';
 
-export async function renderFamilyFeeSummary(container) {
+async function renderFamilyFeeSummary(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

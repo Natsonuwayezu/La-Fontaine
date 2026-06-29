@@ -1,14 +1,8 @@
 // js/modules/receipt-printing.js
 // Receipt Printing Module - Print and manage payment receipts
 
-import { state } from '../core/state.js';
-import { getAll } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, fmtDateTime, esc } from '../core/utils.js';
-import { ensureStateLoaded } from '../core/data-loader.js';
-import { getStudentById, getClassById, getFullStudentBalance } from './student-fees.js';
 
-export async function renderReceiptPrinting(container) {
+async function renderReceiptPrinting(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

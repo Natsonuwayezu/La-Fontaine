@@ -1,12 +1,6 @@
 // js/modules/teacher-timetable.js
 // Teacher Timetable Module - View timetable for specific teacher
 
-import { state } from '../core/state.js';
-import { getAll } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal } from '../ui/modals.js';
-import { fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById, getSubjectById, getTeacherById } from './student-fees.js';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 const TIME_SLOTS = [
@@ -26,7 +20,7 @@ function getBreakIcon(ts) {
     return '';
 }
 
-export async function renderTeacherTimetable(container) {
+async function renderTeacherTimetable(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

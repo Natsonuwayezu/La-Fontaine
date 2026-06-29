@@ -3,7 +3,7 @@
 // ============================================================
 
 // Accordion manager class
-export class AccordionManager {
+class AccordionManager {
     constructor(container, options = {}) {
         this.container = container;
         this.items = [];
@@ -104,7 +104,7 @@ export class AccordionManager {
 }
 
 // Create a simple accordion
-export function createAccordion(containerId, items, multiple = false) {
+function createAccordion(containerId, items, multiple = false) {
     const container = document.getElementById(containerId);
     if (!container) return null;
 
@@ -117,7 +117,7 @@ export function createAccordion(containerId, items, multiple = false) {
 }
 
 // Bulk payment student card toggle
-export function toggleBulkStudentCard(studentId) {
+function toggleBulkStudentCard(studentId) {
     const el = document.getElementById(`bulk-student-${studentId}`);
     if (el) {
         if (el.style.display === 'none') {
@@ -129,7 +129,7 @@ export function toggleBulkStudentCard(studentId) {
 }
 
 // Toggle all fees for a student (bulk payment)
-export function toggleAllFeesForStudent(studentId, checked) {
+function toggleAllFeesForStudent(studentId, checked) {
     const feeRows = document.querySelectorAll(`#bulk-student-${studentId} .bulk-fee-select`);
     feeRows.forEach(cb => {
         cb.checked = checked;

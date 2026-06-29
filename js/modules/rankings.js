@@ -2,13 +2,6 @@
 // RANKINGS MODULE - Student ranking and position calculations
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getStudentById } from '../core/state.js';
-import { getCurrentUser, isAdmin, isTeacher } from '../core/auth.js';
-import { fmtPct, getGrade, getGradeClass, esc } from '../core/utils.js';
-import { getAll } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { exportToExcel } from '../core/utils.js';
 
 // Ranking state
 let _currentRankingClass = null;
@@ -17,7 +10,7 @@ let _currentRankingPage = 1;
 const ITEMS_PER_PAGE = 20;
 
 // Render Rankings page
-export async function renderRankings(container) {
+async function renderRankings(container) {
     if (isAccountant()) {
         container.innerHTML = '<div class="alert alert-danger">Access denied. Accountant cannot access rankings.</div>';
         return;

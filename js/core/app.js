@@ -2,30 +2,13 @@
 // APP - Main application initialization and boot sequence
 // ============================================================
 
-import { state, updateState } from './state.js';
-import { getStoredSession, saveSession, clearSession, getLastModule, saveLastModule } from './storage.js';
-import { login, logout, startSessionWatcher, getCurrentUser } from './auth.js';
-import { loadInitialData } from './data-loader.js';
-import { buildSidebar, setActiveNav, updateSidebarUser, initSidebar, closeSidebarMobile } from '../ui/sidebar.js';
-import { renderTopbar, updateTopbarUser, updateProgressBar, initTheme, initUserDropdown } from '../ui/topbar.js';
-import { navigateTo } from './router.js';
-import { initOfflineSupport } from './offline-engine.js';
-import { initAutoSync } from './sync-engine.js';
-import { startFeeResetWatcher, startAutoArchiveWatcher, startNotificationWatcher } from './auto-tasks.js';
-import { initNotifications } from './notifications-engine.js';
-import { startAutoBackupScheduler } from './backup-engine.js';
-import { initPWA } from './pwa.js';
-import { initCommandPalette } from './command-palette.js';
-import { setupGlobalErrorHandlers } from './error-handler.js';
-import { getCurrentPhase } from './academic-year-engine.js';
-import { showToast } from './helpers.js';
 
 let isBooted = false;
 
 // ─────────────────────────────────────────────
 // Boot application after a successful login
 // ─────────────────────────────────────────────
-export async function bootApp(user) {
+async function bootApp(user) {
     if (isBooted) return;
 
     // Swap login → app
@@ -118,7 +101,7 @@ export async function bootApp(user) {
 // ─────────────────────────────────────────────
 // App init — check for persisted session
 // ─────────────────────────────────────────────
-export async function initApp() {
+async function initApp() {
     const storedUser = getStoredSession();
 
     if (storedUser) {

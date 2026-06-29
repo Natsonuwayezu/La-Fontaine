@@ -1,13 +1,8 @@
 // js/modules/school-settings.js
 // School Settings Module - Configure school information, logo, contact details
 
-import { state } from '../core/state.js';
-import { getAll, updateSchoolSetting } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, esc } from '../core/utils.js';
-import { refreshTable, loadInitialData } from '../core/data-loader.js';
 
-export async function renderSchoolSettings(container) {
+async function renderSchoolSettings(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

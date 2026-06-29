@@ -2,16 +2,9 @@
 // STUDENT ARCHIVE MODULE - Manage archived/deleted students
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getStudentById } from '../core/state.js';
-import { getCurrentUser, isAdmin } from '../core/auth.js';
-import { fmtDate, esc } from '../core/utils.js';
-import { update, remove, insert } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { showToast, confirmDialog } from '../ui/modals.js';
 
 // Render Student Archive page
-export async function renderStudentArchive(container) {
+async function renderStudentArchive(container) {
     if (!isAdmin()) {
         container.innerHTML = '<div class="alert alert-danger">Access denied. Admin privileges required.</div>';
         return;

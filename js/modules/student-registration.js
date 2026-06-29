@@ -2,19 +2,9 @@
 // STUDENT REGISTRATION MODULE - Enroll new students
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getStudentById } from '../core/state.js';
-import { getCurrentUser, isAdmin } from '../core/auth.js';
-import { fmtCurrency, esc } from '../core/utils.js';
-import { getFullStudentBalance } from '../core/helpers.js';;
-import { insert, update, getAll } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { showToast, confirmDialog } from '../ui/modals.js';
-import { navigateTo } from '../core/router.js';
-import { logActivity } from '../core/helpers.js';
 
 // Render Enroll Student page
-export async function renderEnrollStudent(container) {
+async function renderEnrollStudent(container) {
     if (!isAdmin()) {
         container.innerHTML = '<div class="alert alert-danger">Access denied. Admin privileges required.</div>';
         return;

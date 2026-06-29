@@ -2,11 +2,9 @@
 // ERROR HANDLER - Global error handling and recovery
 // ============================================================
 
-import { error as logError, warn as logWarn } from './logger.js';
-import { showToast } from './helpers.js';
 
 // Error severity levels
-export const ERROR_SEVERITY = {
+const ERROR_SEVERITY = {
     LOW: 'low',
     MEDIUM: 'medium',
     HIGH: 'high',
@@ -14,7 +12,7 @@ export const ERROR_SEVERITY = {
 };
 
 // Error categories
-export const ERROR_CATEGORIES = {
+const ERROR_CATEGORIES = {
     NETWORK: 'network',
     DATABASE: 'database',
     AUTH: 'auth',
@@ -36,17 +34,17 @@ function addToRecentErrors(error) {
 }
 
 // Get recent errors
-export function getRecentErrors() {
+function getRecentErrors() {
     return [...recentErrors];
 }
 
 // Clear recent errors
-export function clearRecentErrors() {
+function clearRecentErrors() {
     recentErrors.length = 0;
 }
 
 // Determine error category
-export function getErrorCategory(error) {
+function getErrorCategory(error) {
     if (error.message?.includes('network') || error.message?.includes('fetch') || error.message?.includes('offline')) {
         return ERROR_CATEGORIES.NETWORK;
     }
@@ -66,7 +64,7 @@ export function getErrorCategory(error) {
 }
 
 // Determine error severity
-export function getErrorSeverity(error, category) {
+function getErrorSeverity(error, category) {
     if (category === ERROR_CATEGORIES.CRITICAL) return ERROR_SEVERITY.CRITICAL;
     if (error.message?.includes('fatal') || error.stack?.includes('fatal')) return ERROR_SEVERITY.CRITICAL;
     if (category === ERROR_CATEGORIES.AUTH) return ERROR_SEVERITY.HIGH;
@@ -76,7 +74,7 @@ export function getErrorSeverity(error, category) {
 }
 
 // Show user-friendly error message
-export function showUserError(error, category) {
+function showUserError(error, category) {
     let userMessage = 'An error occurred. Please try again.';
 
     switch (category) {
@@ -98,7 +96,7 @@ export function showUserError(error, category) {
 }
 
 // Global error handler
-export function handleError(error, context = null) {
+function handleError(error, context = null) {
     const category = getErrorCategory(error);
     const severity = getErrorSeverity(error, category);
 
@@ -135,13 +133,13 @@ export function handleError(error, context = null) {
 }
 
 // Promise rejection handler
-export function handlePromiseRejection(event) {
+function handlePromiseRejection(event) {
     const error = event.reason;
     handleError(error, { type: 'unhandled_rejection' });
 }
 
 // Global error event handler
-export function setupGlobalErrorHandlers() {
+function setupGlobalErrorHandlers() {
     window.addEventListener('error', (event) => {
         handleError(event.error || new Error(event.message), { type: 'global_error', filename: event.filename, lineno: event.lineno });
     });
@@ -161,7 +159,7 @@ export function setupGlobalErrorHandlers() {
 }
 
 // Safe function wrapper (catches and handles errors automatically)
-export function safe(fn, fallbackValue = null, context = null) {
+function safe(fn, fallbackValue = null, context = null) {
     return function (...args) {
         try {
             return fn(...args);
@@ -173,7 +171,7 @@ export function safe(fn, fallbackValue = null, context = null) {
 }
 
 // Safe async function wrapper
-export function safeAsync(fn, fallbackValue = null, context = null) {
+function safeAsync(fn, fallbackValue = null, context = null) {
     return async function (...args) {
         try {
             return await fn(...args);
@@ -185,7 +183,7 @@ export function safeAsync(fn, fallbackValue = null, context = null) {
 }
 
 // Safe DOM element access
-export function safeGetElement(id, fallback = null) {
+function safeGetElement(id, fallback = null) {
     try {
         return document.getElementById(id) || fallback;
     } catch (error) {
@@ -195,7 +193,7 @@ export function safeGetElement(id, fallback = null) {
 }
 
 // Safe JSON parse
-export function safeJsonParse(str, fallback = null) {
+function safeJsonParse(str, fallback = null) {
     try {
         return JSON.parse(str);
     } catch (error) {

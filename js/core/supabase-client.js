@@ -17,7 +17,6 @@ function checkYearLock(table, data) {
 // SUPABASE CLIENT - Database API wrappers
 // ============================================================
 
-import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
 
 // API Headers
 function apiHeaders() {
@@ -30,7 +29,7 @@ function apiHeaders() {
 }
 
 // Generic API request
-export async function apiRequest(endpoint, method = 'GET', body = null) {
+async function apiRequest(endpoint, method = 'GET', body = null) {
     const url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
     const opts = { method, headers: apiHeaders() };
     if (body && ['POST', 'PATCH', 'PUT'].includes(method)) {
@@ -50,7 +49,7 @@ export async function apiRequest(endpoint, method = 'GET', body = null) {
 }
 
 // Get all records from a table
-export async function getAll(table, filters = {}) {
+async function getAll(table, filters = {}) {
     let q = `${table}?select=*`;
 
     if (typeof filters === 'string') {
@@ -77,43 +76,43 @@ export async function getAll(table, filters = {}) {
 }
 
 // Get single record by ID
-export async function getById(table, id) {
+async function getById(table, id) {
     const r = await apiRequest(`${table}?id=eq.${id}&select=*`);
     return (r.success && r.data.length > 0) ? r.data[0] : null;
 }
 
 // Insert a record
-export async function insert(table, data) {
+async function insert(table, data) {
     const r = await apiRequest(table, 'POST', data);
     return r.success ? (Array.isArray(r.data) ? r.data[0] : r.data) : null;
 }
 
 // Update a record by ID
-export async function update(table, id, data) {
+async function update(table, id, data) {
     const r = await apiRequest(`${table}?id=eq.${id}`, 'PATCH', data);
     return r.success;
 }
 
 // Update records matching filter
-export async function updateWhere(table, filterStr, data) {
+async function updateWhere(table, filterStr, data) {
     const r = await apiRequest(`${table}?${filterStr}`, 'PATCH', data);
     return r.success;
 }
 
 // Delete a record by ID
-export async function remove(table, id) {
+async function remove(table, id) {
     const r = await apiRequest(`${table}?id=eq.${id}`, 'DELETE');
     return r.success;
 }
 
 // Delete records matching filter
-export async function removeWhere(table, filterStr) {
+async function removeWhere(table, filterStr) {
     const r = await apiRequest(`${table}?${filterStr}`, 'DELETE');
     return r.success;
 }
 
 // Get records with automatic pagination
-export async function getAllRecords(table, filter = '', batchSize = 1000) {
+async function getAllRecords(table, filter = '', batchSize = 1000) {
     let allRecords = [];
     let page = 0;
 
@@ -135,7 +134,7 @@ export async function getAllRecords(table, filter = '', batchSize = 1000) {
 }
 
 // Get school settings
-export async function getSchoolSettings() {
+async function getSchoolSettings() {
     const rows = await getAll('school_settings');
     const out = {};
     rows.forEach(r => { out[r.key] = r.value; });
@@ -143,7 +142,7 @@ export async function getSchoolSettings() {
 }
 
 // Update school setting
-export async function updateSchoolSetting(key, value) {
+async function updateSchoolSetting(key, value) {
     const existing = await getAll('school_settings', { key });
     if (existing.length > 0) {
         return await updateWhere('school_settings', `key=eq.${key}`, { value, updated_at: new Date().toISOString() });

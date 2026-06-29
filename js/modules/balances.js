@@ -1,14 +1,8 @@
 // js/modules/balances.js
 // Balances Module - Student fee balance management and tracking
 
-import { state } from '../core/state.js';
-import { getAll, update } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, fmtPct, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getStudentById, getClassById, getFullStudentBalance, getStudentCreditBalance, updateStudentCredit } from './student-fees.js';
 
-export async function renderBalances(container) {
+async function renderBalances(container) {
     await ensureStateLoaded();
     
     const user = state.currentUser;

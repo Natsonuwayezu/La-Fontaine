@@ -2,13 +2,11 @@
 // PWA - Progressive Web App functionality
 // ============================================================
 
-import { showToast } from './helpers.js';
-import { info, error as logError } from './logger.js';
 
 let deferredPrompt = null;
 
 // Register service worker — path fixed to /pwa/sw.js
-export async function registerServiceWorker() {
+async function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) {
         console.log('[PWA] Service Worker not supported in this browser.');
         return false;
@@ -44,7 +42,7 @@ export async function registerServiceWorker() {
 }
 
 // Listen for the browser's install prompt
-export function initPWAInstall() {
+function initPWAInstall() {
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -63,7 +61,7 @@ export function initPWAInstall() {
 }
 
 // Trigger PWA install prompt
-export async function installPWA() {
+async function installPWA() {
     if (!deferredPrompt) {
         showToast('App is already installed or cannot be installed in this browser.', 'info');
         return;
@@ -77,7 +75,7 @@ export async function installPWA() {
 }
 
 // Build and inject a dynamic manifest (picks up school name/logo from state)
-export function generateManifest() {
+function generateManifest() {
     const settings   = window.state?.schoolSettings || {};
     const schoolName = settings.school_name || 'ECOLE LA FONTAINE';
     const logo       = settings.school_logo  || '';
@@ -112,7 +110,7 @@ export function generateManifest() {
 }
 
 // Pre-cache the offline fallback page
-export async function cacheOfflinePage() {
+async function cacheOfflinePage() {
     if (!('caches' in window)) return;
     try {
         const cache = await caches.open('ecole-cache-v1');
@@ -123,13 +121,13 @@ export async function cacheOfflinePage() {
     }
 }
 
-export function isStandalone() {
+function isStandalone() {
     return window.matchMedia('(display-mode: standalone)').matches ||
            window.navigator.standalone === true;
 }
 
 // Main init — called once after bootApp
-export function initPWA() {
+function initPWA() {
     registerServiceWorker();
     initPWAInstall();
     generateManifest();

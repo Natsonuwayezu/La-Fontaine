@@ -2,17 +2,9 @@
 // SIBLING LINKING MODULE - Family and sibling management
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getStudentById } from '../core/state.js';
-import { getCurrentUser, isAdmin, isAccountant } from '../core/auth.js';
-import { fmtCurrency, esc } from '../core/utils.js';
-import { getFullStudentBalance } from '../core/helpers.js';;
-import { update, insert, remove } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { showToast, confirmDialog, showModal, closeModal } from '../ui/modals.js';
 
 // Render Sibling Linking page
-export async function renderSiblingLinking(container) {
+async function renderSiblingLinking(container) {
     if (!isAdmin() && !isAccountant()) {
         container.innerHTML = '<div class="alert alert-danger">Access denied.</div>';
         return;

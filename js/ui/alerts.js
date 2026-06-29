@@ -2,10 +2,9 @@
 // ALERTS UI - Alert banner system
 // ============================================================
 
-import { showToast } from './toasts.js';
 
 // Alert types
-export const ALERT_TYPES = {
+const ALERT_TYPES = {
     SUCCESS: 'success',
     ERROR: 'error',
     WARNING: 'warning',
@@ -13,7 +12,7 @@ export const ALERT_TYPES = {
 };
 
 // Create an alert banner
-export function createAlert(message, type = ALERT_TYPES.INFO, dismissible = true) {
+function createAlert(message, type = ALERT_TYPES.INFO, dismissible = true) {
     const alert = document.createElement('div');
     alert.className = `alert alert-${type}`;
 
@@ -39,7 +38,7 @@ export function createAlert(message, type = ALERT_TYPES.INFO, dismissible = true
 }
 
 // Show a temporary alert that auto-dismisses
-export function showAlert(message, type = ALERT_TYPES.INFO, duration = 5000) {
+function showAlert(message, type = ALERT_TYPES.INFO, duration = 5000) {
     const alert = createAlert(message, type, true);
     const container = document.getElementById('dynamic-content');
     if (!container) return;
@@ -61,27 +60,27 @@ export function showAlert(message, type = ALERT_TYPES.INFO, duration = 5000) {
 }
 
 // Show success alert
-export function showSuccessAlert(message, duration = 5000) {
+function showSuccessAlert(message, duration = 5000) {
     return showAlert(message, ALERT_TYPES.SUCCESS, duration);
 }
 
 // Show error alert
-export function showErrorAlert(message, duration = 5000) {
+function showErrorAlert(message, duration = 5000) {
     return showAlert(message, ALERT_TYPES.ERROR, duration);
 }
 
 // Show warning alert
-export function showWarningAlert(message, duration = 5000) {
+function showWarningAlert(message, duration = 5000) {
     return showAlert(message, ALERT_TYPES.WARNING, duration);
 }
 
 // Show info alert
-export function showInfoAlert(message, duration = 5000) {
+function showInfoAlert(message, duration = 5000) {
     return showAlert(message, ALERT_TYPES.INFO, duration);
 }
 
 // Clear all alerts
-export function clearAlerts() {
+function clearAlerts() {
     const container = document.getElementById('dynamic-content');
     if (container) {
         const alerts = container.querySelectorAll('.alert');
@@ -90,7 +89,7 @@ export function clearAlerts() {
 }
 
 // Show validation summary alert
-export function showValidationAlert(errors) {
+function showValidationAlert(errors) {
     if (!errors || errors.length === 0) return;
 
     const errorCount = errors.length;

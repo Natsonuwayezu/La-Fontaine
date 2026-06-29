@@ -2,14 +2,9 @@
 // STUDENT STATEMENTS MODULE - Generate financial statements
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getStudentById } from '../core/state.js';
-import { fmtCurrency, fmtDate, esc } from '../core/utils.js';
-import { getFullStudentBalance } from '../core/helpers.js';;
-import { showToast } from '../ui/modals.js';
 
 // Generate and print student fee statement
-export async function printStudentStatement(studentId) {
+async function printStudentStatement(studentId) {
     const student = getStudentById(studentId);
     if (!student) {
         showToast('Student not found', 'error');
@@ -87,7 +82,7 @@ export async function printStudentStatement(studentId) {
 }
 
 // Generate class financial summary
-export async function printClassStatement(classId) {
+async function printClassStatement(classId) {
     const cls = getClassById(classId);
     if (!cls) return;
 
@@ -166,7 +161,7 @@ export async function printClassStatement(classId) {
 }
 
 // Export student statement to Excel
-export function exportStudentStatementToExcel(studentId) {
+function exportStudentStatementToExcel(studentId) {
     const student = getStudentById(studentId);
     if (!student) return;
 
@@ -212,7 +207,7 @@ export function exportStudentStatementToExcel(studentId) {
     showToast('✅ Statement exported', 'success');
 }
 // ── Page render entry point ─────────────────────────────────
-export async function renderStudentStatements(container) {
+async function renderStudentStatements(container) {
     if (!container) return;
     container.innerHTML = `
         <div class="dash-card">

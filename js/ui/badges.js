@@ -2,10 +2,9 @@
 // BADGES UI - Badge components for status indicators
 // ============================================================
 
-import { getGradeClass } from '../core/utils.js';
 
 // Create a status badge
-export function createBadge(text, type = 'neutral') {
+function createBadge(text, type = 'neutral') {
     const badge = document.createElement('span');
     badge.className = `badge badge-${type}`;
     badge.textContent = text;
@@ -13,7 +12,7 @@ export function createBadge(text, type = 'neutral') {
 }
 
 // Create grade badge
-export function createGradeBadge(percentage) {
+function createGradeBadge(percentage) {
     const gradeClass = getGradeClass(percentage);
     const grade = getGrade(percentage);
     const badge = document.createElement('span');
@@ -23,7 +22,7 @@ export function createGradeBadge(percentage) {
 }
 
 // Create payment status badge
-export function createPaymentStatusBadge(isPaid, isPartial = false, isOverdue = false) {
+function createPaymentStatusBadge(isPaid, isPartial = false, isOverdue = false) {
     let text = '', type = '';
 
     if (isPaid) {
@@ -44,7 +43,7 @@ export function createPaymentStatusBadge(isPaid, isPartial = false, isOverdue = 
 }
 
 // Create attendance status badge
-export function createAttendanceBadge(status) {
+function createAttendanceBadge(status) {
     const badges = {
         present: { text: '✅ Present', type: 'success' },
         absent: { text: '❌ Absent', type: 'danger' },
@@ -57,7 +56,7 @@ export function createAttendanceBadge(status) {
 }
 
 // Create assessment status badge
-export function createAssessmentStatusBadge(isLocked, isOverdue = false, daysLeft = null) {
+function createAssessmentStatusBadge(isLocked, isOverdue = false, daysLeft = null) {
     if (isLocked) {
         return createBadge('🔒 Locked', 'neutral');
     }
@@ -74,7 +73,7 @@ export function createAssessmentStatusBadge(isLocked, isOverdue = false, daysLef
 }
 
 // Create role badge
-export function createRoleBadge(role) {
+function createRoleBadge(role) {
     const badges = {
         admin: { text: '👑 Admin', type: 'danger' },
         accountant: { text: '💰 Accountant', type: 'warning' },
@@ -86,7 +85,7 @@ export function createRoleBadge(role) {
 }
 
 // Create active/inactive status badge
-export function createStatusBadge(isActive) {
+function createStatusBadge(isActive) {
     return createBadge(
         isActive ? '🟢 Active' : '⚪ Inactive',
         isActive ? 'success' : 'neutral'
@@ -94,12 +93,12 @@ export function createStatusBadge(isActive) {
 }
 
 // Create fee waiver badge
-export function createWaiverBadge() {
+function createWaiverBadge() {
     return createBadge('🎁 Waived', 'success');
 }
 
 // Create credit badge
-export function createCreditBadge(amount) {
+function createCreditBadge(amount) {
     const badge = createBadge(`💰 Credit: ${formatCurrency(amount)}`, 'info');
     return badge;
 }

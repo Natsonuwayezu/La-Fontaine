@@ -1,13 +1,8 @@
 // js/modules/assessment-export.js
 // Assessment Export Module - Export assessment data and marks to Excel/PDF
 
-import { state } from '../core/state.js';
-import { getAll } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, fmtPct, esc, exportToExcel, downloadBlob } from '../core/utils.js';
-import { getClassById, getSubjectById, getStudentById, getTermById } from '../core/state.js';;
 
-export async function renderAssessmentExport(container) {
+async function renderAssessmentExport(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

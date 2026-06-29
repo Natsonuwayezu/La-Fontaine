@@ -1,7 +1,7 @@
 // js/mobile/gestures.js
 // Gestures Module - Handle touch gestures for mobile devices
 
-export function initGestures() {
+function initGestures() {
     if (!isTouchDevice()) return;
 
     initSwipeGestures();
@@ -130,7 +130,7 @@ function triggerEvent(eventName, detail) {
 }
 
 // Swipe handlers for specific UI elements
-export function initSwipeForSidebar() {
+function initSwipeForSidebar() {
     const sidebar = document.getElementById('sidebar');
     let touchStartX = 0;
 
@@ -158,7 +158,7 @@ export function initSwipeForSidebar() {
     }, { passive: true });
 }
 
-export function initSwipeForTables() {
+function initSwipeForTables() {
     const tables = document.querySelectorAll('.table-wrapper');
 
     tables.forEach(table => {
@@ -178,7 +178,7 @@ export function initSwipeForTables() {
     });
 }
 
-export function initPullToRefresh(callback) {
+function initPullToRefresh(callback) {
     let startY = 0;
     let isRefreshing = false;
     let pullDistance = 0;

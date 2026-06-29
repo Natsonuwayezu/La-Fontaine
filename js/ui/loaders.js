@@ -3,7 +3,7 @@
 // ============================================================
 
 // Show full page loader
-export function showPageLoader() {
+function showPageLoader() {
     let loader = document.getElementById('page-loader');
     if (!loader) {
         loader = document.createElement('div');
@@ -17,7 +17,7 @@ export function showPageLoader() {
 }
 
 // Hide full page loader
-export function hidePageLoader() {
+function hidePageLoader() {
     const loader = document.getElementById('page-loader');
     if (loader) {
         loader.style.opacity = '0';
@@ -29,7 +29,7 @@ export function hidePageLoader() {
 }
 
 // Show content loader (spinner in container)
-export function showContentLoader(container, message = 'Loading...') {
+function showContentLoader(container, message = 'Loading...') {
     if (!container) return null;
 
     const loader = document.createElement('div');
@@ -41,7 +41,7 @@ export function showContentLoader(container, message = 'Loading...') {
 }
 
 // Show table loader (skeleton rows)
-export function showTableLoader(tableElement, rowCount = 5, columnCount = 5) {
+function showTableLoader(tableElement, rowCount = 5, columnCount = 5) {
     if (!tableElement) return;
 
     const tbody = tableElement.querySelector('tbody');
@@ -60,7 +60,7 @@ export function showTableLoader(tableElement, rowCount = 5, columnCount = 5) {
 }
 
 // Show card loader (skeleton cards)
-export function showCardLoader(container, cardCount = 3) {
+function showCardLoader(container, cardCount = 3) {
     if (!container) return;
 
     let cardsHtml = '';
@@ -78,7 +78,7 @@ export function showCardLoader(container, cardCount = 3) {
 }
 
 // Create an inline spinner
-export function createSpinner(size = 'sm') {
+function createSpinner(size = 'sm') {
     const spinner = document.createElement('div');
     const sizeClass = size === 'sm' ? 'loader-spinner-sm' : (size === 'lg' ? 'loader-spinner-lg' : 'loader-spinner');
     spinner.className = sizeClass;
@@ -86,7 +86,7 @@ export function createSpinner(size = 'sm') {
 }
 
 // Create dots loader
-export function createDotsLoader() {
+function createDotsLoader() {
     const loader = document.createElement('div');
     loader.className = 'loader-dots';
     loader.innerHTML = '<span></span><span></span><span></span>';
@@ -94,7 +94,7 @@ export function createDotsLoader() {
 }
 
 // Show button loading state
-export function setButtonLoading(button, isLoading, text = null) {
+function setButtonLoading(button, isLoading, text = null) {
     if (!button) return;
 
     if (isLoading) {
@@ -108,7 +108,7 @@ export function setButtonLoading(button, isLoading, text = null) {
 }
 
 // Show inline loader for a specific element
-export function showInlineLoader(element) {
+function showInlineLoader(element) {
     if (!element) return;
 
     const originalContent = element.innerHTML;

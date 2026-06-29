@@ -1,17 +1,12 @@
 // js/modules/statistics.js
 // Statistics Module - Academic performance analytics and reports
 
-import { state } from '../core/state.js';
-import { showToast, showModal } from '../ui/modals.js';
-import { fmtCurrency, fmtPct, esc, exportToExcel } from '../core/utils.js';
-import { ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById, getSubjectById, getStudentById, getTeacherById } from '../core/state.js';;
 
 let statsChart = null;
 let gradeChart = null;
 let subjectChart = null;
 
-export async function renderStatistics(container) {
+async function renderStatistics(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

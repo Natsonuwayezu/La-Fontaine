@@ -1,14 +1,8 @@
 // js/modules/reminders.js
 // Reminders Module - Set and manage reminders for tasks, payments, events
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, fmtDateTime, fmtAgo, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getStudentById, getClassById } from './student-fees.js';
 
-export async function renderReminders(container) {
+async function renderReminders(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

@@ -2,11 +2,9 @@
 // PRINT ENGINE - Print-friendly page generation
 // ============================================================
 
-import { showToast } from './helpers.js';
-import { info, error as logError } from './logger.js';
 
 // Print specific element
-export function printElement(element, title = 'Print') {
+function printElement(element, title = 'Print') {
     if (!element) {
         showToast('Nothing to print', 'warning');
         return;
@@ -97,7 +95,7 @@ export function printElement(element, title = 'Print') {
 }
 
 // Print receipt
-export function printReceipt(receiptData, schoolInfo) {
+function printReceipt(receiptData, schoolInfo) {
     const receiptHtml = `
         <div class="receipt-print">
             <div style="text-align:center; margin-bottom:16px;">
@@ -188,7 +186,7 @@ export function printReceipt(receiptData, schoolInfo) {
 }
 
 // Print report card
-export function printReportCard(reportCardHtml, studentName) {
+function printReportCard(reportCardHtml, studentName) {
     const printWindow = window.open('', '_blank', 'width=800,height=600');
     if (!printWindow) {
         showToast('Please allow popups to print', 'warning');
@@ -227,7 +225,7 @@ export function printReportCard(reportCardHtml, studentName) {
 }
 
 // Print statement (fee statement for student)
-export function printStatement(student, fees, payments, balance) {
+function printStatement(student, fees, payments, balance) {
     const printWindow = window.open('', '_blank', 'width=800,height=600');
     if (!printWindow) {
         showToast('Please allow popups to print', 'warning');

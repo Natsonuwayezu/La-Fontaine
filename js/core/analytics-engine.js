@@ -2,11 +2,9 @@
 // ANALYTICS ENGINE - Statistics and analytics calculations
 // ============================================================
 
-import { state } from './state.js';
-import { getGrade, rankStudents } from './utils.js';
 
 // Calculate class performance for a specific term
-export function calculateClassPerformance(classId, termId) {
+function calculateClassPerformance(classId, termId) {
     const students = state.students.filter(s => s.class_id === classId && s.status === 'Active');
     const assessments = state.assessments.filter(a => a.class_id === classId && a.term_id === termId);
 
@@ -59,7 +57,7 @@ export function calculateClassPerformance(classId, termId) {
 }
 
 // Calculate grade distribution for all students
-export function calculateGradeDistribution(classId = null, termId = null) {
+function calculateGradeDistribution(classId = null, termId = null) {
     let students = state.students;
     if (classId) {
         students = students.filter(s => s.class_id === classId);
@@ -101,7 +99,7 @@ export function calculateGradeDistribution(classId = null, termId = null) {
 }
 
 // Calculate subject performance across terms
-export function calculateSubjectPerformance(subjectId, classId = null) {
+function calculateSubjectPerformance(subjectId, classId = null) {
     let assessments = state.assessments.filter(a => a.subject_id === subjectId);
     if (classId) {
         assessments = assessments.filter(a => a.class_id === classId);
@@ -145,7 +143,7 @@ function calculateTrend(values) {
 }
 
 // Calculate teacher performance
-export function calculateTeacherPerformance(teacherId, termId = null) {
+function calculateTeacherPerformance(teacherId, termId = null) {
     const assignments = state.teacherAssignments?.filter(a => a.teacher_id === teacherId) || [];
     const classIds = [...new Set(assignments.map(a => a.class_id))];
 
@@ -169,7 +167,7 @@ export function calculateTeacherPerformance(teacherId, termId = null) {
 }
 
 // Calculate school-wide statistics
-export function calculateSchoolStats(termId = null) {
+function calculateSchoolStats(termId = null) {
     const students = state.students.filter(s => s.status === 'Active');
     const classes = state.classes.filter(c => c.is_active !== false);
 
@@ -231,7 +229,7 @@ function getTeacherName(teacherId) {
 }
 
 // Export analytics data
-export function exportAnalyticsData(stats) {
+function exportAnalyticsData(stats) {
     return {
         school: stats,
         classes: state.classes.map(c => calculateClassPerformance(c.id, state.currentTerm?.id)),

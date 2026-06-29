@@ -2,14 +2,9 @@
 // ANNUAL REGISTER MODULE - Combined annual view of all terms
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getSubjectById, getStudentById } from '../core/state.js';
-import { getCurrentUser, isAccountant } from '../core/auth.js';
-import { fmt, fmtPct, getGrade, getGradeClass, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable } from '../core/data-loader.js';
 
 // Render Annual Register (combined terms)
-export async function renderAnnualRegister(container) {
+async function renderAnnualRegister(container) {
     if (isAccountant()) {
         container.innerHTML = '<div class="alert alert-danger">Access denied. Accountant cannot access academic register.</div>';
         return;

@@ -2,25 +2,24 @@
 // RESPONSIVE UI - Mobile and responsive behavior
 // ============================================================
 
-import { closeSidebarMobile } from './sidebar.js';
 
 // Check if device is mobile
-export function isMobile() {
+function isMobile() {
     return window.innerWidth <= 768;
 }
 
 // Check if device is tablet
-export function isTablet() {
+function isTablet() {
     return window.innerWidth > 768 && window.innerWidth <= 1024;
 }
 
 // Check if device is desktop
-export function isDesktop() {
+function isDesktop() {
     return window.innerWidth > 1024;
 }
 
 // Initialize responsive behavior
-export function initResponsive() {
+function initResponsive() {
     // Handle window resize
     window.addEventListener('resize', () => {
         handleResize();
@@ -52,7 +51,7 @@ function handleResize() {
 }
 
 // Make tables horizontally scrollable on mobile
-export function makeTablesScrollable() {
+function makeTablesScrollable() {
     if (!isMobile()) return;
 
     const tables = document.querySelectorAll('.data-table:not(.no-scroll)');
@@ -68,7 +67,7 @@ export function makeTablesScrollable() {
 }
 
 // Adjust font sizes for mobile
-export function adjustFontSizes() {
+function adjustFontSizes() {
     if (isMobile()) {
         document.documentElement.style.fontSize = '14px';
     } else {
@@ -77,7 +76,7 @@ export function adjustFontSizes() {
 }
 
 // Handle touch events for mobile
-export function initTouchEvents() {
+function initTouchEvents() {
     if (!isMobile()) return;
 
     // Add touch-friendly styles
@@ -93,7 +92,7 @@ export function initTouchEvents() {
 }
 
 // Make modals fullscreen on mobile
-export function initMobileModals() {
+function initMobileModals() {
     if (!isMobile()) return;
 
     const observer = new MutationObserver((mutations) => {
@@ -111,7 +110,7 @@ export function initMobileModals() {
 }
 
 // Close sidebar when clicking on overlay (mobile)
-export function initMobileSidebar() {
+function initMobileSidebar() {
     const overlay = document.createElement('div');
     overlay.className = 'sidebar-overlay';
     overlay.onclick = closeSidebarMobile;
@@ -119,7 +118,7 @@ export function initMobileSidebar() {
 }
 
 // Responsive table stacking (convert to cards on mobile)
-export function stackTableOnMobile(tableId, breakpoint = 768) {
+function stackTableOnMobile(tableId, breakpoint = 768) {
     const table = document.getElementById(tableId);
     if (!table) return;
 
@@ -136,7 +135,7 @@ export function stackTableOnMobile(tableId, breakpoint = 768) {
 }
 
 // Set viewport height for mobile (fixes 100vh issues)
-export function setMobileViewportHeight() {
+function setMobileViewportHeight() {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 

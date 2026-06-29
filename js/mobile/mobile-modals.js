@@ -1,7 +1,7 @@
 // js/mobile/mobile-modals.js
 // Mobile Modals Module - Optimized modal handling for mobile devices
 
-export function initMobileModals() {
+function initMobileModals() {
     if (!isMobileDevice()) return;
 
     enhanceModalBehavior();
@@ -208,7 +208,7 @@ function handleKeyboardOnMobile() {
     });
 }
 
-export function showMobileBottomSheet(content, options = {}) {
+function showMobileBottomSheet(content, options = {}) {
     const sheet = document.createElement('div');
     sheet.className = 'bottom-sheet';
     sheet.style.cssText = `
@@ -321,7 +321,7 @@ export function showMobileBottomSheet(content, options = {}) {
     };
 }
 
-export function showMobileActionSheet(actions, onSelect) {
+function showMobileActionSheet(actions, onSelect) {
     const actionList = actions.map(action => `
         <button class="action-sheet-item" data-value="${action.value}" style="
             width: 100%;

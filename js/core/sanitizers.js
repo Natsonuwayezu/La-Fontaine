@@ -3,7 +3,7 @@
 // ============================================================
 
 // Escape HTML special characters
-export function sanitizeHtml(str) {
+function sanitizeHtml(str) {
     if (typeof str !== 'string') return str;
     return str
         .replace(/&/g, '&amp;')
@@ -14,44 +14,44 @@ export function sanitizeHtml(str) {
 }
 
 // Sanitize user input (remove HTML tags, trim)
-export function sanitizeInput(value) {
+function sanitizeInput(value) {
     if (typeof value !== 'string') return value;
     return value.trim().replace(/[<>]/g, '');
 }
 
 // Sanitize numeric input
-export function sanitizeNumber(value, defaultValue = 0) {
+function sanitizeNumber(value, defaultValue = 0) {
     const num = parseFloat(value);
     return isNaN(num) ? defaultValue : num;
 }
 
 // Sanitize integer input
-export function sanitizeInteger(value, defaultValue = 0) {
+function sanitizeInteger(value, defaultValue = 0) {
     const num = parseInt(value);
     return isNaN(num) ? defaultValue : num;
 }
 
 // Sanitize email
-export function sanitizeEmail(email) {
+function sanitizeEmail(email) {
     if (typeof email !== 'string') return '';
     return email.trim().toLowerCase();
 }
 
 // Sanitize phone number (keep only digits and plus sign)
-export function sanitizePhone(phone) {
+function sanitizePhone(phone) {
     if (typeof phone !== 'string') return '';
     return phone.replace(/[^0-9+]/g, '');
 }
 
 // Sanitize date
-export function sanitizeDate(date, defaultValue = null) {
+function sanitizeDate(date, defaultValue = null) {
     if (!date) return defaultValue;
     const d = new Date(date);
     return isNaN(d.getTime()) ? defaultValue : d.toISOString().split('T')[0];
 }
 
 // Sanitize object values recursively
-export function sanitizeObject(obj, allowedKeys = null) {
+function sanitizeObject(obj, allowedKeys = null) {
     if (!obj || typeof obj !== 'object') return obj;
 
     const sanitized = {};
@@ -72,7 +72,7 @@ export function sanitizeObject(obj, allowedKeys = null) {
 }
 
 // Sanitize form data before submission
-export function sanitizeFormData(formData, schema) {
+function sanitizeFormData(formData, schema) {
     const sanitized = {};
     for (const [field, rules] of Object.entries(schema)) {
         let value = formData[field];
@@ -100,7 +100,7 @@ export function sanitizeFormData(formData, schema) {
 }
 
 // Clean object by removing null/undefined values
-export function cleanObject(obj) {
+function cleanObject(obj) {
     const cleaned = {};
     for (const [key, value] of Object.entries(obj)) {
         if (value !== null && value !== undefined && value !== '') {
@@ -111,14 +111,14 @@ export function cleanObject(obj) {
 }
 
 // Truncate string to max length
-export function truncate(str, maxLength, suffix = '...') {
+function truncate(str, maxLength, suffix = '...') {
     if (typeof str !== 'string') return str;
     if (str.length <= maxLength) return str;
     return str.substring(0, maxLength - suffix.length) + suffix;
 }
 
 // Escape regex special characters
-export function escapeRegex(str) {
+function escapeRegex(str) {
     if (typeof str !== 'string') return '';
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

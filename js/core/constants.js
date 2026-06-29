@@ -3,7 +3,7 @@
 // ============================================================
 
 // Navigation Configuration for each role
-export const NAV_CONFIG = {
+const NAV_CONFIG = {
     admin: [
         {
             section: 'Dashboard', items: [
@@ -168,7 +168,7 @@ export const NAV_CONFIG = {
 };
 
 // Modules blocked for Teacher (Finance)
-export const TEACHER_BLOCKED_MODULES = new Set([
+const TEACHER_BLOCKED_MODULES = new Set([
     'carry-forward', 'credit-balances', 'payment-reversals',
     'receipt-printing', 'fee-structure', 'payment-history', 'record-payment',
     'financial-reports', 'overdue-payments', 'fee-waivers', 'receipts',
@@ -179,7 +179,7 @@ export const TEACHER_BLOCKED_MODULES = new Set([
 ]);
 
 // Modules blocked for Accountant (Academics & Staff Timetable)
-export const ACCOUNTANT_BLOCKED_MODULES = new Set([
+const ACCOUNTANT_BLOCKED_MODULES = new Set([
     'marks-entry', 'marks-database', 'class-register', 'statistics',
     'timetable', 'report-cards', 'assessments',
     'enroll-student',
@@ -190,7 +190,7 @@ export const ACCOUNTANT_BLOCKED_MODULES = new Set([
 ]);
 
 // Keyboard Shortcuts
-export const KEYBOARD_SHORTCUTS = {
+const KEYBOARD_SHORTCUTS = {
     '1': { module: 'admin-dashboard', label: 'Dashboard' },
     '2': { module: 'student-list', label: 'Students' },
     '3': { module: 'marks-entry', label: 'Marks Entry' },
@@ -209,9 +209,8 @@ export const KEYBOARD_SHORTCUTS = {
 };
 
 // Phase detection
-export const PHASE = {
+const PHASE = {
     PRE_MIDTERM: 'pre_midterm',
     POST_MIDTERM: 'post_midterm'
 };
 // Re-exports from config.js for backward compatibility
-export { DEFAULT_GRADES, PROMOTION_MAP, PROMOTION_RULES } from './config.js';

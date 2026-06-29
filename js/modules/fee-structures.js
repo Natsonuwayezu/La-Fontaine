@@ -1,14 +1,8 @@
 // js/modules/fee-structures.js
 // Fee Structures Module - Manage fee categories and amount templates
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById } from '../core/state.js';;
 
-export async function renderFeeStructures(container) {
+async function renderFeeStructures(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

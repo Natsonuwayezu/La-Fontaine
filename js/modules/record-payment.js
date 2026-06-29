@@ -1,18 +1,11 @@
 // js/modules/record-payment.js
 // Record Payment Module - Record new payments with fee allocation
 
-import { state } from '../core/state.js';
-import { getAll, insert, update } from '../core/supabase-client.js';
-import { showToast } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, esc } from '../core/utils.js';
-import { refreshTable } from '../core/data-loader.js';
-import { getStudentById, getClassById, getFullStudentBalance, getStudentCreditBalance, updateStudentCredit, recordCreditAsPayment } from './student-fees.js';
-import { printReceipt } from './receipts.js';
 
 let selectedFees = new Map();
 let currentStudentId = null;
 
-export async function renderRecordPayment(container) {
+async function renderRecordPayment(container) {
     const preselId = localStorage.getItem('elf_pay_student');
     localStorage.removeItem('elf_pay_student');
 

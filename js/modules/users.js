@@ -1,13 +1,8 @@
 // js/modules/users.js
 // Users Module - User profile and session management
 
-import { state } from '../core/state.js';
-import { getAll, update, getById } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, fmtDateTime, esc } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
 
-export async function renderUsers(container) {
+async function renderUsers(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

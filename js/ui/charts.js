@@ -5,7 +5,7 @@
 let chartInstances = {};
 
 // Create a bar chart
-export function createBarChart(canvasId, labels, datasets, options = {}) {
+function createBarChart(canvasId, labels, datasets, options = {}) {
     const ctx = document.getElementById(canvasId)?.getContext('2d');
     if (!ctx) return null;
 
@@ -33,7 +33,7 @@ export function createBarChart(canvasId, labels, datasets, options = {}) {
 }
 
 // Create a line chart
-export function createLineChart(canvasId, labels, datasets, options = {}) {
+function createLineChart(canvasId, labels, datasets, options = {}) {
     const ctx = document.getElementById(canvasId)?.getContext('2d');
     if (!ctx) return null;
 
@@ -60,7 +60,7 @@ export function createLineChart(canvasId, labels, datasets, options = {}) {
 }
 
 // Create a pie/doughnut chart
-export function createPieChart(canvasId, labels, data, colors, type = 'doughnut') {
+function createPieChart(canvasId, labels, data, colors, type = 'doughnut') {
     const ctx = document.getElementById(canvasId)?.getContext('2d');
     if (!ctx) return null;
 
@@ -92,7 +92,7 @@ export function createPieChart(canvasId, labels, data, colors, type = 'doughnut'
 }
 
 // Update chart data
-export function updateChart(canvasId, labels, datasets) {
+function updateChart(canvasId, labels, datasets) {
     const chart = chartInstances[canvasId];
     if (!chart) return;
 
@@ -102,7 +102,7 @@ export function updateChart(canvasId, labels, datasets) {
 }
 
 // Destroy chart
-export function destroyChart(canvasId) {
+function destroyChart(canvasId) {
     if (chartInstances[canvasId]) {
         chartInstances[canvasId].destroy();
         delete chartInstances[canvasId];
@@ -110,7 +110,7 @@ export function destroyChart(canvasId) {
 }
 
 // Destroy all charts
-export function destroyAllCharts() {
+function destroyAllCharts() {
     for (const id in chartInstances) {
         chartInstances[id].destroy();
     }
@@ -118,7 +118,7 @@ export function destroyAllCharts() {
 }
 
 // Create fee collection chart (for admin dashboard)
-export function createFeeCollectionChart(canvasId, classNames, expectedData, collectedData) {
+function createFeeCollectionChart(canvasId, classNames, expectedData, collectedData) {
     return createBarChart(canvasId, classNames, [
         {
             label: 'Expected (M RWF)',
@@ -138,7 +138,7 @@ export function createFeeCollectionChart(canvasId, classNames, expectedData, col
 }
 
 // Create class performance comparison chart
-export function createClassPerformanceChart(canvasId, classNames, term1Data, term2Data, term3Data) {
+function createClassPerformanceChart(canvasId, classNames, term1Data, term2Data, term3Data) {
     return createLineChart(canvasId, classNames, [
         { label: 'Term 1', data: term1Data, borderColor: '#3b82f6', backgroundColor: 'transparent', tension: 0.3 },
         { label: 'Term 2', data: term2Data, borderColor: '#10b981', backgroundColor: 'transparent', tension: 0.3 },
@@ -149,7 +149,7 @@ export function createClassPerformanceChart(canvasId, classNames, term1Data, ter
 }
 
 // Create monthly collection trend chart
-export function createMonthlyTrendChart(canvasId, months, amounts) {
+function createMonthlyTrendChart(canvasId, months, amounts) {
     return createLineChart(canvasId, months, [{
         label: 'Collected (RWF)',
         data: amounts,

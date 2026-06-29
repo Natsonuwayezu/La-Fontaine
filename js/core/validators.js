@@ -2,10 +2,9 @@
 // VALIDATORS - Form validation engine
 // ============================================================
 
-import { showToast } from './helpers.js';
 
 // Validation rules
-export const validators = {
+const validators = {
     required: (value) => value && String(value).trim().length > 0,
     email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value)),
     phone: (value) => /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/.test(String(value)),
@@ -23,7 +22,7 @@ export const validators = {
 };
 
 // Get error message for a validation rule
-export function getErrorMessage(rule, fieldName, args) {
+function getErrorMessage(rule, fieldName, args) {
     const fieldLabel = fieldName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     const messages = {
         required: `${fieldLabel} is required`,
@@ -45,7 +44,7 @@ export function getErrorMessage(rule, fieldName, args) {
 }
 
 // Validate a form element against rules
-export function validateForm(formElement, rules = {}) {
+function validateForm(formElement, rules = {}) {
     const errors = [];
     const inputs = formElement.querySelectorAll('input, select, textarea');
 
@@ -102,33 +101,33 @@ export function validateForm(formElement, rules = {}) {
 }
 
 // Validate a single value against a rule
-export function validateValue(value, rule, ...args) {
+function validateValue(value, rule, ...args) {
     const validator = validators[rule];
     return validator ? validator(value, ...args) : true;
 }
 
 // Check if email is valid
-export function isValidEmail(email) {
+function isValidEmail(email) {
     return validators.email(email);
 }
 
 // Check if phone number is valid
-export function isValidPhone(phone) {
+function isValidPhone(phone) {
     return validators.phone(phone);
 }
 
 // Check if number is positive
-export function isPositiveNumber(value) {
+function isPositiveNumber(value) {
     return validators.numericPositive(value);
 }
 
 // Check if date is valid
-export function isValidDate(date) {
+function isValidDate(date) {
     return validators.date(date);
 }
 
 // Show validation summary toast
-export function showValidationSummary(errors) {
+function showValidationSummary(errors) {
     if (errors.length === 0) return;
 
     const errorCount = errors.length;

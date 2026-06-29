@@ -2,15 +2,9 @@
 // ACADEMIC YEAR ENGINE - Year and term management
 // ============================================================
 
-import { state, updateState } from './state.js';
-import { insert, update, getAll } from './supabase-client.js';
-import { showToast, confirmDialog } from './helpers.js';
-import { info, error as logError } from './logger.js';
-import { refreshTable } from './data-loader.js';
-import { updateSchoolSetting } from './supabase-client.js';
 
 // Switch academic year
-export async function switchAcademicYear(yearId) {
+async function switchAcademicYear(yearId) {
     yearId = parseInt(yearId);
     const year = state.academicYears.find(y => y.id === yearId);
     if (!year) return;
@@ -40,7 +34,7 @@ export async function switchAcademicYear(yearId) {
 }
 
 // Create academic year with auto-created 3 terms
-export async function createAcademicYearWithTerms(name, startDate = null, endDate = null, isActive = false) {
+async function createAcademicYearWithTerms(name, startDate = null, endDate = null, isActive = false) {
     if (!name) {
         showToast('Academic year name required', 'warning');
         return null;
@@ -107,7 +101,7 @@ export async function createAcademicYearWithTerms(name, startDate = null, endDat
 }
 
 // Get current phase (Pre-Midterm or Post-Midterm)
-export function getCurrentPhase(term = null) {
+function getCurrentPhase(term = null) {
     const currentTerm = term || state.currentTerm;
     if (!currentTerm?.midterm_date) return 'post_midterm';
 
@@ -118,7 +112,7 @@ export function getCurrentPhase(term = null) {
 }
 
 // Calculate term progress percentage
-export function getTermProgress(term = null) {
+function getTermProgress(term = null) {
     const currentTerm = term || state.currentTerm;
     if (!currentTerm?.start_date || !currentTerm?.end_date) {
         return { pct: 0, daysLeft: 0, text: 'No term data' };
@@ -150,7 +144,7 @@ export function getTermProgress(term = null) {
 }
 
 // Auto-lock assessments when term ends
-export async function autoLockTermAssessments(termId) {
+async function autoLockTermAssessments(termId) {
     const assessments = await getAll('assessments', { term_id: termId, is_locked: false });
     let locked = 0;
 
@@ -168,7 +162,7 @@ export async function autoLockTermAssessments(termId) {
 }
 
 // Get next class for promotion
-export function getNextClass(currentClassName) {
+function getNextClass(currentClassName) {
     const promotionMap = {
         'NURSERY 1': 'NURSERY 2',
         'NURSERY 2': 'NURSERY 3',
@@ -184,14 +178,14 @@ export function getNextClass(currentClassName) {
 }
 
 // Get all terms for current academic year
-export function getTermsForCurrentYear() {
+function getTermsForCurrentYear() {
     const yearId = state.currentAcadYear?.id;
     if (!yearId) return [];
     return state.terms.filter(t => t.academic_year_id === yearId);
 }
 
 // Get active term (current)
-export function getActiveTerm() {
+function getActiveTerm() {
     const today = new Date();
     const terms = getTermsForCurrentYear();
     return terms.find(t => {
@@ -202,7 +196,7 @@ export function getActiveTerm() {
 }
 
 // Update term dates
-export async function updateTermDates(termId, startDate, endDate, midtermDate) {
+async function updateTermDates(termId, startDate, endDate, midtermDate) {
     await update('terms', termId, {
         start_date: startDate,
         end_date: endDate,
@@ -214,7 +208,7 @@ export async function updateTermDates(termId, startDate, endDate, midtermDate) {
 }
 
 // Set current term
-export async function setCurrentTerm(termId) {
+async function setCurrentTerm(termId) {
     const term = state.terms.find(t => t.id === termId);
     if (!term) return;
 
@@ -230,7 +224,7 @@ export async function setCurrentTerm(termId) {
 }
 
 // Check if term is current (in progress)
-export function isTermCurrent(term) {
+function isTermCurrent(term) {
     const today = new Date();
     const start = new Date(term.start_date);
     const end = new Date(term.end_date);
@@ -238,7 +232,7 @@ export function isTermCurrent(term) {
 }
 
 // Get term status (upcoming, current, completed)
-export function getTermStatus(term) {
+function getTermStatus(term) {
     const today = new Date();
     const start = term.start_date ? new Date(term.start_date) : null;
     const end = term.end_date ? new Date(term.end_date) : null;
@@ -249,4 +243,3 @@ export function getTermStatus(term) {
     return 'upcoming';
 }
 // Alias for backward compatibility
-export { getTermProgress as termProgress };

@@ -1,16 +1,10 @@
 // js/modules/timetable-import.js
 // Timetable Import Module - Import timetable from Excel/CSV files
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, removeWhere } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById, getSubjectById, getTeacherById } from './student-fees.js';
 
 let _timetableImportPreview = [];
 
-export async function renderTimetableImport(container) {
+async function renderTimetableImport(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

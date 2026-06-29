@@ -2,10 +2,9 @@
 // CARDS UI - Dashboard cards and statistics cards
 // ============================================================
 
-import { fmtCurrency, fmtPct } from '../core/utils.js';
 
 // Create a stat card
-export function createStatCard(icon, value, label, trend = null) {
+function createStatCard(icon, value, label, trend = null) {
     const card = document.createElement('div');
     card.className = 'stat-card';
 
@@ -27,7 +26,7 @@ export function createStatCard(icon, value, label, trend = null) {
 }
 
 // Create a dashboard card
-export function createDashboardCard(title, content, actions = null) {
+function createDashboardCard(title, content, actions = null) {
     const card = document.createElement('div');
     card.className = 'dash-card';
 
@@ -50,7 +49,7 @@ export function createDashboardCard(title, content, actions = null) {
 }
 
 // Create a quick action button
-export function createQuickAction(icon, title, subtitle, onClick) {
+function createQuickAction(icon, title, subtitle, onClick) {
     const btn = document.createElement('div');
     btn.className = 'quick-btn';
     btn.innerHTML = `
@@ -63,7 +62,7 @@ export function createQuickAction(icon, title, subtitle, onClick) {
 }
 
 // Update stat card value with animation
-export function updateStatValue(cardElement, newValue, animate = true) {
+function updateStatValue(cardElement, newValue, animate = true) {
     const valueEl = cardElement.querySelector('.stat-value');
     if (!valueEl) return;
 
@@ -100,7 +99,7 @@ function formatNumber(num) {
 }
 
 // Create fee summary cards for student
-export function createFeeSummaryCards(total, paid, balance) {
+function createFeeSummaryCards(total, paid, balance) {
     const container = document.createElement('div');
     container.className = 'stats-grid';
     container.style.gridTemplateColumns = 'repeat(3, 1fr)';

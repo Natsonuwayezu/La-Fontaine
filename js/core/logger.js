@@ -3,7 +3,7 @@
 // ============================================================
 
 // Log levels
-export const LOG_LEVELS = {
+const LOG_LEVELS = {
     DEBUG: 0,
     INFO: 1,
     WARN: 2,
@@ -28,17 +28,17 @@ let serverLoggingEnabled = false;
 const MAX_QUEUE_SIZE = 100;
 
 // Set log level
-export function setLogLevel(level) {
+function setLogLevel(level) {
     currentLogLevel = level;
 }
 
 // Enable/disable console logging
-export function setConsoleLogging(enabled) {
+function setConsoleLogging(enabled) {
     consoleEnabled = enabled;
 }
 
 // Enable/disable server logging
-export function setServerLogging(enabled) {
+function setServerLogging(enabled) {
     serverLoggingEnabled = enabled;
 }
 
@@ -78,7 +78,7 @@ function log(level, message, data = null, module = 'app') {
 }
 
 // Flush logs to server
-export async function flushLogs() {
+async function flushLogs() {
     if (!serverLoggingEnabled || isSending || logQueue.length === 0) return;
 
     isSending = true;
@@ -97,27 +97,27 @@ export async function flushLogs() {
 }
 
 // Debug log (level 0)
-export function debug(message, data = null, module = 'app') {
+function debug(message, data = null, module = 'app') {
     log(LOG_LEVELS.DEBUG, message, data, module);
 }
 
 // Info log (level 1)
-export function info(message, data = null, module = 'app') {
+function info(message, data = null, module = 'app') {
     log(LOG_LEVELS.INFO, message, data, module);
 }
 
 // Warning log (level 2)
-export function warn(message, data = null, module = 'app') {
+function warn(message, data = null, module = 'app') {
     log(LOG_LEVELS.WARN, message, data, module);
 }
 
 // Error log (level 3)
-export function error(message, data = null, module = 'app') {
+function error(message, data = null, module = 'app') {
     log(LOG_LEVELS.ERROR, message, data, module);
 }
 
 // Log API request
-export function logApiRequest(endpoint, method, requestData = null, responseData = null, duration = null) {
+function logApiRequest(endpoint, method, requestData = null, responseData = null, duration = null) {
     debug('API Request', {
         endpoint,
         method,
@@ -128,7 +128,7 @@ export function logApiRequest(endpoint, method, requestData = null, responseData
 }
 
 // Log user action
-export function logUserAction(action, details = null, module = 'user') {
+function logUserAction(action, details = null, module = 'user') {
     info(`User action: ${action}`, details, module);
     // Also log to activity_logs table
     if (window.state?.currentUser) {
@@ -137,17 +137,17 @@ export function logUserAction(action, details = null, module = 'user') {
 }
 
 // Log performance metric
-export function logPerformance(metric, value, unit = 'ms') {
+function logPerformance(metric, value, unit = 'ms') {
     debug(`Performance: ${metric}`, { value, unit }, 'performance');
 }
 
 // Clear log queue
-export function clearLogQueue() {
+function clearLogQueue() {
     logQueue = [];
 }
 
 // Get current log queue
-export function getLogQueue() {
+function getLogQueue() {
     return [...logQueue];
 }
 

@@ -2,11 +2,9 @@
 // EXPORT ENGINE - Export data to Excel, CSV, PDF
 // ============================================================
 
-import { exportToExcel, downloadBlob, showToast } from './helpers.js';
-import { info, error as logError } from './logger.js';
 
 // Export data to Excel
-export function exportToExcelFile(data, filename, sheetName = 'Data') {
+function exportToExcelFile(data, filename, sheetName = 'Data') {
     if (!data || !data.length) {
         showToast('No data to export', 'warning');
         return false;
@@ -27,7 +25,7 @@ export function exportToExcelFile(data, filename, sheetName = 'Data') {
 }
 
 // Export data to CSV
-export function exportToCSV(data, filename) {
+function exportToCSV(data, filename) {
     if (!data || !data.length) {
         showToast('No data to export', 'warning');
         return false;
@@ -66,7 +64,7 @@ export function exportToCSV(data, filename) {
 }
 
 // Export table to Excel
-export function exportTableToExcel(tableElement, filename) {
+function exportTableToExcel(tableElement, filename) {
     try {
         const ws = XLSX.utils.table_to_sheet(tableElement);
         const wb = XLSX.utils.book_new();
@@ -82,7 +80,7 @@ export function exportTableToExcel(tableElement, filename) {
 }
 
 // Export marks to Excel with formatting
-export function exportMarksToExcel(students, marksData, assessmentName, filename) {
+function exportMarksToExcel(students, marksData, assessmentName, filename) {
     const data = students.map(student => {
         const row = {
             'Student Code': student.student_code || '',
@@ -101,7 +99,7 @@ export function exportMarksToExcel(students, marksData, assessmentName, filename
 }
 
 // Export fee structure to Excel
-export function exportFeeStructure(feeCategories, feeAmounts, classes, filename = 'Fee_Structure') {
+function exportFeeStructure(feeCategories, feeAmounts, classes, filename = 'Fee_Structure') {
     const data = [];
 
     for (const cls of classes) {
@@ -119,7 +117,7 @@ export function exportFeeStructure(feeCategories, feeAmounts, classes, filename 
 }
 
 // Export student balances to Excel
-export function exportStudentBalances(students, getBalanceFn, filename = 'Student_Balances') {
+function exportStudentBalances(students, getBalanceFn, filename = 'Student_Balances') {
     const data = students.map(student => {
         const balance = getBalanceFn(student.id);
         return {
@@ -138,7 +136,7 @@ export function exportStudentBalances(students, getBalanceFn, filename = 'Studen
 }
 
 // Export payments to Excel
-export function exportPayments(payments, filename = 'Payment_History') {
+function exportPayments(payments, filename = 'Payment_History') {
     const data = payments.map(payment => {
         const student = getStudentById(payment.student_id);
         return {

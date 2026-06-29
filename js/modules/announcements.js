@@ -1,12 +1,6 @@
 // js/modules/announcements.js
 // Announcements Module - Admin announcement management
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, esc } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { renderNotifications } from './notifications.js';
 
 // Simple log activity function if not available elsewhere
 async function logActivity(userId, userRole, action, entityType, entityId, details) {
@@ -25,7 +19,7 @@ async function logActivity(userId, userRole, action, entityType, entityId, detai
     }
 }
 
-export async function renderAnnouncements(container) {
+async function renderAnnouncements(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

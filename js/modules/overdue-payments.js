@@ -1,14 +1,8 @@
 // js/modules/overdue-payments.js
 // Overdue Payments Module - Track and manage late fee payments
 
-import { state } from '../core/state.js';
-import { showToast } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, esc } from '../core/utils.js';
-import { getStudentById, getClassById, getFullStudentBalance } from './student-fees.js';
-import { openRecordPaymentForStudent } from './payment-recording.js';
-import { openBulkPaymentModal } from './bulk-finance-actions.js';
 
-export async function renderOverduePayments(container) {
+async function renderOverduePayments(container) {
     await ensureStateLoaded();
 
     const overdueList = [];

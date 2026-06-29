@@ -3,7 +3,7 @@
 // ============================================================
 
 // Dropdown manager class
-export class DropdownManager {
+class DropdownManager {
     constructor(trigger, options = {}) {
         this.trigger = trigger;
         this.menu = null;
@@ -123,7 +123,7 @@ export class DropdownManager {
 }
 
 // Create a simple dropdown
-export function createDropdown(triggerId, items, onSelect) {
+function createDropdown(triggerId, items, onSelect) {
     const trigger = document.getElementById(triggerId);
     if (!trigger) return null;
 
@@ -131,7 +131,7 @@ export function createDropdown(triggerId, items, onSelect) {
 }
 
 // Create a select dropdown (replaces select element)
-export function createSelectDropdown(selectElement, options = {}) {
+function createSelectDropdown(selectElement, options = {}) {
     const container = document.createElement('div');
     container.className = 'dropdown';
     container.style.position = 'relative';
@@ -166,7 +166,7 @@ export function createSelectDropdown(selectElement, options = {}) {
 }
 
 // Close all dropdowns
-export function closeAllDropdowns() {
+function closeAllDropdowns() {
     document.querySelectorAll('.dropdown-menu').forEach(menu => {
         menu.style.display = 'none';
     });
@@ -176,7 +176,7 @@ export function closeAllDropdowns() {
 }
 
 // Initialize user dropdown
-export function initUserDropdown() {
+function initUserDropdown() {
     const userMenu = document.querySelector('.user-menu');
     if (!userMenu) return;
 

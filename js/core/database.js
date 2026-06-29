@@ -2,13 +2,9 @@
 // DATABASE - Advanced database operations and helpers
 // ============================================================
 
-import { getAll, insert, update, remove, updateWhere, removeWhere, getById, apiRequest } from './supabase-client.js';
-import { state, updateState } from './state.js';
-import { showToast } from './helpers.js';
-import { OPTIONAL_TABLES } from './config.js';
 
 // Refresh a specific table in state
-export async function refreshTable(table) {
+async function refreshTable(table) {
     const map = {
         students: () => getAll('students', { is_deleted: false }).then(d => updateState('students', d)),
         teachers: () => getAll('teachers').then(d => updateState('teachers', d)),
@@ -34,7 +30,7 @@ export async function refreshTable(table) {
 }
 
 // Load all initial data in parallel
-export async function loadInitialData() {
+async function loadInitialData() {
     const promises = [
         getAll('academic_years'),
         getAll('classes'),
@@ -106,7 +102,7 @@ export async function loadInitialData() {
 }
 
 // Ensure state is loaded (lazy load if empty)
-export async function ensureStateLoaded() {
+async function ensureStateLoaded() {
     const promises = [];
     if (!state.classes.length) promises.push(refreshTable('classes'));
     if (!state.subjects.length) promises.push(refreshTable('subjects'));
@@ -119,7 +115,7 @@ export async function ensureStateLoaded() {
 }
 
 // Apply school logo to UI
-export function applySchoolLogo(logoData) {
+function applySchoolLogo(logoData) {
     if (!logoData) return;
     const logoElements = document.querySelectorAll('.sidebar-logo, .report-logo, .receipt-logo');
     logoElements.forEach(el => {
@@ -134,7 +130,7 @@ export function applySchoolLogo(logoData) {
 }
 
 // Generate PWA assets from school settings
-export function generatePWAAssets() {
+function generatePWAAssets() {
     const schoolName = state.schoolSettings?.school_name || 'ECOLE LA FONTAINE';
     const logo = state.schoolSettings?.school_logo || '';
 

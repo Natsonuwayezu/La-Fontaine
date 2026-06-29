@@ -2,11 +2,9 @@
 // TABLES UI - Smart table component with sorting, filtering, pagination
 // ============================================================
 
-import { exportToExcel } from '../core/utils.js';
-import { showToast } from './modals.js';
 
 // SmartTable class - Reusable table component
-export class SmartTable {
+class SmartTable {
     constructor(container, options) {
         this.container = container;
         this.options = {
@@ -237,14 +235,14 @@ export class SmartTable {
 }
 
 // Create a new smart table
-export function createTable(containerId, options) {
+function createTable(containerId, options) {
     const container = document.getElementById(containerId);
     if (!container) return null;
     return new SmartTable(container, options);
 }
 
 // Render a simple HTML table from data
-export function renderSimpleTable(container, columns, data) {
+function renderSimpleTable(container, columns, data) {
     if (!container) return;
 
     let html = '<div class="table-wrapper"><table class="data-table"><thead><tr>';
@@ -270,7 +268,7 @@ export function renderSimpleTable(container, columns, data) {
 }
 
 // Export table to Excel
-export function exportTableToExcel(tableElement, filename) {
+function exportTableToExcel(tableElement, filename) {
     const ws = XLSX.utils.table_to_sheet(tableElement);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');

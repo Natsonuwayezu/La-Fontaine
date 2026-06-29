@@ -507,5 +507,21 @@
     <script src="js/core/boot.js"></script>
     <script src="js/main.js"></script>
 
+    <!-- ═══ BOOT — must come last, after all scripts are loaded ═══ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // initTheme before anything so no flash of wrong theme
+            if (window.initTheme) window.initTheme();
+            // Restore sidebar collapsed state
+            if (window.restoreSidebarState) window.restoreSidebarState();
+            // Start the app
+            if (window.initApp) {
+                window.initApp();
+            } else {
+                console.error('[boot] initApp not found — check js/core/app.js loaded correctly');
+            }
+        });
+    </script>
+
 </body>
 </html>

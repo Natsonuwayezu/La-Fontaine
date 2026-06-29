@@ -1,13 +1,8 @@
 // js/modules/teachers.js
 // Teachers Module - Complete teacher management system
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
 
-export async function renderTeachers(container) {
+async function renderTeachers(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

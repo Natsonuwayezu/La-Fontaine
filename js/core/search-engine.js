@@ -2,8 +2,6 @@
 // SEARCH ENGINE - Universal search across all modules
 // ============================================================
 
-import { state } from './state.js';
-import { escapeRegex } from './sanitizers.js';
 
 // Search indexes
 let searchIndex = {
@@ -15,7 +13,7 @@ let searchIndex = {
 };
 
 // Build search index from state data
-export function buildSearchIndex() {
+function buildSearchIndex() {
     // Index students
     searchIndex.students = (state.students || []).map(s => ({
         id: s.id,
@@ -100,7 +98,7 @@ function getStudentCount(classId) {
 }
 
 // Search across all indexes
-export function search(query, options = {}) {
+function search(query, options = {}) {
     const { limit = 20, types = ['student', 'teacher', 'class', 'payment', 'assessment'] } = options;
 
     if (!query || query.trim().length < 2) {
@@ -150,12 +148,12 @@ function calculateRelevance(item, searchTerm) {
 }
 
 // Quick search for command palette (Ctrl+K)
-export function quickSearch(query) {
+function quickSearch(query) {
     return search(query, { limit: 10 });
 }
 
 // Search students specifically
-export function searchStudents(query, filters = {}) {
+function searchStudents(query, filters = {}) {
     let results = search(query, { types: ['student'], limit: 100 });
 
     if (filters.classId) {
@@ -176,12 +174,12 @@ export function searchStudents(query, filters = {}) {
 }
 
 // Search payments specifically
-export function searchPayments(query) {
+function searchPayments(query) {
     return search(query, { types: ['payment'], limit: 50 });
 }
 
 // Rebuild index when state changes
-export function refreshSearchIndex() {
+function refreshSearchIndex() {
     buildSearchIndex();
 }
 

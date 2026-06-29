@@ -1,12 +1,6 @@
 // js/modules/staff-timetable.js
 // Staff Timetable Module - View all teachers' weekly schedules
 
-import { state } from '../core/state.js';
-import { getAll } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal } from '../ui/modals.js';
-import { fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById, getSubjectById, getTeacherById } from '../core/state.js';;
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 const TIME_SLOTS = [
@@ -26,7 +20,7 @@ function getBreakIcon(ts) {
     return '';
 }
 
-export async function renderStaffTimetable(container) {
+async function renderStaffTimetable(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

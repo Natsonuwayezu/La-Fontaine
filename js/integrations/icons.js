@@ -87,11 +87,11 @@ const ICONS = {
     visibilityOff: '👁️‍🗨️'
 };
 
-export function getIcon(name, fallback = '📄') {
+function getIcon(name, fallback = '📄') {
     return ICONS[name] || fallback;
 }
 
-export function setIcon(element, iconName, options = {}) {
+function setIcon(element, iconName, options = {}) {
     if (!element) return;
 
     const icon = getIcon(iconName);
@@ -108,7 +108,7 @@ export function setIcon(element, iconName, options = {}) {
     }
 }
 
-export function createIcon(iconName, options = {}) {
+function createIcon(iconName, options = {}) {
     const { size = '1rem', color = null, className = '' } = options;
     const span = document.createElement('span');
     span.className = `icon ${className}`;
@@ -118,7 +118,7 @@ export function createIcon(iconName, options = {}) {
     return span;
 }
 
-export function getButtonIcon(buttonType) {
+function getButtonIcon(buttonType) {
     const buttonIcons = {
         primary: '✅',
         success: '✅',
@@ -130,7 +130,7 @@ export function getButtonIcon(buttonType) {
     return buttonIcons[buttonType] || '📄';
 }
 
-export function getGradeIcon(grade) {
+function getGradeIcon(grade) {
     const gradeIcons = {
         'A+': '🏆',
         'A': '⭐',
@@ -142,7 +142,7 @@ export function getGradeIcon(grade) {
     return gradeIcons[grade] || '📊';
 }
 
-export function getRoleIcon(role) {
+function getRoleIcon(role) {
     const roleIcons = {
         admin: '👨‍💼',
         accountant: '💰',
@@ -153,7 +153,7 @@ export function getRoleIcon(role) {
     return roleIcons[role] || '👤';
 }
 
-export function getPaymentMethodIcon(method) {
+function getPaymentMethodIcon(method) {
     const methodIcons = {
         Cash: '💵',
         'Mobile-Money': '📱',
@@ -165,7 +165,7 @@ export function getPaymentMethodIcon(method) {
     return methodIcons[method] || '💰';
 }
 
-export function getStatusIcon(status) {
+function getStatusIcon(status) {
     const statusIcons = {
         active: '✅',
         inactive: '❌',
@@ -180,7 +180,7 @@ export function getStatusIcon(status) {
     return statusIcons[status] || '📌';
 }
 
-export function getFileTypeIcon(filename) {
+function getFileTypeIcon(filename) {
     const ext = filename.split('.').pop().toLowerCase();
     const icons = {
         pdf: '📕',
@@ -203,7 +203,7 @@ export function getFileTypeIcon(filename) {
 }
 
 // Replace emoji icons with Font Awesome or similar if needed
-export function useFontAwesome() {
+function useFontAwesome() {
     // This would be implemented if switching to Font Awesome
     console.log('Font Awesome integration would go here');
 }
@@ -211,17 +211,17 @@ export function useFontAwesome() {
 // Icon registry for dynamic icon loading
 const iconRegistry = new Map();
 
-export function registerIcon(name, icon) {
+function registerIcon(name, icon) {
     iconRegistry.set(name, icon);
     ICONS[name] = icon;
 }
 
-export function getRegisteredIcon(name) {
+function getRegisteredIcon(name) {
     return iconRegistry.get(name) || ICONS[name];
 }
 
 // Helper to add icons to all elements with data-icon attribute
-export function renderDataIcons() {
+function renderDataIcons() {
     document.querySelectorAll('[data-icon]').forEach(el => {
         const iconName = el.dataset.icon;
         const icon = getIcon(iconName);

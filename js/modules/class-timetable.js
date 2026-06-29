@@ -1,12 +1,6 @@
 // js/modules/class-timetable.js
 // Class Timetable Module - View and manage class schedules
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, esc } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById, getSubjectById, getTeacherById } from '../core/state.js';;
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 const TIME_SLOTS = [
@@ -26,7 +20,7 @@ function getBreakIcon(ts) {
     return '';
 }
 
-export async function renderClassTimetable(container) {
+async function renderClassTimetable(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

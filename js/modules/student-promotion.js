@@ -2,20 +2,12 @@
 // STUDENT PROMOTION MODULE - Promote students to next class
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getStudentById, updateState } from '../core/state.js';
-import { getCurrentUser, isAdmin } from '../core/auth.js';
-import { showToast, confirmDialog } from '../ui/modals.js';
-import { update, insert, getAll } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { logActivity } from '../core/helpers.js';
-import { PROMOTION_RULES, PROMOTION_MAP } from '../core/constants.js';
 
 // Promotion data
 let promotionData = [];
 
 // Render Student Promotion page
-export async function renderStudentPromotion(container) {
+async function renderStudentPromotion(container) {
     if (!isAdmin()) {
         container.innerHTML = '<div class="alert alert-danger">Access denied. Admin privileges required.</div>';
         return;

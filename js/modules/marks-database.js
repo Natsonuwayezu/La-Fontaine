@@ -2,18 +2,9 @@
 // MARKS DATABASE MODULE - View, edit, and manage all marks
 // ============================================================
 
-import { state } from '../core/state.js';
-import { getClassById, getSubjectById, getStudentById } from '../core/state.js';
-import { getCurrentUser, isAdmin, isTeacher } from '../core/auth.js';
-import { fmtDate, fmtPct, getGrade, esc } from '../core/utils.js';
-import { showToast } from '../core/helpers.js';
-import { confirmDialog } from '../ui/modals.js';;
-import { getAll, update, remove } from '../core/supabase-client.js';
-import { refreshTable } from '../core/data-loader.js';
-import { exportToExcel } from '../core/utils.js';
 
 // Render Marks Database page
-export async function renderMarksDatabase(container) {
+async function renderMarksDatabase(container) {
     if (isAccountant()) {
         container.innerHTML = '<div class="alert alert-danger">Access denied. Accountant cannot access marks.</div>';
         return;
@@ -310,7 +301,6 @@ window.refreshMarksData = function () {
 };
 
 // Helper functions
-
 
 
 async function ensureStateLoaded() {

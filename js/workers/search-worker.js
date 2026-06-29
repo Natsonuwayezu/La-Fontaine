@@ -117,7 +117,7 @@ function calculateRelevance(searchTerm, text) {
 // Index building for faster searches
 let searchIndex = new Map();
 
-export function buildSearchIndex(data, fields) {
+function buildSearchIndex(data, fields) {
     searchIndex.clear();
 
     for (const item of data) {
@@ -135,7 +135,7 @@ export function buildSearchIndex(data, fields) {
     return searchIndex.size;
 }
 
-export function searchWithIndex(query, options = {}) {
+function searchWithIndex(query, options = {}) {
     if (!query || searchIndex.size === 0) return [];
 
     const searchTerm = query.toLowerCase();
@@ -152,28 +152,28 @@ export function searchWithIndex(query, options = {}) {
 }
 
 // Specialized search functions
-export function searchStudents(students, query, options = {}) {
+function searchStudents(students, query, options = {}) {
     const searchFields = ['first_name', 'last_name', 'student_code', 'guardian_name', 'guardian_phone'];
     return performSearch(query, students, searchFields, options);
 }
 
-export function searchTeachers(teachers, query, options = {}) {
+function searchTeachers(teachers, query, options = {}) {
     const searchFields = ['name', 'email', 'username', 'department', 'phone'];
     return performSearch(query, teachers, searchFields, options);
 }
 
-export function searchAssessments(assessments, query, options = {}) {
+function searchAssessments(assessments, query, options = {}) {
     const searchFields = ['assessment_name', 'assessment_type', 'class_name', 'subject_name'];
     return performSearch(query, assessments, searchFields, options);
 }
 
-export function searchPayments(payments, query, options = {}) {
+function searchPayments(payments, query, options = {}) {
     const searchFields = ['receipt_number', 'student_name', 'payment_method', 'reference'];
     return performSearch(query, payments, searchFields, options);
 }
 
 // Auto-complete suggestions
-export function getSuggestions(data, field, prefix, limit = 5) {
+function getSuggestions(data, field, prefix, limit = 5) {
     if (!prefix || prefix.length < 2) return [];
 
     const suggestions = new Set();
@@ -191,7 +191,7 @@ export function getSuggestions(data, field, prefix, limit = 5) {
 }
 
 // Highlight search terms in text
-export function highlightText(text, query, highlightClass = 'search-highlight') {
+function highlightText(text, query, highlightClass = 'search-highlight') {
     if (!query || !text) return text;
 
     const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
@@ -203,7 +203,7 @@ function escapeRegex(str) {
 }
 
 // Batch search multiple data sources
-export function multiSourceSearch(queries, options = {}) {
+function multiSourceSearch(queries, options = {}) {
     const results = {};
 
     for (const [sourceName, { data, fields, query }] of Object.entries(queries)) {

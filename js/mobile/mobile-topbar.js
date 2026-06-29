@@ -1,7 +1,7 @@
 // js/mobile/mobile-topbar.js
 // Mobile Topbar Module - Optimized topbar for mobile devices
 
-export function initMobileTopbar() {
+function initMobileTopbar() {
     if (!isMobileDevice()) return;
 
     enhanceTopbar();

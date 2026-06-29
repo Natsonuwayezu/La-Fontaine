@@ -1,12 +1,6 @@
 // js/modules/timetable-generator.js
 // Timetable Generator Module - Auto-generate timetable from teacher assignments
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove, removeWhere } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById, getSubjectById, getTeacherById } from './student-fees.js';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 const TEACHING_SLOTS = [
@@ -16,7 +10,7 @@ const TEACHING_SLOTS = [
     '15:20-16:00', '16:00-16:40'
 ];
 
-export async function renderTimetableGenerator(container) {
+async function renderTimetableGenerator(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

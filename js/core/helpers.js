@@ -2,15 +2,12 @@
 // HELPERS - Common helper functions used across modules
 // ============================================================
 
-import { state } from './state.js';
-import { getCurrentUser } from './auth.js';
-import { fmtCurrency, fmtDate, fmtPct } from './utils.js';
 
 // ============================================================
 // EXPORTED UTILITIES (MUST BE AT THE TOP)
 // ============================================================
 
-export function downloadBlob(content, filename, mimeType = 'application/octet-stream') {
+function downloadBlob(content, filename, mimeType = 'application/octet-stream') {
     const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -22,7 +19,7 @@ export function downloadBlob(content, filename, mimeType = 'application/octet-st
     URL.revokeObjectURL(url);
 }
 
-export function exportToExcel(data, filename) {
+function exportToExcel(data, filename) {
     if (!data?.length) {
         console.warn('No data to export');
         return;
@@ -34,7 +31,7 @@ export function exportToExcel(data, filename) {
 }
 
 // Also add formatDate and formatDateTime if not present
-export function formatDate(dateString) {
+function formatDate(dateString) {
     if (!dateString) return '—';
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
@@ -44,7 +41,7 @@ export function formatDate(dateString) {
     });
 }
 
-export function formatDateTime(dateString) {
+function formatDateTime(dateString) {
     if (!dateString) return '—';
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
@@ -56,13 +53,13 @@ export function formatDateTime(dateString) {
     });
 }
 
-export function formatCurrency(amount) {
+function formatCurrency(amount) {
     if (amount === null || amount === undefined || isNaN(amount)) return '—';
     return Number(amount).toLocaleString('en-RW') + ' RWF';
 }
 
 // String escaping
-export function esc(str) {
+function esc(str) {
     if (!str) return '';
     return String(str).replace(/[&<>"']/g, function (m) {
         if (m === '&') return '&amp;';
@@ -78,7 +75,7 @@ export function esc(str) {
 // ============================================================
 
 // Pre-Midterm Calculation for Primary (scaled to 100)
-export function calcPreMidtermPrimary(scores, maxes) {
+function calcPreMidtermPrimary(scores, maxes) {
     if (!scores?.length) return null;
     const avgRaw = scores.reduce((a, b) => a + b, 0) / scores.length;
     const avgMax = maxes.reduce((a, b) => a + b, 0) / maxes.length;
@@ -86,13 +83,13 @@ export function calcPreMidtermPrimary(scores, maxes) {
 }
 
 // Pre-Midterm Calculation for Nursery (raw average out of 50)
-export function calcPreMidtermNursery(scores) {
+function calcPreMidtermNursery(scores) {
     if (!scores?.length) return null;
     return scores.reduce((a, b) => a + b, 0) / scores.length;
 }
 
 // MG Calculation (Continuous Assessment)
-export function calcMG(scores, maxes, mgMax) {
+function calcMG(scores, maxes, mgMax) {
     if (!scores?.length) return null;
     const avgRaw = scores.reduce((a, b) => a + b, 0) / scores.length;
     const avgMax = maxes.reduce((a, b) => a + b, 0) / maxes.length;
@@ -100,12 +97,12 @@ export function calcMG(scores, maxes, mgMax) {
 }
 
 // EX Calculation (Exams)
-export function calcEX(scores, maxes, exMax) {
+function calcEX(scores, maxes, exMax) {
     return calcMG(scores, maxes, exMax);
 }
 
 // Subject Post-Midterm Calculation
-export function calcSubjectPostMidterm(sub, assessments, marks, studentId) {
+function calcSubjectPostMidterm(sub, assessments, marks, studentId) {
     const mgMax = sub.mg_max || 50;
     const exMax = sub.ex_max || 50;
 
@@ -132,7 +129,7 @@ export function calcSubjectPostMidterm(sub, assessments, marks, studentId) {
 // ============================================================
 
 // Rank students by percentage (tie-breaking by name)
-export function rankStudents(arr) {
+function rankStudents(arr) {
     const sorted = [...arr].sort((a, b) => {
         if (b.percentage !== a.percentage) {
             return b.percentage - a.percentage;
@@ -154,7 +151,7 @@ export function rankStudents(arr) {
 }
 
 // Calculate student rank within class
-export async function calculateStudentRank(studentId, classId, termsToProcess = null, allAssessments = null, allMarks = null) {
+async function calculateStudentRank(studentId, classId, termsToProcess = null, allAssessments = null, allMarks = null) {
     const students = state.students.filter(s => s.class_id === classId && s.status === 'Active');
     const studentScores = [];
 
@@ -191,7 +188,7 @@ export async function calculateStudentRank(studentId, classId, termsToProcess = 
 // ============================================================
 
 // Get student credit balance
-export function getStudentCreditBalance(studentId) {
+function getStudentCreditBalance(studentId) {
     const creditFees = (state.studentFees || []).filter(f =>
         f.student_id == studentId && f.is_credit === true
     );
@@ -204,7 +201,7 @@ export function getStudentCreditBalance(studentId) {
 }
 
 // Get full student fee balance
-export function getFullStudentBalance(studentId) {
+function getFullStudentBalance(studentId) {
     const fees = (state.studentFees || []).filter(f =>
         f.student_id == studentId && !f.is_waived && !f.is_credit
     );
@@ -230,7 +227,7 @@ export function getFullStudentBalance(studentId) {
 }
 
 // Student fee balance (simpler version)
-export function studentFeeBalance(studentId) {
+function studentFeeBalance(studentId) {
     const fees = (state.studentFees || []).filter(f =>
         f.student_id == studentId && !f.is_waived && !f.is_credit
     );
@@ -248,7 +245,7 @@ export function studentFeeBalance(studentId) {
 }
 
 // Update student credit balance
-export async function updateStudentCredit(studentId, newCreditAmount) {
+async function updateStudentCredit(studentId, newCreditAmount) {
     const creditFees = (state.studentFees || []).filter(f =>
         f.student_id == studentId && f.is_credit === true
     );
@@ -281,7 +278,7 @@ export async function updateStudentCredit(studentId, newCreditAmount) {
 // ============================================================
 
 // Apply selected fees to a new student
-export async function applySelectedFeesToNewStudent(studentId, classId, selectedCategoryIds) {
+async function applySelectedFeesToNewStudent(studentId, classId, selectedCategoryIds) {
     const termId = state.currentTerm?.id;
     const yearId = state.currentAcadYear?.id;
     const dueDate = state.currentTerm?.end_date || new Date().toISOString().split('T')[0];
@@ -323,7 +320,7 @@ export async function applySelectedFeesToNewStudent(studentId, classId, selected
 }
 
 // Apply all active fees to a new student
-export async function applyFeesToNewStudent(studentId, classId) {
+async function applyFeesToNewStudent(studentId, classId) {
     const termId = state.currentTerm?.id;
     const yearId = state.currentAcadYear?.id;
     const dueDate = state.currentTerm?.end_date || new Date();
@@ -403,7 +400,7 @@ export async function applyFeesToNewStudent(studentId, classId) {
 // ============================================================
 
 // Update mark row and real-time calculations
-export function updateMERow(studentId, max) {
+function updateMERow(studentId, max) {
     const input = document.getElementById(`score-${studentId}`);
     if (!input) return;
 
@@ -432,7 +429,7 @@ export function updateMERow(studentId, max) {
 }
 
 // Get mark background color based on percentage
-export function getMarkBg(pct) {
+function getMarkBg(pct) {
     if (pct === null || isNaN(pct)) return '';
     if (pct >= 80) return '#d1fae5';
     if (pct >= 60) return '#fef3c7';
@@ -441,7 +438,7 @@ export function getMarkBg(pct) {
 }
 
 // Update marks summary
-export function updateMESummary(students, max) {
+function updateMESummary(students, max) {
     if (!students?.length) return;
 
     const scores = [];
@@ -473,18 +470,18 @@ export function updateMESummary(students, max) {
 // Global toast notification
 
 // Global modal system
-export function showModal(html) {
+function showModal(html) {
     const container = document.getElementById('modals-container');
     if (container) container.innerHTML = html;
 }
 
-export function closeModal(id = null) {
+function closeModal(id = null) {
     const el = id ? document.getElementById(id) : document.querySelector('.modal-overlay');
     if (el) el.remove();
 }
 
 // Confirm dialog (Promise-based)
-export function confirmDialog(msg) {
+function confirmDialog(msg) {
     return new Promise(resolve => {
         showModal(`
             <div class="modal-overlay">
@@ -512,7 +509,7 @@ export function confirmDialog(msg) {
 // ============================================================
 
 // Log activity to database
-export async function logActivity(userId, userRole, action, entityType = null, entityId = null, details = null) {
+async function logActivity(userId, userRole, action, entityType = null, entityId = null, details = null) {
     try {
         const newLog = {
             user_id: userId,
@@ -538,8 +535,8 @@ export async function logActivity(userId, userRole, action, entityType = null, e
 // ============================================================
 
 // Check if teacher has access to a specific class/subject
-export { showToast } from '../ui/modals.js';
-export async function hasTeacherAccess(classId, subjectId = null) {
+
+async function hasTeacherAccess(classId, subjectId = null) {
     const user = getCurrentUser();
     if (!user || user.role !== 'teacher') return true;
 

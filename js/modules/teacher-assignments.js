@@ -1,14 +1,8 @@
 // js/modules/teacher-assignments.js
 // Teacher Assignments Module - Assign teachers to classes and subjects
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove, removeWhere } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById, getSubjectById, getTeacherById } from './student-fees.js';
 
-export async function renderTeacherAssignments(container) {
+async function renderTeacherAssignments(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

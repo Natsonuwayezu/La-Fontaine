@@ -1,14 +1,8 @@
 // js/modules/user-management.js
 // User Management Module - Manage system users and permissions
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getTeacherById } from './student-fees.js';
 
-export async function renderUserManagement(container) {
+async function renderUserManagement(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

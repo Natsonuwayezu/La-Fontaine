@@ -2,8 +2,6 @@
 // OFFLINE ENGINE - IndexedDB storage and offline marks
 // ============================================================
 
-import { showToast } from './helpers.js';
-import { info, error as logError } from './logger.js';
 
 // Database configuration
 const DB_NAME = 'EcoleLaFontaineDB';
@@ -18,7 +16,7 @@ let db = null;
 let isOnline = navigator.onLine;
 
 // Open IndexedDB database
-export async function openDatabase() {
+async function openDatabase() {
     return new Promise((resolve, reject) => {
         if (db && db.name === DB_NAME) {
             resolve(db);
@@ -63,7 +61,7 @@ export async function openDatabase() {
 }
 
 // Save marks offline
-export async function saveOfflineMarks(assessmentData) {
+async function saveOfflineMarks(assessmentData) {
     await openDatabase();
 
     return new Promise((resolve, reject) => {
@@ -91,7 +89,7 @@ export async function saveOfflineMarks(assessmentData) {
 }
 
 // Get unsynced offline marks
-export async function getUnsyncedOfflineMarks() {
+async function getUnsyncedOfflineMarks() {
     await openDatabase();
 
     return new Promise((resolve, reject) => {
@@ -112,7 +110,7 @@ export async function getUnsyncedOfflineMarks() {
 }
 
 // Mark offline marks as synced
-export async function markOfflineMarksSynced(id) {
+async function markOfflineMarksSynced(id) {
     await openDatabase();
 
     return new Promise((resolve, reject) => {
@@ -137,7 +135,7 @@ export async function markOfflineMarksSynced(id) {
 }
 
 // Delete offline marks
-export async function deleteOfflineMarks(id) {
+async function deleteOfflineMarks(id) {
     await openDatabase();
 
     return new Promise((resolve, reject) => {
@@ -154,13 +152,13 @@ export async function deleteOfflineMarks(id) {
 }
 
 // Get count of pending offline marks
-export async function getPendingOfflineCount() {
+async function getPendingOfflineCount() {
     const unsynced = await getUnsyncedOfflineMarks();
     return unsynced.length;
 }
 
 // Update offline badge
-export async function updatePendingBadge() {
+async function updatePendingBadge() {
     const count = await getPendingOfflineCount();
     const badge = document.getElementById('offline-badge');
 
@@ -175,7 +173,7 @@ export async function updatePendingBadge() {
 }
 
 // Cache data offline
-export async function cacheData(key, data, ttl = 24 * 60 * 60 * 1000) {
+async function cacheData(key, data, ttl = 24 * 60 * 60 * 1000) {
     await openDatabase();
 
     return new Promise((resolve, reject) => {
@@ -196,7 +194,7 @@ export async function cacheData(key, data, ttl = 24 * 60 * 60 * 1000) {
 }
 
 // Get cached data
-export async function getCachedData(key) {
+async function getCachedData(key) {
     await openDatabase();
 
     return new Promise((resolve, reject) => {
@@ -222,7 +220,7 @@ export async function getCachedData(key) {
 }
 
 // Clear all offline data
-export async function clearAllOfflineData() {
+async function clearAllOfflineData() {
     await openDatabase();
 
     return new Promise((resolve, reject) => {
@@ -241,7 +239,7 @@ export async function clearAllOfflineData() {
 }
 
 // Initialize offline support
-export function initOfflineSupport() {
+function initOfflineSupport() {
     openDatabase().catch(console.error);
 
     window.addEventListener('online', () => {

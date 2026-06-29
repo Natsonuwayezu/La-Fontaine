@@ -2,17 +2,12 @@
 // BACKUP ENGINE - Full system backup and restore
 // ============================================================
 
-import { state, updateState } from './state.js';
-import { getAll, insert, removeWhere } from './supabase-client.js';
-import { downloadBlob, showToast, confirmDialog, formatDate, esc } from './helpers.js';
-import { info, error as logError } from './logger.js';
-import { refreshTable } from './data-loader.js';
 
 const BACKUP_KEY = 'ecole_auto_backups';
 const MAX_BACKUPS = 5;
 
 // Create full backup
-export async function createFullBackup(manual = false) {
+async function createFullBackup(manual = false) {
     if (!manual && state.currentUser?.role !== 'admin') return null;
 
     const backup = {
@@ -81,7 +76,7 @@ function saveBackupWithRotation(backup) {
 }
 
 // Get backup history
-export function getBackupHistory() {
+function getBackupHistory() {
     try {
         return JSON.parse(localStorage.getItem(BACKUP_KEY) || '[]');
     } catch (e) {
@@ -90,7 +85,7 @@ export function getBackupHistory() {
 }
 
 // Download backup as JSON file
-export function downloadBackup(backupData, filename = null) {
+function downloadBackup(backupData, filename = null) {
     if (!backupData) return;
 
     const jsonData = JSON.stringify(backupData, null, 2);
@@ -100,7 +95,7 @@ export function downloadBackup(backupData, filename = null) {
 }
 
 // Restore from backup data
-export async function restoreFromBackup(backupData) {
+async function restoreFromBackup(backupData) {
     if (!await confirmDialog('⚠️ RESTORE WARNING: This will replace ALL current data! This cannot be undone. Continue?')) {
         return false;
     }
@@ -180,7 +175,7 @@ export async function restoreFromBackup(backupData) {
 }
 
 // Import backup from file
-export function importBackupFromFile(file) {
+function importBackupFromFile(file) {
     const reader = new FileReader();
     reader.onload = async (ev) => {
         try {
@@ -194,7 +189,7 @@ export function importBackupFromFile(file) {
 }
 
 // Start auto-backup scheduler
-export function startAutoBackupScheduler() {
+function startAutoBackupScheduler() {
     // Run every 6 hours
     setInterval(async () => {
         if (state.currentUser?.role === 'admin' && navigator.onLine) {
@@ -211,7 +206,7 @@ export function startAutoBackupScheduler() {
 }
 
 // Delete backup record from history
-export function deleteBackupRecord(filename) {
+function deleteBackupRecord(filename) {
     let backups = getBackupHistory();
     backups = backups.filter(b => b.filename !== filename);
     localStorage.setItem(BACKUP_KEY, JSON.stringify(backups));

@@ -90,26 +90,26 @@ class TooltipManager {
 // Initialize tooltips
 let tooltipManager = null;
 
-export function initTooltips() {
+function initTooltips() {
     if (!tooltipManager) {
         tooltipManager = new TooltipManager();
     }
 }
 
 // Add tooltip to element
-export function addTooltip(element, text) {
+function addTooltip(element, text) {
     if (!element) return;
     element.setAttribute('data-tooltip', text);
 }
 
 // Remove tooltip from element
-export function removeTooltip(element) {
+function removeTooltip(element) {
     if (!element) return;
     element.removeAttribute('data-tooltip');
 }
 
 // Create a help tooltip button
-export function createHelpTooltip(text) {
+function createHelpTooltip(text) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'help-tooltip';
@@ -120,7 +120,7 @@ export function createHelpTooltip(text) {
 }
 
 // Add tooltip to form field
-export function addFieldTooltip(labelElement, helpText) {
+function addFieldTooltip(labelElement, helpText) {
     if (!labelElement) return;
     const tooltipBtn = createHelpTooltip(helpText);
     labelElement.appendChild(tooltipBtn);

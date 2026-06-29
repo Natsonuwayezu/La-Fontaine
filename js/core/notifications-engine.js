@@ -2,26 +2,20 @@
 // NOTIFICATIONS ENGINE - Core notification system
 // ============================================================
 
-import { state } from './state.js';
-import { getAll, insert, update, remove } from './supabase-client.js';
-import { showToast } from './helpers.js';
-import { info, error as logError } from './logger.js';
-import { getCurrentUser } from './auth.js';
-import { refreshTable } from './data-loader.js';
 
 // Global notification state
 let _unreadNotifications = [];
 let _notificationCount = 0;
 
 // Initialize notification system
-export async function initNotifications() {
+async function initNotifications() {
     await loadNotifications();
     // Check for new notifications every 30 seconds
     setInterval(checkForNewNotifications, 30000);
 }
 
 // Load notifications from storage
-export async function loadNotifications() {
+async function loadNotifications() {
     const currentUser = getCurrentUser();
     if (!currentUser) return;
 
@@ -37,7 +31,7 @@ export async function loadNotifications() {
 }
 
 // Check system notifications based on role
-export async function checkSystemNotifications() {
+async function checkSystemNotifications() {
     const currentUser = getCurrentUser();
     if (!currentUser) return;
 
@@ -191,7 +185,7 @@ function hasNotification(notificationId) {
 }
 
 // Update notification badge in UI
-export function updateNotificationBadge() {
+function updateNotificationBadge() {
     const currentUser = getCurrentUser();
     if (!currentUser) return;
 
@@ -213,7 +207,7 @@ export function updateNotificationBadge() {
 }
 
 // Mark a single notification as read
-export function markNotificationAsRead(notificationId) {
+function markNotificationAsRead(notificationId) {
     const user = getCurrentUser();
     if (!user) return;
 
@@ -236,7 +230,7 @@ export function markNotificationAsRead(notificationId) {
 }
 
 // Mark all notifications as read
-export function markAllNotificationsAsRead() {
+function markAllNotificationsAsRead() {
     const user = getCurrentUser();
     if (!user) return;
 
@@ -259,7 +253,7 @@ export function markAllNotificationsAsRead() {
 }
 
 // Clear all notifications
-export function clearAllNotifications() {
+function clearAllNotifications() {
     const user = getCurrentUser();
     if (!user) return;
 
@@ -285,7 +279,7 @@ async function checkForNewNotifications() {
 }
 
 // Create a custom notification
-export async function createNotification(notification) {
+async function createNotification(notification) {
     const newNotif = {
         id: `${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
         ...notification,

@@ -1,12 +1,6 @@
 // js/modules/notification-center.js
 // Notification Center Module - Centralized notification management
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, fmtDateTime, fmtAgo, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getStudentById, getTeacherById } from './student-fees.js';
 
 let _allNotifications = [];
 let _notificationFilters = {
@@ -15,7 +9,7 @@ let _notificationFilters = {
     search: ''
 };
 
-export async function renderNotificationCenter(container) {
+async function renderNotificationCenter(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

@@ -3,7 +3,7 @@
 // ============================================================
 
 // Show modal with HTML content
-export function showModal(html, options = {}) {
+function showModal(html, options = {}) {
     const { closeOnOverlay = true, onClose = null } = options;
 
     const container = document.getElementById('modals-container');
@@ -23,7 +23,7 @@ export function showModal(html, options = {}) {
 }
 
 // Close current modal
-export function closeModal(modalId = null) {
+function closeModal(modalId = null) {
     if (modalId) {
         const modal = document.getElementById(modalId);
         if (modal) modal.remove();
@@ -34,7 +34,7 @@ export function closeModal(modalId = null) {
 }
 
 // Confirm dialog (Promise-based)
-export function confirmDialog(message, title = 'Confirm') {
+function confirmDialog(message, title = 'Confirm') {
     return new Promise((resolve) => {
         const modalId = `confirm-modal-${Date.now()}`;
         const html = `
@@ -61,7 +61,7 @@ export function confirmDialog(message, title = 'Confirm') {
 }
 
 // Alert dialog
-export function alertDialog(message, title = 'Notice') {
+function alertDialog(message, title = 'Notice') {
     return new Promise((resolve) => {
         const modalId = `alert-modal-${Date.now()}`;
         const html = `
@@ -87,7 +87,7 @@ export function alertDialog(message, title = 'Notice') {
 }
 
 // Toast notification
-export function showToast(message, type = 'info', duration = 3500) {
+function showToast(message, type = 'info', duration = 3500) {
     const container = document.getElementById('toast-container');
     if (!container) return;
 
@@ -110,7 +110,7 @@ export function showToast(message, type = 'info', duration = 3500) {
 }
 
 // Loading modal
-export function showLoadingModal(message = 'Loading...') {
+function showLoadingModal(message = 'Loading...') {
     const modalId = `loading-modal-${Date.now()}`;
     const html = `
         <div class="modal-overlay" id="${modalId}" style="background: rgba(0,0,0,0.3);">
@@ -127,7 +127,7 @@ export function showLoadingModal(message = 'Loading...') {
 }
 
 // Hide loading modal
-export function hideLoadingModal(modalId) {
+function hideLoadingModal(modalId) {
     if (modalId) {
         const modal = document.getElementById(modalId);
         if (modal) modal.remove();
@@ -135,7 +135,7 @@ export function hideLoadingModal(modalId) {
 }
 
 // Prompt dialog
-export function promptDialog(message, defaultValue = '', title = 'Input Required') {
+function promptDialog(message, defaultValue = '', title = 'Input Required') {
     return new Promise((resolve) => {
         const modalId = `prompt-modal-${Date.now()}`;
         const html = `

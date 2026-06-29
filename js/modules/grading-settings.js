@@ -1,13 +1,8 @@
 // js/modules/grading-settings.js
 // Grading Settings Module - Configure grading scale and grade boundaries
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove, removeWhere } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtPct, esc, exportToExcel } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
 
-export async function renderGradingSettings(container) {
+async function renderGradingSettings(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

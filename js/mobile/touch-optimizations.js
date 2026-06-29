@@ -1,7 +1,7 @@
 // js/mobile/touch-optimizations.js
 // Touch Optimizations Module - Improve touch interactions on mobile
 
-export function initTouchOptimizations() {
+function initTouchOptimizations() {
     if (!isTouchDevice()) return;
 
     optimizeButtonTouchTargets();
@@ -190,7 +190,7 @@ function enableActiveStates() {
     document.head.appendChild(style);
 }
 
-export function enablePullToRefresh(callback) {
+function enablePullToRefresh(callback) {
     let startY = 0;
     let isRefreshing = false;
     const threshold = 80;

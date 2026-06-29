@@ -3,7 +3,7 @@
 
 let html2pdf = null;
 
-export function initHtml2Pdf() {
+function initHtml2Pdf() {
     if (typeof window.html2pdf !== 'undefined') {
         html2pdf = window.html2pdf;
         return true;
@@ -12,7 +12,7 @@ export function initHtml2Pdf() {
     return false;
 }
 
-export function generatePDF(element, options = {}, filename = 'document.pdf') {
+function generatePDF(element, options = {}, filename = 'document.pdf') {
     if (!initHtml2Pdf()) {
         console.error('html2pdf not available');
         return Promise.reject('html2pdf not available');
@@ -41,7 +41,7 @@ export function generatePDF(element, options = {}, filename = 'document.pdf') {
     return html2pdf().set(mergedOptions).from(element).save();
 }
 
-export function generatePDFFromHTML(html, options = {}, filename = 'document.pdf') {
+function generatePDFFromHTML(html, options = {}, filename = 'document.pdf') {
     if (!initHtml2Pdf()) {
         return Promise.reject('html2pdf not available');
     }
@@ -58,7 +58,7 @@ export function generatePDFFromHTML(html, options = {}, filename = 'document.pdf
     });
 }
 
-export async function generateReportCardPDF(studentId, filename = null) {
+async function generateReportCardPDF(studentId, filename = null) {
     const reportCard = document.getElementById('report-card');
     if (!reportCard) {
         throw new Error('Report card not found');
@@ -73,7 +73,7 @@ export async function generateReportCardPDF(studentId, filename = null) {
     }, filename || defaultFilename);
 }
 
-export async function generateReceiptPDF(receiptId, filename = null) {
+async function generateReceiptPDF(receiptId, filename = null) {
     const receipt = document.getElementById(`receipt-${receiptId}`);
     if (!receipt) {
         throw new Error('Receipt not found');
@@ -87,7 +87,7 @@ export async function generateReceiptPDF(receiptId, filename = null) {
     }, filename || defaultFilename);
 }
 
-export async function generateFinancialReportPDF(data, filename = null) {
+async function generateFinancialReportPDF(data, filename = null) {
     const html = generateFinancialReportHTML(data);
     const defaultFilename = `Financial_Report_${formatDate()}.pdf`;
 
@@ -97,7 +97,7 @@ export async function generateFinancialReportPDF(data, filename = null) {
     }, filename || defaultFilename);
 }
 
-export async function generateClassRegisterPDF(classId, filename = null) {
+async function generateClassRegisterPDF(classId, filename = null) {
     const registerTable = document.querySelector('#cr-table-container table');
     if (!registerTable) {
         throw new Error('Class register not found');
@@ -145,7 +145,7 @@ function formatDate() {
 }
 
 // Export worker for background PDF generation
-export function createPDFWorker() {
+function createPDFWorker() {
     if (typeof Worker === 'undefined') {
         return null;
     }

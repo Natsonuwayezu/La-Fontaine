@@ -2,11 +2,9 @@
 // FORMS UI - Form handling and validation
 // ============================================================
 
-import { showToast } from './modals.js';
-import { validators, getErrorMessage } from '../core/validators.js';
 
 // Validate a form against rules
-export function validateForm(formElement, rules = {}) {
+function validateForm(formElement, rules = {}) {
     const errors = [];
     const inputs = formElement.querySelectorAll('input, select, textarea');
 
@@ -63,7 +61,7 @@ export function validateForm(formElement, rules = {}) {
 }
 
 // Get form data as object
-export function getFormData(formElement) {
+function getFormData(formElement) {
     const formData = new FormData(formElement);
     const data = {};
 
@@ -82,7 +80,7 @@ export function getFormData(formElement) {
 }
 
 // Set form data from object
-export function setFormData(formElement, data) {
+function setFormData(formElement, data) {
     for (const [key, value] of Object.entries(data)) {
         const input = formElement.querySelector(`[name="${key}"], #${key}`);
         if (input) {
@@ -96,7 +94,7 @@ export function setFormData(formElement, data) {
 }
 
 // Reset form to default values
-export function resetForm(formElement) {
+function resetForm(formElement) {
     formElement.reset();
     formElement.querySelectorAll('.is-invalid').forEach(el => {
         el.classList.remove('is-invalid');
@@ -107,7 +105,7 @@ export function resetForm(formElement) {
 }
 
 // Disable form inputs
-export function disableForm(formElement, disabled = true) {
+function disableForm(formElement, disabled = true) {
     const inputs = formElement.querySelectorAll('input, select, textarea, button');
     inputs.forEach(input => {
         input.disabled = disabled;
@@ -115,7 +113,7 @@ export function disableForm(formElement, disabled = true) {
 }
 
 // Auto-save form to localStorage
-export function autoSaveForm(formId, data) {
+function autoSaveForm(formId, data) {
     localStorage.setItem(`form_autosave_${formId}`, JSON.stringify({
         data: data,
         timestamp: Date.now()
@@ -123,7 +121,7 @@ export function autoSaveForm(formId, data) {
 }
 
 // Load auto-saved form data
-export function loadAutoSaveForm(formId) {
+function loadAutoSaveForm(formId) {
     const saved = localStorage.getItem(`form_autosave_${formId}`);
     if (saved) {
         try {
@@ -137,12 +135,12 @@ export function loadAutoSaveForm(formId) {
 }
 
 // Clear auto-saved form
-export function clearAutoSaveForm(formId) {
+function clearAutoSaveForm(formId) {
     localStorage.removeItem(`form_autosave_${formId}`);
 }
 
 // Toggle password visibility
-export function togglePasswordVisibility(inputElement, buttonElement) {
+function togglePasswordVisibility(inputElement, buttonElement) {
     if (inputElement.type === 'password') {
         inputElement.type = 'text';
         if (buttonElement) buttonElement.textContent = '🙈';
@@ -153,7 +151,7 @@ export function togglePasswordVisibility(inputElement, buttonElement) {
 }
 
 // Show form submission loading state
-export function setFormLoading(button, isLoading, originalText = null) {
+function setFormLoading(button, isLoading, originalText = null) {
     if (!button) return;
 
     if (isLoading) {

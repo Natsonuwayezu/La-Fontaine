@@ -2,15 +2,9 @@
 // AUTO TASKS - Scheduled tasks (fee resets, auto-archive, backups)
 // ============================================================
 
-import { state, updateState } from './state.js';
-import { insert, update, getAll, removeWhere } from './supabase-client.js';
-import { getStudentCreditBalance, updateStudentCredit, getFullStudentBalance } from './helpers.js';
-import { showToast } from './helpers.js';
-import { info, error as logError } from './logger.js';
-import { refreshTable } from './data-loader.js';
 
 // Fee reset watcher
-export async function checkAndApplyFeeResets() {
+async function checkAndApplyFeeResets() {
     info('[FeeReset] Checking for fee resets...', null, 'auto-tasks');
     const today = new Date();
     const currentTerm = state.currentTerm;
@@ -156,13 +150,13 @@ async function archivePreviousYearFees() {
 }
 
 // Start fee reset watcher
-export function startFeeResetWatcher() {
+function startFeeResetWatcher() {
     checkAndApplyFeeResets();
     setInterval(checkAndApplyFeeResets, 24 * 60 * 60 * 1000); // Check daily
 }
 
 // Auto-archive inactive students
-export async function runAutoArchive() {
+async function runAutoArchive() {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     const candidates = state.students.filter(s =>
@@ -194,14 +188,14 @@ export async function runAutoArchive() {
 }
 
 // Start auto-archive watcher
-export function startAutoArchiveWatcher() {
+function startAutoArchiveWatcher() {
     setInterval(() => {
         runAutoArchive();
     }, 24 * 60 * 60 * 1000); // Run daily
 }
 
 // Notification watcher
-export function startNotificationWatcher() {
+function startNotificationWatcher() {
     setInterval(() => {
         if (window.updateNotificationBadge) {
             window.updateNotificationBadge();
@@ -210,7 +204,7 @@ export function startNotificationWatcher() {
 }
 // ── Field Trip / One-Time Fee Archiver ─────────────────────
 // Handles completed activity fees: paid → archive, unpaid → waive
-export async function handleCompletedActivityFee(feeCategoryId, reason = 'Activity completed') {
+async function handleCompletedActivityFee(feeCategoryId, reason = 'Activity completed') {
     const currentTerm = state.currentTerm;
     if (!currentTerm) { showToast('No active term found', 'warning'); return; }
 
@@ -247,7 +241,7 @@ export async function handleCompletedActivityFee(feeCategoryId, reason = 'Activi
 }
 
 // Auto-archive completed one-time activity fees at term end
-export async function archiveCompletedActivities() {
+async function archiveCompletedActivities() {
     const currentTerm = state.currentTerm;
     if (!currentTerm?.end_date) return;
     if (new Date() < new Date(currentTerm.end_date)) return; // Term not ended yet

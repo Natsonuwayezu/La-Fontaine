@@ -1,7 +1,7 @@
 // js/integrations/print.js
 // Print Integration - Optimized printing for reports, receipts, and cards
 
-export function initPrintIntegration() {
+function initPrintIntegration() {
     addPrintStyles();
     setupPrintEventHandlers();
 }
@@ -128,7 +128,7 @@ function setupPrintEventHandlers() {
     });
 }
 
-export function printElement(element, title = 'Print') {
+function printElement(element, title = 'Print') {
     const printWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
     if (!printWindow) {
         alert('Please allow pop-ups to print');
@@ -168,7 +168,7 @@ export function printElement(element, title = 'Print') {
     printWindow.document.close();
 }
 
-export function printReportCard(studentId) {
+function printReportCard(studentId) {
     const reportCard = document.getElementById('report-card');
     if (!reportCard) {
         console.error('Report card not found');
@@ -180,7 +180,7 @@ export function printReportCard(studentId) {
     printElement(reportCard, title);
 }
 
-export function printReceipt(receiptId) {
+function printReceipt(receiptId) {
     const receipt = document.getElementById(`receipt-${receiptId}`) || document.querySelector('.receipt');
     if (!receipt) {
         console.error('Receipt not found');
@@ -190,11 +190,11 @@ export function printReceipt(receiptId) {
     printElement(receipt, `Receipt_${receiptId}`);
 }
 
-export function printTable(tableElement, title = 'Report') {
+function printTable(tableElement, title = 'Report') {
     printElement(tableElement, title);
 }
 
-export function printClassRegister(classId) {
+function printClassRegister(classId) {
     const table = document.querySelector('#cr-table-container table');
     if (!table) {
         console.error('Class register not found');

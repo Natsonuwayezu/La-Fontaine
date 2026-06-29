@@ -3,7 +3,7 @@
 
 let XLSX = null;
 
-export function initXLSX() {
+function initXLSX() {
     if (typeof window.XLSX !== 'undefined') {
         XLSX = window.XLSX;
         return true;
@@ -12,7 +12,7 @@ export function initXLSX() {
     return false;
 }
 
-export function exportToExcel(data, filename, sheetName = 'Data') {
+function exportToExcel(data, filename, sheetName = 'Data') {
     if (!initXLSX()) {
         console.error('XLSX not available');
         return false;
@@ -25,7 +25,7 @@ export function exportToExcel(data, filename, sheetName = 'Data') {
     return true;
 }
 
-export function exportTableToExcel(tableElement, filename, sheetName = 'Data') {
+function exportTableToExcel(tableElement, filename, sheetName = 'Data') {
     if (!initXLSX()) return false;
 
     const ws = XLSX.utils.table_to_sheet(tableElement);
@@ -35,7 +35,7 @@ export function exportTableToExcel(tableElement, filename, sheetName = 'Data') {
     return true;
 }
 
-export function exportToCSV(data, filename) {
+function exportToCSV(data, filename) {
     if (!initXLSX()) return false;
 
     const ws = XLSX.utils.json_to_sheet(data);
@@ -44,7 +44,7 @@ export function exportToCSV(data, filename) {
     return true;
 }
 
-export async function importFromExcel(file) {
+async function importFromExcel(file) {
     return new Promise((resolve, reject) => {
         if (!initXLSX()) {
             reject('XLSX not available');
@@ -69,7 +69,7 @@ export async function importFromExcel(file) {
     });
 }
 
-export function createTemplate(data, filename, sheetName = 'Template') {
+function createTemplate(data, filename, sheetName = 'Template') {
     if (!initXLSX()) return false;
 
     const ws = XLSX.utils.json_to_sheet(data);
@@ -79,7 +79,7 @@ export function createTemplate(data, filename, sheetName = 'Template') {
     return true;
 }
 
-export function exportMultiSheet(dataMap, filename) {
+function exportMultiSheet(dataMap, filename) {
     if (!initXLSX()) return false;
 
     const wb = XLSX.utils.book_new();
@@ -93,7 +93,7 @@ export function exportMultiSheet(dataMap, filename) {
     return true;
 }
 
-export function exportArrayToExcel(data, filename, sheetName = 'Data') {
+function exportArrayToExcel(data, filename, sheetName = 'Data') {
     if (!initXLSX()) return false;
 
     const ws = XLSX.utils.aoa_to_sheet(data);

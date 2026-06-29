@@ -3,7 +3,7 @@
 // ============================================================
 
 // Create skeleton card
-export function createSkeletonCard() {
+function createSkeletonCard() {
     const card = document.createElement('div');
     card.className = 'skeleton-card';
     card.innerHTML = `
@@ -16,7 +16,7 @@ export function createSkeletonCard() {
 }
 
 // Create skeleton table row
-export function createSkeletonTableRow(columnCount = 5) {
+function createSkeletonTableRow(columnCount = 5) {
     const row = document.createElement('tr');
     for (let i = 0; i < columnCount; i++) {
         const td = document.createElement('td');
@@ -27,7 +27,7 @@ export function createSkeletonTableRow(columnCount = 5) {
 }
 
 // Create skeleton table
-export function createSkeletonTable(rows = 5, columns = 5) {
+function createSkeletonTable(rows = 5, columns = 5) {
     const table = document.createElement('table');
     table.className = 'data-table';
 
@@ -41,7 +41,7 @@ export function createSkeletonTable(rows = 5, columns = 5) {
 }
 
 // Create skeleton list item
-export function createSkeletonListItem() {
+function createSkeletonListItem() {
     const item = document.createElement('div');
     item.className = 'skeleton-list-item';
     item.innerHTML = `
@@ -56,7 +56,7 @@ export function createSkeletonListItem() {
 }
 
 // Create skeleton stats grid
-export function createSkeletonStatsGrid(count = 4) {
+function createSkeletonStatsGrid(count = 4) {
     const container = document.createElement('div');
     container.className = 'stats-grid';
 
@@ -71,7 +71,7 @@ export function createSkeletonStatsGrid(count = 4) {
 }
 
 // Create skeleton chart
-export function createSkeletonChart(height = 300) {
+function createSkeletonChart(height = 300) {
     const container = document.createElement('div');
     container.className = 'skeleton-chart';
     container.style.height = `${height}px`;
@@ -79,7 +79,7 @@ export function createSkeletonChart(height = 300) {
 }
 
 // Create skeleton profile header
-export function createSkeletonProfileHeader() {
+function createSkeletonProfileHeader() {
     const container = document.createElement('div');
     container.className = 'skeleton-profile-header';
     container.style.display = 'flex';
@@ -97,7 +97,7 @@ export function createSkeletonProfileHeader() {
 }
 
 // Fill container with skeleton cards
-export function fillWithSkeletonCards(container, count = 3, cardCreator = null) {
+function fillWithSkeletonCards(container, count = 3, cardCreator = null) {
     if (!container) return;
     container.innerHTML = '';
     const creator = cardCreator || createSkeletonCard;
@@ -107,7 +107,7 @@ export function fillWithSkeletonCards(container, count = 3, cardCreator = null) 
 }
 
 // Fill container with skeleton table rows
-export function fillWithSkeletonRows(tableElement, rows = 5, columns = null) {
+function fillWithSkeletonRows(tableElement, rows = 5, columns = null) {
     if (!tableElement) return;
     const tbody = tableElement.querySelector('tbody');
     if (!tbody) return;
@@ -120,14 +120,14 @@ export function fillWithSkeletonRows(tableElement, rows = 5, columns = null) {
 }
 
 // Replace skeletons with actual content
-export function replaceSkeletons(container, contentGenerator) {
+function replaceSkeletons(container, contentGenerator) {
     if (!container) return;
     container.innerHTML = '';
     contentGenerator(container);
 }
 
 // Skeleton loader for marks entry table
-export function showMarksEntrySkeleton(container, studentCount = 20) {
+function showMarksEntrySkeleton(container, studentCount = 20) {
     if (!container) return;
 
     let skeletonHtml = `
@@ -166,7 +166,7 @@ export function showMarksEntrySkeleton(container, studentCount = 20) {
 }
 
 // Skeleton loader for dashboard stats
-export function showDashboardSkeleton(container) {
+function showDashboardSkeleton(container) {
     if (!container) return;
 
     container.innerHTML = `

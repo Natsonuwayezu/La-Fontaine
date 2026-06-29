@@ -1,14 +1,8 @@
 // js/modules/timetable-conflicts.js
 // Timetable Conflicts Module - Detect and resolve timetable conflicts
 
-import { state } from '../core/state.js';
-import { getAll } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { ensureStateLoaded } from '../core/data-loader.js';
-import { getClassById, getSubjectById, getTeacherById } from './student-fees.js';
 
-export async function renderTimetableConflicts(container) {
+async function renderTimetableConflicts(container) {
     await ensureStateLoaded();
 
     const user = state.currentUser;

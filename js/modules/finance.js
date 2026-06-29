@@ -1,14 +1,8 @@
 // js/modules/finance.js
 // Core Finance Module - Fee structure, payments, receipts, waivers
 
-import { state } from '../core/state.js';
-import { getAll, insert, update, remove, updateWhere, removeWhere } from '../core/supabase-client.js';
-import { showToast, showModal, closeModal, confirmDialog } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, fmtPct, esc, exportToExcel, downloadBlob } from '../core/utils.js';
-import { refreshTable, ensureStateLoaded } from '../core/data-loader.js';
-import { getFullStudentBalance, getStudentById, getClassById, getStudentCreditBalance, updateStudentCredit, recordCreditAsPayment } from './student-fees.js';
 
-export async function renderFeeStructure(container) {
+async function renderFeeStructure(container) {
     await ensureStateLoaded();
 
     container.innerHTML = `
@@ -556,4 +550,3 @@ async function removeFeeAmountFromClass(amountId, className, categoryName, curre
     refreshFeeAmounts();
 }
 
-export { refreshFeeAmounts as renderFeeAmounts };

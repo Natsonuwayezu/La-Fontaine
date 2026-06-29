@@ -1,15 +1,9 @@
 // js/mobile/remaining-mobile.js
 // Complete Mobile Module - Gestures, Navigation, Tables, Modals, Topbar
 
-import { initGestures, initSwipeForSidebar, initPullToRefresh } from './gestures.js';
-import { initMobileNavigation, updateMobileNavBadge, hideBottomNav, showBottomNav } from './mobile-navigation.js';
-import { initTouchOptimizations, enablePullToRefresh as enablePullToRefreshTouch } from './touch-optimizations.js';
-import { initMobileTables, resetTableDisplay, handleOrientationChange } from './mobile-tables.js';
-import { initMobileModals, showMobileBottomSheet, showMobileActionSheet } from './mobile-modals.js';
-import { initMobileTopbar } from './mobile-topbar.js';
 
 // Main initialization function for all mobile features
-export function initMobileFeatures() {
+function initMobileFeatures() {
     if (!isMobileDevice()) return;
 
     initGestures();
@@ -63,23 +57,6 @@ async function refreshDashboardData() {
 }
 
 // Export individual functions for selective use
-export {
-    initGestures,
-    initSwipeForSidebar,
-    initPullToRefresh,
-    initMobileNavigation,
-    updateMobileNavBadge,
-    hideBottomNav,
-    showBottomNav,
-    initTouchOptimizations,
-    initMobileTables,
-    resetTableDisplay,
-    handleOrientationChange,
-    initMobileModals,
-    showMobileBottomSheet,
-    showMobileActionSheet,
-    initMobileTopbar
-};
 
 // Auto-initialize when DOM is ready
 if (document.readyState === 'loading') {

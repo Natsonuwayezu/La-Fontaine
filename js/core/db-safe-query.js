@@ -2,9 +2,6 @@
 // DB SAFE QUERY - Retry logic, timeouts, and fallback cache
 // ============================================================
 
-import { apiRequest } from './supabase-client.js';
-import { showToast } from './helpers.js';
-import { cacheGet, cacheSet } from './cache.js';
 
 // Default retry configuration
 const DEFAULT_RETRY_CONFIG = {
@@ -16,7 +13,7 @@ const DEFAULT_RETRY_CONFIG = {
 };
 
 // Execute query with retry logic
-export async function safeQuery(queryFn, options = {}) {
+async function safeQuery(queryFn, options = {}) {
     const config = { ...DEFAULT_RETRY_CONFIG, ...options };
     let lastError = null;
 
@@ -45,7 +42,7 @@ export async function safeQuery(queryFn, options = {}) {
 }
 
 // Safe get with caching and retry
-export async function safeGet(table, filters = {}, options = {}) {
+async function safeGet(table, filters = {}, options = {}) {
     const config = { ...DEFAULT_RETRY_CONFIG, ...options };
     const cacheKey = `${table}:${JSON.stringify(filters)}`;
 
@@ -81,7 +78,7 @@ export async function safeGet(table, filters = {}, options = {}) {
 }
 
 // Safe insert with validation and retry
-export async function safeInsert(table, data, options = {}) {
+async function safeInsert(table, data, options = {}) {
     const config = { ...DEFAULT_RETRY_CONFIG, ...options };
 
     return await safeQuery(async () => {
@@ -99,7 +96,7 @@ export async function safeInsert(table, data, options = {}) {
 }
 
 // Safe update with retry
-export async function safeUpdate(table, id, data, options = {}) {
+async function safeUpdate(table, id, data, options = {}) {
     const config = { ...DEFAULT_RETRY_CONFIG, ...options };
 
     return await safeQuery(async () => {
@@ -116,7 +113,7 @@ export async function safeUpdate(table, id, data, options = {}) {
 }
 
 // Safe delete with retry
-export async function safeDelete(table, id, options = {}) {
+async function safeDelete(table, id, options = {}) {
     const config = { ...DEFAULT_RETRY_CONFIG, ...options };
 
     return await safeQuery(async () => {
@@ -133,14 +130,14 @@ export async function safeDelete(table, id, options = {}) {
 }
 
 // Invalidate all cache entries for a table
-export function invalidateTableCache(table) {
+function invalidateTableCache(table) {
     if (window.cacheInstance) {
         window.cacheInstance.deletePattern(table);
     }
 }
 
 // Batch insert with progress callback
-export async function batchInsert(table, items, batchSize = 100, onProgress = null) {
+async function batchInsert(table, items, batchSize = 100, onProgress = null) {
     const results = [];
     const errors = [];
     const total = items.length;
@@ -168,7 +165,7 @@ export async function batchInsert(table, items, batchSize = 100, onProgress = nu
 }
 
 // Check database connection health
-export async function checkDbHealth() {
+async function checkDbHealth() {
     try {
         const startTime = Date.now();
         const result = await safeQuery(async () => {

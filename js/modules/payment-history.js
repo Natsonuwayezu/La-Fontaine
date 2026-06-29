@@ -1,14 +1,8 @@
 // js/modules/payment-history.js
 // Payment History Module - View and manage all payments
 
-import { state } from '../core/state.js';
-import { getAll } from '../core/supabase-client.js';
-import { showToast } from '../ui/modals.js';
-import { fmtCurrency, fmtDate, esc, exportToExcel } from '../core/utils.js';
-import { getStudentById, getClassById, getFullStudentBalance } from './student-fees.js';
-import { printReceipt } from './receipts.js';
 
-export async function renderPaymentHistory(container) {
+async function renderPaymentHistory(container) {
     const sorted = [...state.payments].sort((a, b) =>
         new Date(b.payment_date || b.created_at) - new Date(a.payment_date || a.created_at)
     );

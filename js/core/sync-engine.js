@@ -2,17 +2,11 @@
 // SYNC ENGINE - Synchronize offline data with server
 // ============================================================
 
-import { getUnsyncedOfflineMarks, deleteOfflineMarks, markOfflineMarksSynced, updatePendingBadge } from './offline-engine.js';
-import { insert, update, getAll } from './supabase-client.js';
-import { getCurrentUser } from './auth.js';
-import { showToast } from './helpers.js';
-import { info, error as logError } from './logger.js';
-import { refreshTable } from './data-loader.js';
 
 let isSyncing = false;
 
 // Sync offline marks to server
-export async function syncOfflineMarks() {
+async function syncOfflineMarks() {
     if (!navigator.onLine) {
         showToast('No internet connection. Cannot sync.', 'warning');
         return { success: false, message: 'No internet connection' };
@@ -127,7 +121,7 @@ export async function syncOfflineMarks() {
 }
 
 // Show sync progress modal
-export function showSyncProgressModal(total, current = 0, currentItem = null) {
+function showSyncProgressModal(total, current = 0, currentItem = null) {
     const modalHtml = `
         <div class="modal-overlay" id="sync-modal" onclick="if(event.target===this)closeSyncModal()">
             <div class="modal modal-sm" onclick="event.stopPropagation()">
@@ -164,7 +158,7 @@ export function showSyncProgressModal(total, current = 0, currentItem = null) {
 }
 
 // Update sync progress
-export function updateSyncProgress(current, total, currentItem) {
+function updateSyncProgress(current, total, currentItem) {
     const percent = (current / total) * 100;
     const progressBar = document.getElementById('sync-progress-bar');
     const progressText = document.getElementById('sync-progress-text');
@@ -184,13 +178,13 @@ export function updateSyncProgress(current, total, currentItem) {
 }
 
 // Close sync modal
-export function closeSyncModal() {
+function closeSyncModal() {
     const modal = document.getElementById('sync-modal');
     if (modal) modal.remove();
 }
 
 // Auto-sync when coming online
-export function initAutoSync() {
+function initAutoSync() {
     window.addEventListener('online', () => {
         info('Connection restored, auto-syncing...', null, 'sync-engine');
         setTimeout(() => syncOfflineMarks(), 1000);

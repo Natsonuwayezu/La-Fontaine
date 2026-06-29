@@ -1,7 +1,7 @@
 // js/mobile/mobile-tables.js
 // Mobile Tables Module - Responsive table handling for mobile devices
 
-export function initMobileTables() {
+function initMobileTables() {
     if (!isMobileDevice()) return;
 
     enhanceAllTables();
@@ -153,7 +153,7 @@ function initTableSwipe() {
     });
 }
 
-export function resetTableDisplay() {
+function resetTableDisplay() {
     const tables = document.querySelectorAll('.data-table-enhanced');
 
     tables.forEach(table => {
@@ -165,7 +165,7 @@ export function resetTableDisplay() {
     });
 }
 
-export function handleOrientationChange() {
+function handleOrientationChange() {
     if (window.innerWidth <= 480) {
         const tables = document.querySelectorAll('.data-table-enhanced');
         tables.forEach(table => {

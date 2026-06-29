@@ -158,14 +158,14 @@ class ContextMenuManager {
 // Initialize context menu
 let contextMenu = null;
 
-export function initContextMenu() {
+function initContextMenu() {
     if (!contextMenu) {
         contextMenu = new ContextMenuManager();
     }
 }
 
 // Register context menu for an element
-export function registerContextMenu(element, menuId, data = {}) {
+function registerContextMenu(element, menuId, data = {}) {
     if (!element) return;
     element.setAttribute('data-context-menu', menuId);
     for (const [key, value] of Object.entries(data)) {

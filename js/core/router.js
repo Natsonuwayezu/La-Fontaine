@@ -2,13 +2,6 @@
 // ROUTER - Module navigation and dynamic content loading
 // ============================================================
 
-import { state } from './state.js';
-import { getCurrentUser } from './auth.js';
-import { setActiveNav, closeSidebarMobile } from '../ui/sidebar.js';
-import { updateProgressBar } from '../ui/topbar.js';
-import { TEACHER_BLOCKED_MODULES, ACCOUNTANT_BLOCKED_MODULES, NAV_CONFIG } from './constants.js';
-import { showToast } from './helpers.js';
-import { error as logError } from './logger.js';
 
 let currentModuleId = null;
 // Module JS file is imported once then cached here
@@ -122,12 +115,12 @@ const MODULE_MAP = {
     'ranking-engine':         { file: 'modules/ranking-engine.js',       fn: 'renderRankingEngine' },
 };
 
-export function initRouter(defaultModule = 'admin-dashboard') {
+function initRouter(defaultModule = 'admin-dashboard') {
     const savedModule = localStorage.getItem('elf_module') || defaultModule;
     navigateTo(savedModule);
 }
 
-export async function navigateTo(moduleId) {
+async function navigateTo(moduleId) {
     const role = getCurrentUser()?.role;
 
     if (role === 'teacher' && TEACHER_BLOCKED_MODULES.has(moduleId)) {
@@ -214,7 +207,7 @@ function showAccessDenied(message) {
     }
 }
 
-export function navigateToWithData(moduleId, data) {
+function navigateToWithData(moduleId, data) {
     if (data) {
         Object.entries(data).forEach(([key, value]) => {
             if (value != null) localStorage.setItem(`elf_nav_${key}`, String(value));
@@ -223,17 +216,17 @@ export function navigateToWithData(moduleId, data) {
     navigateTo(moduleId);
 }
 
-export function getNavData(key) {
+function getNavData(key) {
     const value = localStorage.getItem(`elf_nav_${key}`);
     localStorage.removeItem(`elf_nav_${key}`);
     return value;
 }
 
-export function clearModuleCache() {
+function clearModuleCache() {
     importedModules.clear();
 }
 
-export function getCurrentModule() {
+function getCurrentModule() {
     return currentModuleId;
 }
 

@@ -2,10 +2,9 @@
 // BUTTONS UI - Button loading states and actions
 // ============================================================
 
-import { showToast } from './modals.js';
 
 // Set button loading state
-export function setButtonLoading(button, isLoading, text = null) {
+function setButtonLoading(button, isLoading, text = null) {
     if (!button) return;
 
     if (isLoading) {
@@ -19,7 +18,7 @@ export function setButtonLoading(button, isLoading, text = null) {
 }
 
 // Create a loading button
-export function createLoadingButton(text, loadingText = 'Loading...') {
+function createLoadingButton(text, loadingText = 'Loading...') {
     const button = document.createElement('button');
     button.className = 'btn btn-primary';
     button.innerHTML = text;
@@ -39,7 +38,7 @@ export function createLoadingButton(text, loadingText = 'Loading...') {
 }
 
 // Copy to clipboard button handler
-export async function handleCopyToClipboard(text, successMessage = 'Copied to clipboard!') {
+async function handleCopyToClipboard(text, successMessage = 'Copied to clipboard!') {
     try {
         await navigator.clipboard.writeText(text);
         showToast(successMessage, 'success');
@@ -51,7 +50,7 @@ export async function handleCopyToClipboard(text, successMessage = 'Copied to cl
 }
 
 // Print button handler
-export function handlePrint(elementId, title = 'Print') {
+function handlePrint(elementId, title = 'Print') {
     const element = document.getElementById(elementId);
     if (!element) {
         showToast('Nothing to print', 'warning');
@@ -86,7 +85,7 @@ export function handlePrint(elementId, title = 'Print') {
 }
 
 // Confirm delete button handler
-export function confirmDelete(onConfirm, itemName = 'item') {
+function confirmDelete(onConfirm, itemName = 'item') {
     if (confirm(`Are you sure you want to delete ${itemName}?`)) {
         onConfirm();
     }
