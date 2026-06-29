@@ -1,7 +1,7 @@
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║  ECOLE LA FONTAINE — BUILD PROGRESS TRACKER                                        ║
 ║  Status: [ ] todo  [~] in progress  [x] done  [!] blocked  [?] needs verification ║
-║  Last updated: 2026-06-29  |  Working file: index.html (split-file SPA)            ║
+║  Last updated: 2026-06-29 (session 2)  |  Working file: index.html (split-file SPA)            ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 HOW TO USE
@@ -71,7 +71,10 @@ PHASE 0 — FOUNDATION & INFRASTRUCTURE
            Change SUPABASE_URL from hejdppzparottbcnycjo to ovmymtdrugdljnttiltd
            Also check js/core/supabase-client.js
 
-[~] P0-13  Verify ES module / non-module consistency                        PARTIAL
+[x] P0-13  ES module / non-module — FIXED 2026-06-29
+           Stripped import/export from 110 files. All use window globals now.
+           main.js replaced. DOMContentLoaded boot trigger added to index.html.
+           supabase-client.js fixed (was importing from wrong filename).
            PROBLEM: js/core/router.js uses import/export (ES module)
            But index.html loads files as plain <script src>, not type="module"
            Either: convert all to plain globals, OR add type="module" to index.html
