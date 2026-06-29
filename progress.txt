@@ -1,7 +1,7 @@
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║  ECOLE LA FONTAINE — BUILD PROGRESS TRACKER                                        ║
 ║  Status: [ ] todo  [~] in progress  [x] done  [!] blocked  [?] needs verification ║
-║  Last updated: 2026-06-28  |  Working file: index.html (split-file SPA)            ║
+║  Last updated: 2026-06-29  |  Working file: index.html (split-file SPA)            ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 HOW TO USE
@@ -40,12 +40,15 @@ WHAT ACTUALLY WORKS IN THE BROWSER TODAY:
   · All 185 JS module files have stub/partial implementations
 
 WHAT DOES NOT WORK YET:
-  · Admin username should show headteacher name (UWAYO GANZA Eugene), not "Administrator"
-  · Bell (🔔) must navigate to notification-center, NOT open a modal
-  · Sidebar outside-click / hamburger must work on ALL devices (not just mobile)
-  · Many render functions are stubs that render placeholder content
-  · Several module IDs in sidebar NAV_CONFIG have no matching router entry
-  · Several router entries have no matching js/modules/ file
+  · 97 JS files still have ES import/export (P0-13) — will break in browser
+    Affected: 30/40 core, 20/25 ui, 47/91 modules, 7/7 mobile, 5/5 integrations
+  · Bell polling (P2-08): updateBellCount() exists but not wired to setInterval in boot.js
+  · Many render functions are stubs that render placeholder content (see P4–P16)
+  · 'announcements' in sidebar has no router entry (P3-11)
+  · 10+ module IDs in sidebar have no router entry (P3-11)
+  · Admin dashboard: 17 of 18 widgets missing (P4-01–P4-18)
+  · ES modules issue (P0-13): js/core/supabase-client.js imports from './config.js'
+    but the file is actually named supabase-config.js — WILL CRASH on load
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 PHASE 0 — FOUNDATION & INFRASTRUCTURE
@@ -63,12 +66,12 @@ PHASE 0 — FOUNDATION & INFRASTRUCTURE
 [x] P0-10  Write AGENT_PROMPT.md universal agent guide                 2026-06-28
 [x] P0-11  Add admin dashboard wireframe to frontend.txt               2026-06-28
 
-[ ] P0-12  Fix Supabase URL to new project (ovmymtdrugdljnttiltd)
+[x] P0-12  Fix Supabase URL to new project (ovmymtdrugdljnttiltd)          2026-06-29
            File: js/config/supabase-config.js line ~3
            Change SUPABASE_URL from hejdppzparottbcnycjo to ovmymtdrugdljnttiltd
            Also check js/core/supabase-client.js
 
-[ ] P0-13  Verify ES module / non-module consistency
+[~] P0-13  Verify ES module / non-module consistency                        PARTIAL
            PROBLEM: js/core/router.js uses import/export (ES module)
            But index.html loads files as plain <script src>, not type="module"
            Either: convert all to plain globals, OR add type="module" to index.html
@@ -98,7 +101,7 @@ FILE: html/partials/login.html + js/core/auth.js
 [x] P1-06  Biometric login button (shown if device supports WebAuthn)  2026-06-28
 [x] P1-07  Enter key submits login                                     2026-06-28
 
-[ ] P1-08  Admin login shows headteacher name, NOT "Administrator"
+[x] P1-08  Admin login shows headteacher name, NOT "Administrator"          2026-06-29
            SPEC: When role=admin is selected, subtitle should read:
            "Head Teacher — UWAYO GANZA Eugene" (read from school_settings.head_teacher)
            File: js/core/auth.js function login() line ~117
@@ -128,24 +131,25 @@ FILE: css/components/topbar.css + js/ui/topbar.js + html/partials/topbar.html
 [x] P2-05  Term progress bar below topbar                              2026-06-28
 [x] P2-06  Phase indicator badge (Pre/Post Midterm)                    2026-06-28
 
-[ ] P2-07  Bell (🔔) MUST navigate to notification-center module
+[x] P2-07  Bell (🔔) MUST navigate to notification-center module            2026-06-29
            NEVER open a modal — always call navigateTo('notification-center')
            File: js/ui/topbar.js — check the bell onclick handler
            File: html/partials/topbar.html — check onclick attribute on bell button
            Check: js/ui/shell.js for any bell handler overrides
 
-[ ] P2-08  Bell badge shows unread notification count
+[~] P2-08  Bell badge shows unread notification count                       PARTIAL
+           updateBellCount() written in topbar.js — polling not yet in boot.js
            File: js/ui/topbar.js function updateBellCount(n)
            Must: poll notifications table every 60s, filter by current user role
            Show red dot with count if n > 0, hide dot if n === 0
 
-[ ] P2-09  Hamburger toggles sidebar on ALL devices (not just mobile)
+[x] P2-09  Hamburger toggles sidebar on ALL devices (not just mobile)       2026-06-29
            SPEC: sidebar collapses to 72px icon-only on desktop when hamburger clicked
            On mobile: sidebar slides in/out as overlay drawer
            File: js/ui/sidebar.js function toggleSidebar()
            Current: only handles mobile-open class, no desktop collapse
 
-[ ] P2-10  User dropdown: Profile, Change Password, Biometric, Logout
+[x] P2-10  User dropdown: Profile, Change Password, Biometric, Logout       2026-06-29
            File: js/ui/topbar.js
            Verify all 4 items are present and functional
            Profile → showProfileModal()
@@ -167,37 +171,52 @@ FILE: css/components/sidebar.css + js/ui/sidebar.js + html/partials/sidebar.html
 [x] P3-05  Sidebar footer: avatar + username + role + logout           2026-06-28
 [x] P3-06  Section collapse state saved to localStorage               2026-06-28
 
-[ ] P3-07  Sidebar outside-click closes on ALL devices
+[x] P3-07  Sidebar outside-click closes on ALL devices                      2026-06-29
            SPEC: "fold and unfold sidebar for all devices" — not just mobile
            On desktop: outside click collapses to 72px icon mode
            On mobile: outside click removes overlay + slides out
            File: js/ui/sidebar.js — overlay click handler + document click handler
 
-[ ] P3-08  Sidebar collapsed state (72px icons-only) on desktop
+[x] P3-08  Sidebar collapsed state (72px icons-only) on desktop             2026-06-29
            SPEC: frontend.txt sidebar breakdown mentions collapsed state
            When collapsed: only icons visible, labels hidden
            data-label attribute on each nav item → CSS tooltip on hover
            File: js/ui/sidebar.js function toggleSidebar() for desktop path
            File: css/components/sidebar.css .sidebar.collapsed styles
 
-[ ] P3-09  ESC key closes sidebar on mobile
+[x] P3-09  ESC key closes sidebar on mobile                                 2026-06-29
            File: js/ui/sidebar.js — keydown event listener
 
-[ ] P3-10  Resize from mobile to desktop cleans up mobile-open state
+[x] P3-10  Resize from mobile to desktop cleans up mobile-open state        2026-06-29
            File: js/ui/sidebar.js — window resize listener
 
-[ ] P3-11  Verify all sidebar nav IDs have matching router entries
-           MISMATCHES FOUND (sidebar has these IDs but router may not):
-           · 'user-management' → sidebar shows it, router has 'user-management'
-             but js/modules/ has 'users.js' and 'user-management.js' — which is right?
-           · 'teachers-list' → sidebar does NOT have this, but router has it
-             Sidebar has 'user-management' for staff — verify this is correct
-           · 'sibling-linking' → in router but NOT in sidebar NAV_CONFIG
-           · 'analytics' → in sidebar for admin, check router has it
-           · 'finance-dashboard' → in sidebar, check router has it
-           · 'marks-analysis' → in router but NOT in sidebar
-           · 'rankings' → in router but NOT in sidebar
-           ACTION: audit every sidebar ID against MODULE_MAP in router.js
+[~] P3-11  Verify all sidebar nav IDs have matching router entries
+           AUDIT COMPLETE 2026-06-29 — mismatches found:
+           IN SIDEBAR BUT NOT IN ROUTER (1):
+             · announcements → add to router → js/modules/announcements.js
+           IN ROUTER BUT NOT IN SIDEBAR (34 sub-module IDs):
+             These are sub-modules reached via deep links, NOT sidebar items.
+             Normal — no fix needed for: annual-register, assessment-locking,
+             assessment-export, bulk-finance-actions, class-timetable,
+             credit-balances, discounts, dynamic-content, fee-assignments,
+             fee-structures, finance-audit, finance-reports, grading-settings,
+             manual-adjustments, marks-analysis, marks-import-export,
+             notifications, payments, ranking-engine, rankings, register-export,
+             report-generator, sibling-linking, staff, student-fee-status,
+             student-statements, students, system-health, teachers,
+             timetable-conflicts, timetable-import, transcript
+           REAL FIXES NEEDED:
+             · Add 'announcements' to router MODULE_MAP → renderAnnouncements
+             · Add 'financial-reports' to router (sidebar has it, router has finance-reports)
+             · Add 'marks-entry' to router (sidebar has it — what is the render fn?)
+             · Add 'marks-database' to router
+             · Add 'school-settings' to router
+             · Add 'academic-calendar' to router
+             · Add 'statistics' to router
+             · Add 'student-list', 'student-details', 'student-archive' to router
+             · Add 'student-fees' to router
+             · Add 'grading-scale' to router (router has grading-settings, not grading-scale)
+             · Add 'system-logs' to router
 
 [ ] P3-12  Accountant sidebar — add missing finance nav items
            Accountant NAV_CONFIG currently has:
