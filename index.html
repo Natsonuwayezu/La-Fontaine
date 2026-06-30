@@ -497,6 +497,26 @@
     <script src="js/integrations/icons.js"></script>
 
     <!-- ═══════════════════════════════════════════════════
+         JAVASCRIPT — PATCHES (bug fixes from previous sessions,
+         must load AFTER modules so they can override/extend them,
+         BEFORE window-exposure.js so missing functions get exported)
+    ════════════════════════════════════════════════════ -->
+    <script src="js/patches/missing-helpers.js"></script>
+    <script src="js/patches/missing-functions.js"></script>
+    <script src="js/patches/missing-functions-98.js"></script>
+    <script src="js/patches/analytics-helpers.js"></script>
+    <script src="js/patches/announcements.js"></script>
+    <script src="js/patches/system-logs.js"></script>
+    <script src="js/patches/v9-features.js"></script>
+    <script src="js/patches/window-exposure-98.js"></script>
+
+    <!-- ═══════════════════════════════════════════════════
+         JAVASCRIPT — PWA INSTALL PROMPT
+    ════════════════════════════════════════════════════ -->
+    <script src="pwa/install.js"></script>
+    <script src="pwa/offline-cache.js"></script>
+
+    <!-- ═══════════════════════════════════════════════════
          JAVASCRIPT — APP ENTRY POINT (load last)
     ════════════════════════════════════════════════════ -->
     <script src="js/core/router.js"></script>
